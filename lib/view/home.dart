@@ -11,7 +11,7 @@ class HomePage extends StatelessWidget
        title: const Text('Home'),
      ),
      drawer: const SideBar(),
-     body: Center(child: Text(AppLocalizations.of(context)!.helloWorld)),
+     body: Center(child: Text(AppLocalizations.of(context)!.home)),
    );
   }
 

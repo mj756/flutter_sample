@@ -1,3 +1,5 @@
 {
-  "helloWorld": "Hello World spanish!",
+  "setting": "Ajuste",
+  "logout":"cerrar sesión",
+  "home":"Hogar"
 }
