@@ -1,3 +1,19 @@
+Important notes:
+1. Change package name of this project using change_app_package_name library (preferred)
+2. Create firebase project and add debug sha1 and release sha1 keys.
+3. Add google services.json and key.jks file in android/app folder.
+4. Set your own credential in key.properties file
+
+
+Here are some useful command to generate jks file and read sha1 keys from it.
+
+1. keytool -genkey -v -keystore D:/key.jks -storetype JKS -keyalg RSA -keysize 2048 -validity 10000 -alias android
+2. keytool -list -v -keystore D:/Flutter/android/app/key.jks -alias android -storepass android -keypass android
+
+
+
+
+
 how to create jks file
 keytool -export -alias tutorialspedia -file “C:\test\tutorialspedia_public_cert.cer” -keystore “path of jks file”
 or from android studio
@@ -87,7 +103,6 @@ run "flutter pub run build_runner build --delete-conflicting-outputs" for build 
 
 
 
-keytool -genkey -v -keystore D:/key.jks -storetype JKS -keyalg RSA -keysize 2048 -validity 10000 -alias android
-keytool -list -v -keystore D:/Flutter/android/app/key.jks -alias android -storepass android -keypass android
+
 
 
