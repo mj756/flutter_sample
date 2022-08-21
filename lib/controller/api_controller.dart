@@ -287,10 +287,9 @@ class ApiController
       });
       var client = http.Client();
       Map<String,String> header=<String,String>{};
-      header['Authorization']="key=<your own key>";
+      header['Authorization']="key=<your own key**********************************>";
       header['content-Type']='application/json';
       final result=await client.post(Uri.parse(fcmUrl),headers:header,body: body).timeout(timeOut);
-      print(result.body);
     } catch (e) {
 
     }

@@ -18,6 +18,8 @@ dependencies:
   firebase_crashlytics: ^2.6.1
   firebase_analytics: ^9.1.4
   firebase_core: ^1.14.0
+  firebase_messaging: ^11.2.12
+  flutter_local_notifications: ^9.6.1
 
   flutter_localizations: # Add this line
     sdk: flutter
