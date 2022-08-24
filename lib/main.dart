@@ -6,6 +6,8 @@ import 'package:flutter_sample/controller/app_setting_controller.dart';
 import 'package:flutter_sample/controller/firebase_controller.dart';
 import 'package:flutter_sample/controller/preference_controller.dart';
 import 'package:flutter_sample/view/home.dart';
+import 'package:flutter_sample/view/login.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,22 +26,29 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-        return ChangeNotifierProvider(
-          create:  (context) => AppSetting(),
+        return ScreenUtilInit(
+          designSize: const Size(360, 690),
+          minTextAdapt: true,
+          splitScreenMode: true,
           builder: (context,child){
-            return MaterialApp(
-                debugShowCheckedModeBanner: false,
-                title: 'Flutter Demo',
-                locale: Locale(context.watch<AppSetting>().appLanguage,''),
-                supportedLocales: AppLocalizations.supportedLocales,
-                localizationsDelegates:  const [
-                  AppLocalizations.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                theme: context.watch<AppSetting>().defaultTheme,
-                home: const HomePage()
+           return ChangeNotifierProvider(
+                create:  (context) => AppSettingController(),
+                builder: (context,child){
+                  return MaterialApp(
+                      debugShowCheckedModeBanner: false,
+                      title: 'Flutter Demo',
+                      locale: Locale(context.watch<AppSettingController>().appLanguage,''),
+                      supportedLocales: AppLocalizations.supportedLocales,
+                      localizationsDelegates:  const [
+                        AppLocalizations.delegate,
+                        GlobalMaterialLocalizations.delegate,
+                        GlobalWidgetsLocalizations.delegate,
+                        GlobalCupertinoLocalizations.delegate,
+                      ],
+                      theme: context.watch<AppSettingController>().defaultTheme,
+                    home: PreferenceController.getBoolean(PreferenceController.prefKeyIsLoggedIn)==true ?  HomePage():LoginPage(),
+                  );
+                }
             );
           }
         );

@@ -10,8 +10,9 @@ import 'package:path_provider/path_provider.dart';
 
 class ApiController
 {
+
   static const Duration timeOut=Duration(seconds: 30);
-  static const String baseAddress="https:www.google.com/";   //put your own api endpoint address
+  static const String baseAddress='http://restapi.adequateshop.com/api/authaccount/';   //put your own api endpoint address
   static const String endpointLogin="${baseAddress}login";
   static const String endpointRegistration="${baseAddress}registration";
   static const String endpointForGotPassword="${baseAddress}forgot-password";
@@ -19,6 +20,7 @@ class ApiController
   static const String endpointAboutUs="${baseAddress}about";
   static const String endpointTopUsers="${baseAddress}profile-detail";
   static const String endpointLogout="${baseAddress}logout";
+  static const String endpointSetting="${baseAddress}setting";
 
   static Future<bool> checkInternetStatus()async{
     try {
@@ -59,7 +61,7 @@ class ApiController
 
       if(await checkInternetStatus()==false)
       {
-        apiResponse.status=-1;
+        apiResponse.code=-1;
         return apiResponse;
       }
       var client = http.Client();
@@ -75,10 +77,10 @@ class ApiController
       }
       else
       {
-        apiResponse.status=response.statusCode;
+        apiResponse.code=response.statusCode;
       }
     } catch(ex) {
-      apiResponse.status=-1;
+      apiResponse.code=-1;
       apiResponse.message=ex.toString();
       if(kDebugMode)
       {
@@ -94,7 +96,7 @@ class ApiController
       if(await checkInternetStatus()==false)
       {
 
-        apiResponse.status=-1;
+        apiResponse.code=-1;
         return apiResponse;
       }
       var client = http.Client();
@@ -110,11 +112,11 @@ class ApiController
       }
       else
       {
-        apiResponse.status=response.statusCode;
+        apiResponse.code=response.statusCode;
         apiResponse.data=null;
       }
     } catch(ex) {
-      apiResponse.status=-1;
+      apiResponse.code=-1;
       apiResponse.message=ex.toString();
       if(kDebugMode)
       {
@@ -129,7 +131,7 @@ class ApiController
     try {
       if(await checkInternetStatus()==false)
       {
-        apiResponse.status=-1;
+        apiResponse.code=-1;
         return apiResponse;
       }
       var client = http.Client();
@@ -145,11 +147,11 @@ class ApiController
       }
       else
       {
-        apiResponse.status=response.statusCode;
+        apiResponse.code=response.statusCode;
         apiResponse.data=null;
       }
     } catch(ex) {
-      apiResponse.status=-1;
+      apiResponse.code=-1;
       apiResponse.message=ex.toString();
       if(kDebugMode)
       {
@@ -164,7 +166,7 @@ class ApiController
       if(await checkInternetStatus()==false)
       {
 
-        apiResponse.status=-1;
+        apiResponse.code=-1;
         return apiResponse;
       }
       var client = http.Client();
@@ -180,7 +182,7 @@ class ApiController
       }
       else
       {
-        apiResponse.status=response.statusCode;
+        apiResponse.code=response.statusCode;
         apiResponse.data=null;
       }
     } catch(ex) {
@@ -215,7 +217,7 @@ class ApiController
       if(await checkInternetStatus()==false)
       {
 
-        apiResponse.status=-1;
+        apiResponse.code=-1;
         return apiResponse;
       }
       var request = http.MultipartRequest(method, Uri.parse(url));
@@ -249,12 +251,12 @@ class ApiController
       }
       else
       {
-        apiResponse.status=response.statusCode;
+        apiResponse.code=response.statusCode;
         apiResponse.data=null;
       }
     }catch(ex)
     {
-      apiResponse.status=-1;
+      apiResponse.code=-1;
       apiResponse.message=ex.toString();
       if(kDebugMode)
       {
@@ -290,7 +292,6 @@ class ApiController
       header['Authorization']="key=<your own key>";
       header['content-Type']='application/json';
       final result=await client.post(Uri.parse(fcmUrl),headers:header,body: body).timeout(timeOut);
-      print(result.body);
     } catch (e) {
 
     }

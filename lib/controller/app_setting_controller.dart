@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sample/controller/preference_controller.dart';
+import 'package:flutter_sample/model/user.dart';
 
-class AppSetting extends ChangeNotifier
+class AppSettingController extends ChangeNotifier
 {
   String appLanguage='en';
-
-  AppSetting()
+  late AppUser currentUser;
+  AppSettingController()
   {
     String language=PreferenceController.getString(PreferenceController.prefKeyLanguage);
 
-    print(language);
     appLanguage=language.isEmpty ? 'en':language;
   }
-
-   ThemeData defaultTheme=ThemeData(
+   final ThemeData defaultTheme=ThemeData(
     primarySwatch: Colors.blue,
      visualDensity: VisualDensity.adaptivePlatformDensity,
      iconTheme: const IconThemeData(
