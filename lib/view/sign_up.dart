@@ -8,7 +8,6 @@ import '../utils/app_colors.dart';
 import '../utils/styles.dart';
 import '../utils/utility.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'home.dart';
 class SignUpPage extends StatelessWidget
 {
    SignUpPage({Key? key}) : super(key: key);
@@ -64,7 +63,7 @@ class SignUpPage extends StatelessWidget
                                       TextFormField(
                                         controller: _nameController,
                                         decoration:  InputDecoration(
-                                          prefixIcon: Icon(Icons.email),
+                                          prefixIcon: const Icon(Icons.email),
                                           hintText: AppLocalizations.of(context)!
                                               .label_enter_user_name,
                                           label: Text(AppLocalizations.of(context)!
@@ -148,11 +147,9 @@ class SignUpPage extends StatelessWidget
                                                       _passwordController.text)
                                                       .then((value) {
                                                     if (value.isEmpty) {
-                                                      Navigator.pushReplacement(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                               HomePage()));
+                                                      Navigator.pushReplacementNamed(
+                                                          context,'/home'
+                                                      );
                                                     } else {
                                                       Utility.showSnackBar(
                                                           context, value);

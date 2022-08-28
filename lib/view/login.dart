@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sample/controller/login_controller.dart';
 import 'package:flutter_sample/utils/app_colors.dart';
 import 'package:flutter_sample/utils/styles.dart';
-import 'package:flutter_sample/view/home.dart';
-import 'package:flutter_sample/view/sign_up.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../utils/utility.dart';
@@ -156,11 +154,8 @@ class LoginPage extends StatelessWidget {
                                                       _passwordController.text)
                                                   .then((value) {
                                                 if (value.isEmpty) {
-                                                  Navigator.pushReplacement(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                               HomePage()));
+                                                  Navigator.pushReplacementNamed(
+                                                      context,'/home');
                                                 } else {
                                                   Utility.showSnackBar(
                                                       context, value);
@@ -217,12 +212,10 @@ class LoginPage extends StatelessWidget {
                                         fontSize: 15,
                                         isBold: true),
                                     recognizer: TapGestureRecognizer()
-                                      ..onTap = () async {
-                                        await Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    SignUpPage()));
+                                      ..onTap = () {
+                                        Navigator.pushReplacementNamed(
+                                            context,'/signup'
+                                            );
                                       },
                                   ),
                                 ],

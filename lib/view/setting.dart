@@ -20,7 +20,7 @@ class Setting extends StatelessWidget {
       body: ListView(
         children: [
           ListTile(
-            leading: Icon(Icons.language),
+            leading: const Icon(Icons.language),
               title: DropdownButton(
                 value: context.watch<AppSettingController>().appLanguage,
                 icon: const Icon(Icons.keyboard_arrow_down),

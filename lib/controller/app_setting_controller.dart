@@ -8,9 +8,9 @@ class AppSettingController extends ChangeNotifier
   late AppUser currentUser;
   AppSettingController()
   {
-    String language=PreferenceController.getString(PreferenceController.prefKeyLanguage);
+   // String language=PreferenceController.getString(PreferenceController.prefKeyLanguage);
 
-    appLanguage=language.isEmpty ? 'en':language;
+  //  appLanguage=language.isEmpty ? 'en':language;
   }
    final ThemeData defaultTheme=ThemeData(
     primarySwatch: Colors.blue,
@@ -19,7 +19,11 @@ class AppSettingController extends ChangeNotifier
        color: Colors.blue,
        size: 18,
      ),
-
+     textTheme: const TextTheme(
+       headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+       headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+       bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+     ),
   );
   void changeLanguage(String newLanguage)
   {

@@ -1,14 +1,33 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sample/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomStyles {
+
+  static late  BuildContext? context;
+  static bool isInitialize=false;
+  static void setContext(BuildContext context1){
+    if(isInitialize==false) {
+      context=context1;
+      isInitialize=true;
+    }
+  }
+
+
+  static TextStyle normalTextStyle({Color defaultColor = CustomColors.blackColor,
+    bool isBold = false,
+    bool isUnderLine = false,
+    double fontSize = 14}){
+    return Theme.of(context!).textTheme.bodyText2!;
+  }
+
   static TextStyle customTextStyle(
       {Color defaultColor = CustomColors.blackColor,
       bool isBold = false,
       bool isUnderLine = false,
       double fontSize = 14}) {
+
+    return  Theme.of(context!).textTheme.bodyText2!.copyWith(color: defaultColor);
     return TextStyle(
         color: defaultColor,
         fontSize: fontSize.h,
@@ -38,9 +57,7 @@ class CustomStyles {
         },
       ),
       textStyle: MaterialStateProperty.resolveWith<TextStyle>((Set<MaterialState> states) {
-        return const TextStyle(
-            fontSize: 18
-        );
+        return  Theme.of(context!).textTheme.button!.copyWith(color: defaultColor);
       }),
       minimumSize:
       MaterialStateProperty.resolveWith<Size>((Set<MaterialState> states) {
