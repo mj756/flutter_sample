@@ -99,7 +99,7 @@ Answer: https://stackoverflow.com/questions/41490878/how-can-i-delete-a-bundle-i
     Step 2: Convert to HTML using Git BASH shell: ./genhtml.perl ./coverage/lcov.info -o coverage/html
 
 https://stackoverflow.com/questions/67366702/flutter-mockito-with-null-safety-throws-null-type-error
-run "flutter pub run build_runner build --delete-conflicting-outputs" for build runner to build the stub files for you
+run "flutter pub run build_runner build --delete-conflicting-outputs" for build runner to build the stub files for you  
 
 
 
