@@ -8,12 +8,16 @@ name: Dart
 on:
   push:
     branches: [ "main" ]
+    tags:
+    - '*'
   pull_request:
     branches: [ "main" ]
 
 jobs:
   build:
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-java@v2
@@ -26,8 +30,6 @@ jobs:
     - run: flutter pub get
     - run: flutter build apk
     - uses: ncipollo/release-action@v1
-      env:
-          TOKEN: ${{ secrets.TOKEN }}
       with:
         artifacts: "build/app/outputs/apk/release/*.apk"
         token: ${{ secrets.TOKEN }}
