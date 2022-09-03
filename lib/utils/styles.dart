@@ -4,31 +4,35 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomStyles {
 
-  static late  BuildContext? context;
-  static bool isInitialize=false;
-  static void setContext(BuildContext context1){
-    if(isInitialize==false) {
-      context=context1;
-      isInitialize=true;
-    }
-  }
+   static const int extraSmallFont=10;
+   static const int smallFont=12;
+   static const int normalFont=14;
+   static const int largeFont=16;
+   static const int extraLargeFont=18;
 
 
-  static TextStyle normalTextStyle({Color defaultColor = CustomColors.blackColor,
-    bool isBold = false,
-    bool isUnderLine = false,
-    double fontSize = 14}){
-    return Theme.of(context!).textTheme.bodyText2!;
-  }
 
   static TextStyle customTextStyle(
       {Color defaultColor = CustomColors.blackColor,
       bool isBold = false,
       bool isUnderLine = false,
-      double fontSize = 14}) {
+      isNormalFont=true,isExtraSmallFont=false,isSmallFont=false,isLargeFont=false,isExtraLargeFont=false}) {
 
-    return  Theme.of(context!).textTheme.bodyText2!.copyWith(color: defaultColor);
+    int fontSize=14;
+    if(isExtraSmallFont==true) {
+      fontSize=extraSmallFont;
+    } else if(isSmallFont==true) {
+      fontSize=smallFont;
+    } else if(isLargeFont==true) {
+      fontSize=largeFont;
+    } else if(isExtraLargeFont==true) {
+      fontSize=extraLargeFont;
+    } else {
+      fontSize=normalFont;
+    }
+
     return TextStyle(
+        fontFamily: 'Lato',
         color: defaultColor,
         fontSize: fontSize.h,
         fontWeight: isBold == true ? FontWeight.bold : FontWeight.normal,
@@ -57,7 +61,7 @@ class CustomStyles {
         },
       ),
       textStyle: MaterialStateProperty.resolveWith<TextStyle>((Set<MaterialState> states) {
-        return  Theme.of(context!).textTheme.button!.copyWith(color: defaultColor);
+        return  customTextStyle(defaultColor: CustomColors.whiteColor,isLargeFont: true);
       }),
       minimumSize:
       MaterialStateProperty.resolveWith<Size>((Set<MaterialState> states) {

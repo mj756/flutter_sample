@@ -3,8 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_sample/controller/app_setting_controller.dart';
-import 'package:flutter_sample/utils/styles.dart';
+import 'package:flutter_sample/utils/app_colors.dart';
 import 'package:flutter_sample/view/home.dart';
+import 'package:flutter_sample/view/language_selection.dart';
 import 'package:flutter_sample/view/login.dart';
 import 'package:flutter_sample/view/sign_up.dart';
 import 'package:flutter_sample/view/splash_screen.dart';
@@ -23,7 +24,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CustomStyles.setContext(context);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -49,36 +49,14 @@ class MyApp extends StatelessWidget {
                     GlobalCupertinoLocalizations.delegate,
                   ],
                   theme: ThemeData(
-                    primarySwatch: Colors.blue,
+                    fontFamily: 'Lato',
+                    primarySwatch: CustomColors.themeColor,
                     visualDensity: VisualDensity.adaptivePlatformDensity,
+                    textTheme: Theme.of(context).textTheme,
                     iconTheme: const IconThemeData(
-                      color: Colors.blue,
-                      size: 18,
+                      color: CustomColors.themeColor,
+                      size: 20,
                     ),
-                 /*   textTheme: const TextTheme(
-                      // headline1: TextStyle(fontSize: 96.0, fontWeight: FontWeight.bold),
-                      //  headline2: TextStyle(fontSize: 60.0, fontWeight: FontWeight.bold),
-                      //  headline3: TextStyle(fontSize: 48.0, fontWeight: FontWeight.bold),
-                      //  headline4: TextStyle(fontSize: 34.0, fontWeight: FontWeight.bold),
-                      headline5: TextStyle(
-                          fontSize: 24.0, fontWeight: FontWeight.bold),
-                      headline6: TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.bold),
-                      subtitle1: TextStyle(
-                          fontSize: 16.0, fontStyle: FontStyle.italic),
-                      subtitle2: TextStyle(
-                          fontSize: 14.0, fontStyle: FontStyle.italic),
-                      bodyText1: TextStyle(
-                          fontSize: 16.0, fontStyle: FontStyle.italic),
-                      bodyText2: TextStyle(
-                          fontSize: 14.0, fontStyle: FontStyle.italic),
-                      button: TextStyle(
-                          fontSize: 14.0, fontStyle: FontStyle.italic),
-                      caption: TextStyle(
-                          fontSize: 12.0, fontStyle: FontStyle.italic),
-                      overline: TextStyle(
-                          fontSize: 10.0, fontStyle: FontStyle.italic),
-                    ),*/
                   ),
                   initialRoute: '/splash',
                   routes: {
@@ -86,6 +64,7 @@ class MyApp extends StatelessWidget {
                     '/login': (context) =>  LoginPage(),
                     '/signup': (context) =>  SignUpPage(),
                     '/home': (context) =>  HomePage(),
+                    '/language': (context) =>  const SelectLanguage(),
                   },
                 );
               });

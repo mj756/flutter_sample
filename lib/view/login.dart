@@ -16,10 +16,14 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _emailController.text='test134@gmil.com';
+    _passwordController.text='12345678';
+
     return ChangeNotifierProvider(
         create: (context) => LoginController(),
         builder: (context, child) {
           return Scaffold(
+            resizeToAvoidBottomInset: false,
             body: SafeArea(
               child: Container(
                 padding: EdgeInsets.all(10.w),
@@ -36,6 +40,13 @@ class LoginPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    Align(
+                        alignment: Alignment.topRight,
+                        child: InkWell(
+                            onTap: ()async {
+                             await Navigator.pushNamed(context,'/language');
+                            },
+                            child: const Icon(Icons.language,size: 30,))),
                     Expanded(
                       flex: 9,
                       child: Stack(children: [
@@ -59,7 +70,7 @@ class LoginPage extends StatelessWidget {
                                         isBold: true,
                                         defaultColor:
                                             CustomColors.screenBackgroundColor,
-                                        fontSize: 18),
+                                        isExtraLargeFont: true),
                                   ),
                                   SizedBox(height: 20.h),
                                   TextFormField(
@@ -91,12 +102,18 @@ class LoginPage extends StatelessWidget {
                                         .isPasswordVisible,
                                     decoration: InputDecoration(
                                       prefixIcon: const Icon(Icons.lock),
-                                      suffixIcon: Icon(context
-                                                  .watch<LoginController>()
-                                                  .isPasswordVisible ==
-                                              true
-                                          ? Icons.visibility
-                                          : Icons.visibility_off),
+                                      suffixIcon: GestureDetector(
+                                        onTap: (){
+                                          Provider.of
+                                              <LoginController>(context,listen: false).changePasswordVisibility();
+                                        },
+                                        child: Icon(context
+                                                    .watch<LoginController>()
+                                                    .isPasswordVisible ==
+                                                true
+                                            ? Icons.visibility
+                                            : Icons.visibility_off),
+                                      ),
                                       hintText: AppLocalizations.of(context)!
                                           .title_enter_password,
                                       label: Text(AppLocalizations.of(context)!
@@ -169,7 +186,7 @@ class LoginPage extends StatelessWidget {
                                         AppLocalizations.of(context)!
                                             .label_login,
                                         style: CustomStyles.customTextStyle(
-                                            fontSize: 16,
+                                            isLargeFont: true,
                                             defaultColor:
                                                 CustomColors.whiteColor,
                                             isBold: true),
@@ -198,7 +215,7 @@ class LoginPage extends StatelessWidget {
                                                     .lastIndexOf(' ') +
                                                 1),
                                     style: CustomStyles.customTextStyle(
-                                        fontSize: 13),
+                                        isSmallFont: true),
                                   ),
                                   TextSpan(
                                     text: AppLocalizations.of(context)!
@@ -209,7 +226,7 @@ class LoginPage extends StatelessWidget {
                                             1),
                                     style: CustomStyles.customTextStyle(
                                         defaultColor: CustomColors.whiteColor,
-                                        fontSize: 15,
+                                        isLargeFont:true,
                                         isBold: true),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
@@ -302,7 +319,7 @@ class LoginPage extends StatelessWidget {
                     child: Text(
                       AppLocalizations.of(context)!.label_send,
                       style: CustomStyles.customTextStyle(
-                          fontSize: 16,
+                         isLargeFont: true,
                           defaultColor: CustomColors.whiteColor,
                           isBold: true),
                     ))

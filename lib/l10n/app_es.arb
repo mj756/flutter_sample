@@ -19,13 +19,15 @@
       "message_no_internet_connection":"No internet connection",
       "label_login":"Login",
       "label_forgot_password":"Forgot password?",
-      "label_do_not_have_account":"Don't have an account yet?, create",
+      "label_do_not_have_account":"Don't have an account yet? create",
       "label_registration":"Registration",
       "label_sign_up":"Sign Up",
-       "label_already_have_account":"Already have an account?, Login",
+       "label_already_have_account":"Already have an account? Login",
         "label_send":"Send",
         "label_send_password_description":"Forgot your old password?, get a new password.",
         "message_invalid_user_name":"Please enter valid user name",
         "label_enter_user_name":"Enter user name",
-        "label_name":"Name"
+        "label_name":"Name",
+         "label_terms_and_condition":  "By signing up your agree with our terms and conditions",
+         "label_select_language":"Seleccione el idioma"
 }

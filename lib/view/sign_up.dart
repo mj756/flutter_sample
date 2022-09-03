@@ -58,7 +58,7 @@ class SignUpPage extends StatelessWidget
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(AppLocalizations.of(context)!
-                                          .label_registration,style: CustomStyles.customTextStyle(isBold: true,defaultColor: CustomColors.screenBackgroundColor,fontSize: 18),),
+                                          .label_registration,style: CustomStyles.customTextStyle(isBold: true,defaultColor: CustomColors.screenBackgroundColor,isExtraLargeFont:true),),
                                       SizedBox(height: 20.h),
                                       TextFormField(
                                         controller: _nameController,
@@ -161,7 +161,40 @@ class SignUpPage extends StatelessWidget
                                           },
                                           child: Text(
                                             AppLocalizations.of(context)!
-                                                .label_sign_up,style: CustomStyles.customTextStyle(fontSize: 16,defaultColor: CustomColors.whiteColor,isBold: true),))
+                                                .label_sign_up,style: CustomStyles.customTextStyle(isLargeFont:true,defaultColor: CustomColors.whiteColor,isBold: true),)),
+                                      Expanded( child: Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: AppLocalizations.of(context)!
+                                                      .label_already_have_account.substring(0,
+                                                      AppLocalizations.of(context)!
+                                                          .label_already_have_account
+                                                          .lastIndexOf(' ') + 1),
+                                                  style: CustomStyles.customTextStyle(
+                                                      isSmallFont:true),
+                                                ),
+                                                TextSpan(
+                                                  text: AppLocalizations.of(context)!
+                                                      .label_already_have_account.substring(
+                                                      AppLocalizations.of(context)!
+                                                          .label_already_have_account
+                                                          .lastIndexOf(' ') + 1),
+                                                  style: CustomStyles.customTextStyle(
+                                                      defaultColor: CustomColors
+                                                          .themeColor,
+                                                     isLargeFont: true,
+                                                      isBold: true),
+                                                  recognizer: TapGestureRecognizer()
+                                                    ..onTap = () async {
+                                                      await Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> LoginPage()));
+                                                    },
+                                                ),
+                                              ],
+                                            ),)
+                                      ))
                                     ],
                                   ),
                                 ),
@@ -172,36 +205,40 @@ class SignUpPage extends StatelessWidget
                         flex: 1,
                         child: Align(
                             alignment: Alignment.bottomCenter,
-                            child: RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: AppLocalizations.of(context)!
-                                        .label_already_have_account.substring(0,
-                                        AppLocalizations.of(context)!
-                                            .label_already_have_account
-                                            .lastIndexOf(' ') + 1),
-                                    style: CustomStyles.customTextStyle(
-                                        fontSize: 13),
-                                  ),
-                                  TextSpan(
-                                    text: AppLocalizations.of(context)!
-                                        .label_already_have_account.substring(
-                                        AppLocalizations.of(context)!
-                                            .label_already_have_account
-                                            .lastIndexOf(' ') + 1),
-                                    style: CustomStyles.customTextStyle(
-                                        defaultColor: CustomColors
-                                            .whiteColor,
-                                        fontSize: 15,
-                                        isBold: true),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () async {
-                                        await Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> LoginPage()));
-                                      },
-                                  ),
-                                ],
-                              ),)
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: RichText(
+                                text: TextSpan(
+
+                                  children: [
+                                    TextSpan(
+                                      text: AppLocalizations.of(context)!
+                                          .label_terms_and_condition.substring(0,
+                                          AppLocalizations.of(context)!
+                                              .label_terms_and_condition
+                                              .lastIndexOf('terms') -1),
+                                      style: CustomStyles.customTextStyle(
+                                          isNormalFont: true)
+                                    ),
+                                    TextSpan(
+                                      text:AppLocalizations.of(context)!
+                                          .label_terms_and_condition.substring(
+                                          AppLocalizations.of(context)!
+                                              .label_terms_and_condition
+                                              .lastIndexOf('terms') - 1),
+                                      style: CustomStyles.customTextStyle(
+                                          defaultColor: CustomColors
+                                              .whiteColor,
+                                          isNormalFont:true,
+                                          isBold: true,isUnderLine: true),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () async {
+                                          await Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> LoginPage()));
+                                        },
+                                    ),
+                                  ],
+                                ),),
+                            )
                         ))
                   ],
 

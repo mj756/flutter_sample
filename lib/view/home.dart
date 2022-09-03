@@ -4,6 +4,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_sample/controller/home_controller.dart';
 import 'package:flutter_sample/widget/drawer.dart';
 import 'package:provider/provider.dart';
+
+import '../widget/app_exit_dialog.dart';
 class HomePage extends StatelessWidget
 {
   static const platform = MethodChannel('samples.flutter.dev/permission');
@@ -14,36 +16,48 @@ class HomePage extends StatelessWidget
    return ChangeNotifierProvider(
      create: (context)=>HomeController(),lazy: false,
      builder: (context,child){
-       return Scaffold(
-         appBar: AppBar(
-           title:  Text(AppLocalizations.of(context)!.home),
-         ),
-         drawer: const SideBar(),
-         body: PageView.builder(
-             controller: _pageController,
-             physics:const NeverScrollableScrollPhysics(),
-             itemCount: 4,
-             itemBuilder: (context,index){
-               return Container(
-                 height: 200,
-                 color: Colors.red,
-                 child: Text('Page${index+1}'),
-               );
-             }),
+       return WillPopScope(
+         onWillPop: () async{
+           final shouldPop = await showDialog<bool>(
+             context: context,
+             barrierDismissible: false,
+             builder: (context) {
+               return const AppExitDialog();
+             },
+           );
+           return shouldPop!;
+         },
+         child: Scaffold(
+           appBar: AppBar(
+             title:  Text(AppLocalizations.of(context)!.home),
+           ),
+           drawer: const SideBar(),
+           body: PageView.builder(
+               controller: _pageController,
+               physics:const NeverScrollableScrollPhysics(),
+               itemCount: 4,
+               itemBuilder: (context,index){
+                 return Container(
+                   height: 200,
+                   color: Colors.red,
+                   child: Text('Page${index+1}'),
+                 );
+               }),
 
-         bottomNavigationBar: BottomNavigationBar(
-           type:BottomNavigationBarType.fixed,
-           currentIndex: context.watch<HomeController>().currentPage,
-           onTap: (index){
-              Provider.of<HomeController>(context,listen: false).changePageIndex(index);
-             _pageController.jumpToPage(index);
-           },
-           items: [
-             BottomNavigationBarItem(icon:const Icon(Icons.home),label: AppLocalizations.of(context)!.home),
-             BottomNavigationBarItem(icon:const Icon(Icons.home),label: AppLocalizations.of(context)!.home),
-             BottomNavigationBarItem(icon:const Icon(Icons.home),label: AppLocalizations.of(context)!.home),
-             BottomNavigationBarItem(icon:const Icon(Icons.home),label: AppLocalizations.of(context)!.home),
-           ],
+           bottomNavigationBar: BottomNavigationBar(
+             type:BottomNavigationBarType.fixed,
+             currentIndex: context.watch<HomeController>().currentPage,
+             onTap: (index){
+                Provider.of<HomeController>(context,listen: false).changePageIndex(index);
+               _pageController.jumpToPage(index);
+             },
+             items: [
+               BottomNavigationBarItem(icon:const Icon(Icons.home),label: AppLocalizations.of(context)!.home),
+               BottomNavigationBarItem(icon:const Icon(Icons.home),label: AppLocalizations.of(context)!.home),
+               BottomNavigationBarItem(icon:const Icon(Icons.home),label: AppLocalizations.of(context)!.home),
+               BottomNavigationBarItem(icon:const Icon(Icons.home),label: AppLocalizations.of(context)!.home),
+             ],
+           ),
          ),
        );
      }
