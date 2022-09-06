@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'package:event_bus/event_bus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../Utils/Utility.dart';
 import 'api_controller.dart';
+import 'extra_functionality/event_bus.dart';
 class PushNotificationController {
   static const String notificationChannel = "high_importance_channel";
   static final flutterNotificationPlugin = FlutterLocalNotificationsPlugin();
@@ -32,20 +34,21 @@ class PushNotificationController {
 
   static Future<void> messageReceived(RemoteMessage message) async {
     await initialize();
+    eventBus.fire(ChatMessageEvent(message));
     showLocalNotification(
         message);
   }
 
   static Future<void> onBackgroundMessage(RemoteMessage message) async {
     await initialize();
+    eventBus.fire(ChatMessageEvent(message));
     showLocalNotification(
         message);
   }
 
   static Future<void> onMessageReceive(RemoteMessage message) async {
-    print('message received');
-
     await initialize();
+    eventBus.fire(ChatMessageEvent(message));
     showLocalNotification(
         message);
   }

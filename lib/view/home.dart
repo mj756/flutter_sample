@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_sample/controller/home_controller.dart';
+import 'package:flutter_sample/view/extra_functionality/chat_user_list.dart';
 import 'package:flutter_sample/widget/drawer.dart';
 import 'package:provider/provider.dart';
 
@@ -50,7 +51,7 @@ class HomePage extends StatelessWidget
                    case 1:
                      return GoogleView();
                    case 2:
-                     return const ChatRoom();
+                     return const ChatUserList();
                  }
                  return Container(
                    height: 200,

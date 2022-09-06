@@ -1,8 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart';
 import 'package:flutter_sample/controller/api_controller.dart';
@@ -13,22 +13,31 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:mime/mime.dart';
 import '../../../Utils/Utility.dart';
 import '../../model/extra_functionality/chat_message.dart';
+import 'event_bus.dart';
 
-class ChatController extends ChangeNotifier {
+class ChatController with ChangeNotifier {
   List<types.Message> messages =
         List.empty(growable: true);
-  void onTap(BuildContext context, types.Message message) {}
-
   final String _tableChat = 'chatTable';
   late AppUser _currentUser;
+  late AppUser _otherUser;
+  late StreamSubscription<ChatMessageEvent> subscription;
+  @override
+  void dispose() {
+    print('chat controller disposed');
+    subscription.cancel();
+    messages.clear();
+    super.dispose();
+  }
 
-  ChatController() {
+
+  ChatController(this._otherUser) {
     _currentUser = AppUser.fromJson(json.decode(PreferenceController.getString(
         PreferenceController.prefKeyUserPayload)));
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      if (message.data['notificationType'] == Utility.MESSAGE_TYPE_TEXT) {
+    subscription=eventBus.on<ChatMessageEvent>().listen((event) {
+      if (event.message.data['notificationType'] == Utility.MESSAGE_TYPE_TEXT) {
         Map<String, dynamic> jsonData = Map<String, dynamic>.from(
-            json.decode(message.data['notificationPayload']));
+            json.decode(event.message.data['notificationPayload']));
         ChatMessage temp = ChatMessage.fromJson(jsonData);
         types.TextMessage msg1 = types.TextMessage(
             author: types.User(
@@ -39,12 +48,10 @@ class ChatController extends ChangeNotifier {
             text: temp.message!,
             createdAt: temp.insertedOn.toLocal().millisecondsSinceEpoch);
         messages.insert(0, msg1);
+        notifyListeners();
       }
     });
   }
-
-
-
   void send(PartialText message) async{
     final msg1 = types.TextMessage(
         author: types.User(
@@ -58,19 +65,17 @@ class ChatController extends ChangeNotifier {
         (DateTime.now().toUtc().millisecondsSinceEpoch / 1000).floor());
 
     ChatMessage msg =
-    ChatMessage.parseFromMessage(_currentUser.id, 101, msg1);
+    ChatMessage.parseFromMessage(_currentUser.id, _otherUser.id, msg1);
     msg.senderName = _currentUser.name;
    // msg.imageUrl = _currentUser.profileImage;
     msg.imageUrl = 'https://picsum.photos/200/300';
 
-    await ApiController.sendPushChatMessage(msg.toJson()).then((value) async {
+    await ApiController.sendPushChatMessage(msg.toJson(),_otherUser.token).then((value) async {
     await addData(_tableChat, msg.toJson());
-    messages.insert(0,msg1);
+    messages.insert(0, msg1);
     notifyListeners();
     });
-
   }
-
   void handlePreviewDataFetched(
       types.TextMessage message,
       types.PreviewData previewData,

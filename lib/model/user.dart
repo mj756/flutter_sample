@@ -12,7 +12,6 @@ class AppUser {
      token='';
      profileImage='';
   }
-
   AppUser.fromJson(Map<String, dynamic> json) {
     id = json['Id'] as int;
     email = json['Email'] as String;
@@ -27,7 +26,7 @@ class AppUser {
     data['Email'] =email;
     data['Name'] =name;
     data['Token'] =token;
-    data['profileImage'] ='';
+    data['profileImage'] =profileImage;
     return data;
   }
 }

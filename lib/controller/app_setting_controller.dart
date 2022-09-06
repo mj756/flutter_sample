@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sample/controller/preference_controller.dart';
 import 'package:flutter_sample/model/user.dart';
 
-class AppSettingController extends ChangeNotifier
+class AppSettingController with ChangeNotifier
 {
   String appLanguage='en';
   late AppUser currentUser;

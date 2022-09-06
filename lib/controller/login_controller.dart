@@ -1,13 +1,19 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_sample/controller/preference_controller.dart';
 import 'package:flutter_sample/model/user.dart';
 import 'api_controller.dart';
 import 'push_notification_controller.dart';
 
-class LoginController extends ChangeNotifier
+class LoginController with ChangeNotifier
 {
     bool isPasswordVisible=false;
+    @override
+    void dispose() {
+      print('disposed');
+      super.dispose();
+    }
     void changePasswordVisibility()
     {
       isPasswordVisible=!isPasswordVisible;
@@ -33,6 +39,11 @@ class LoginController extends ChangeNotifier
                    PreferenceController.fcmToken, value);
                }
              });
+              user.token=PreferenceController.getString(
+                  PreferenceController.fcmToken);
+                 final value =
+                 await FirebaseFirestore.instance.collection('users').add(user.toJson());
+                 return value;
 
            }else
              {

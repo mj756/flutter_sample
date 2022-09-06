@@ -26,7 +26,7 @@ void main()  async{
   WidgetsFlutterBinding.ensureInitialized();
   await FirebaseController().initialize();
   await PushNotificationController.initialize();
-  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  FirebaseMessaging.onBackgroundMessage(PushNotificationController.onBackgroundMessage);
   FirebaseMessaging.instance.getInitialMessage().then((message) {
     if(message!=null) {
       PushNotificationController.getInitialMessage(message);

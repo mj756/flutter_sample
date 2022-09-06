@@ -266,13 +266,11 @@ class ApiController
     }
     return apiResponse;
   }
-  static Future<void> sendPushChatMessage(Map<String,dynamic> chatMessage)async {
+  static Future<void> sendPushChatMessage(Map<String,dynamic> chatMessage,String otherUserFCMToken)async {
     try {
       const String fcmUrl = 'https://fcm.googleapis.com/fcm/send';
       List<String> registrationIds=List.empty(growable: true);
-      registrationIds.add(PreferenceController.getString(PreferenceController.fcmToken));
-
- //   print(PreferenceController.getString(PreferenceController.fcmToken));
+      registrationIds.add(otherUserFCMToken);
       String body = jsonEncode({
         "registration_ids": registrationIds,
         "sound": "default",

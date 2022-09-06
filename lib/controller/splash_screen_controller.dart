@@ -6,11 +6,15 @@ import 'package:provider/provider.dart';
 import 'api_controller.dart';
 import 'firebase_controller.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-class SplashScreenController extends ChangeNotifier{
+class SplashScreenController with ChangeNotifier{
 
   bool isLoading=true;
   bool dataLoaded=false;
-
+  @override
+  void dispose() {
+    print('disposed');
+    super.dispose();
+  }
   SplashScreenController(BuildContext context){
     isLoading=true;
     initializeApp(context,isCalledFromConstructor: true).then((value) {

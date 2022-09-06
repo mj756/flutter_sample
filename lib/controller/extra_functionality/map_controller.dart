@@ -13,7 +13,7 @@ import '../../model/extra_functionality/parking_detail.dart';
 import '../../utils/utility.dart';
 import '../api_controller.dart';
 
-class MyMapController extends ChangeNotifier with MyPermissionManager {
+class MyMapController  extends MyPermissionManager with ChangeNotifier {
   MapResponseResult? nearByPlaces;
   Completer<GoogleMapController> googleMapController = Completer();
   MapType currentMapType = MapType.normal;
@@ -30,7 +30,11 @@ class MyMapController extends ChangeNotifier with MyPermissionManager {
   LatLng currentLocation = const LatLng(45.521563, -122.677433);
   LatLng previousLocation = const LatLng(45.521563, -122.677433);
   late LatLng selectedMarker = const LatLng(0, 0);
-
+  @override
+  void dispose() {
+    print('disposed');
+    super.dispose();
+  }
   MyMapController() {
     currentLocation = const LatLng( 37.41898, -122.0841);   //set to default latitude of google plex
     kGooglePlex = CameraPosition(
