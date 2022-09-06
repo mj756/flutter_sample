@@ -6,6 +6,8 @@ import 'package:flutter_sample/widget/drawer.dart';
 import 'package:provider/provider.dart';
 
 import '../widget/app_exit_dialog.dart';
+import 'extra_functionality/chat.dart';
+import 'extra_functionality/map.dart';
 class HomePage extends StatelessWidget
 {
   static const platform = MethodChannel('samples.flutter.dev/permission');
@@ -35,8 +37,21 @@ class HomePage extends StatelessWidget
            body: PageView.builder(
                controller: _pageController,
                physics:const NeverScrollableScrollPhysics(),
-               itemCount: 4,
+               itemCount: 3,
                itemBuilder: (context,index){
+
+                 switch(index){
+                   case 0:
+                     return Container(
+                       height: 200,
+                       color: Colors.red,
+                       child: Text('Page${index+1}'),
+                     );
+                   case 1:
+                     return GoogleView();
+                   case 2:
+                     return const ChatRoom();
+                 }
                  return Container(
                    height: 200,
                    color: Colors.red,
@@ -53,9 +68,8 @@ class HomePage extends StatelessWidget
              },
              items: [
                BottomNavigationBarItem(icon:const Icon(Icons.home),label: AppLocalizations.of(context)!.home),
-               BottomNavigationBarItem(icon:const Icon(Icons.home),label: AppLocalizations.of(context)!.home),
-               BottomNavigationBarItem(icon:const Icon(Icons.home),label: AppLocalizations.of(context)!.home),
-               BottomNavigationBarItem(icon:const Icon(Icons.home),label: AppLocalizations.of(context)!.home),
+               BottomNavigationBarItem(icon:const Icon(Icons.map),label: AppLocalizations.of(context)!.home),
+               BottomNavigationBarItem(icon:const Icon(Icons.chat),label: AppLocalizations.of(context)!.home),
              ],
            ),
          ),

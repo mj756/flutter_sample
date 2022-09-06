@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_sample/controller/preference_controller.dart';
 import 'package:flutter_sample/model/user.dart';
 import 'api_controller.dart';
+import 'push_notification_controller.dart';
 
 class LoginController extends ChangeNotifier
 {
@@ -19,12 +20,20 @@ class LoginController extends ChangeNotifier
        await ApiController.post(ApiController.endpointLogin,json.encode({
          'email':email,
          'password':password
-       })).then((response)  {
+       })).then((response)  async{
          if(response.code==0)
            {
              AppUser user=AppUser.fromJson(json.decode(json.encode(response.data)));
              PreferenceController.setBoolean(PreferenceController.prefKeyIsLoggedIn,true);
              PreferenceController.setString(PreferenceController.prefKeyUserPayload,json.encode(user));
+
+             await PushNotificationController.getFCMToken().then((value) {
+               if(value!=null) {
+                 PreferenceController.setString(
+                   PreferenceController.fcmToken, value);
+               }
+             });
+
            }else
              {
                status=response.message;

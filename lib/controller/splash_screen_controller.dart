@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sample/controller/app_setting_controller.dart';
 import 'package:flutter_sample/controller/preference_controller.dart';
+import 'package:flutter_sample/controller/push_notification_controller.dart';
 import 'package:provider/provider.dart';
 import 'api_controller.dart';
 import 'firebase_controller.dart';
@@ -30,6 +31,7 @@ class SplashScreenController extends ChangeNotifier{
     await ApiController.checkInternetStatus().then((value) async {
       if (value == true) {
         await FirebaseController().initialize();
+        await PushNotificationController.initialize();
         status = true;
         dataLoaded=true;
       } else {

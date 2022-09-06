@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import '../model/extra_functionality/map_model.dart';
 
 class ApiController
 {
@@ -265,36 +266,57 @@ class ApiController
     }
     return apiResponse;
   }
-  static Future<void> sendPushMessage() async {
+  static Future<void> sendPushChatMessage(Map<String,dynamic> chatMessage)async {
     try {
       const String fcmUrl = 'https://fcm.googleapis.com/fcm/send';
       List<String> registrationIds=List.empty(growable: true);
       registrationIds.add(PreferenceController.getString(PreferenceController.fcmToken));
+
+ //   print(PreferenceController.getString(PreferenceController.fcmToken));
       String body = jsonEncode({
         "registration_ids": registrationIds,
-        /* "notification": {
-          "title": 'Milan', // set sender name here,
-          "body": 'Test message',
-          "sound": "default",
-          "content_available": true,
-        },*/
         "sound": "default",
         "content_available": true,
         "priority": "high",
         "data": {
-          "title": 'Test message',
-          "notificationType":'CHAT',
-          "notificationPayload":json.encode({'profileImage':'https://picsum.photos/200/300','message':"Hello Flutter How are you ?"})
+          "title": chatMessage['SenderName'],
+          "notificationType":'text',
+          "notificationPayload":  chatMessage
         }
       });
+
+
+
       var client = http.Client();
       Map<String,String> header=<String,String>{};
-      header['Authorization']="key=<your own key>";
+      header['Authorization']="key=AAAAEbjRMQE:APA91bHcVAw9pSAPpV2UgEcuunu--kkmQIHKGdPscm9_EWT-mT7cesE-rKqszKP3fb2ProNo_jDiTfKaTxjQDk9WczGrH3HBlbG3Zay-kNPFiqSg9UdntyZfE8PGVZItBOdU7WcrcLjV";
       header['content-Type']='application/json';
-      final result=await client.post(Uri.parse(fcmUrl),headers:header,body: body).timeout(timeOut);
+     final resp= await client.post(Uri.parse(fcmUrl),headers:header,body: body).timeout(timeOut);
+     print(resp.body);
     } catch (e) {
 
     }
   }
+  static Future<MapResponseResult?> getNearByPlaces(String url) async{
+    try {
 
+      if(await checkInternetStatus()==false)
+      {
+      }
+      var client = http.Client();
+      final response = await client.get(Uri.parse(url)).timeout(timeOut);
+      if(response.statusCode==200)
+      {
+        MapResponseResult result=MapResponseResult.fromJson(json.decode( response.body));
+        return result;
+      }
+      else
+      {
+        print(response.body);
+      }
+    } catch(ex) {
+      print(ex);
+    }
+    return null;
+  }
 }

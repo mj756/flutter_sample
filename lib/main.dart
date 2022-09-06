@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -12,8 +13,32 @@ import 'package:flutter_sample/view/splash_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-void main()  {
+import 'controller/firebase_controller.dart';
+import 'controller/push_notification_controller.dart';
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+
+  await FirebaseController().initialize();
+  await PushNotificationController.initialize();
+  PushNotificationController.onBackgroundMessage(message);
+
+}
+void main()  async{
   WidgetsFlutterBinding.ensureInitialized();
+  await FirebaseController().initialize();
+  await PushNotificationController.initialize();
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  FirebaseMessaging.instance.getInitialMessage().then((message) {
+    if(message!=null) {
+      PushNotificationController.getInitialMessage(message);
+    }
+  });
+  FirebaseMessaging.onMessage
+      .listen(PushNotificationController.onMessageReceive);
+
+  FirebaseMessaging.onMessageOpenedApp.listen((event) {
+    PushNotificationController.onMessageOpenedApp(event);
+  });
+
   runApp(
     const MyApp(),
   );

@@ -18,7 +18,7 @@ class AppUser {
     email = json['Email'] as String;
     name = json['Name'] as String;
     token = json['Token'] as String;
-
+    profileImage='';
   }
 
   Map<String, dynamic> toJson() {
@@ -27,6 +27,7 @@ class AppUser {
     data['Email'] =email;
     data['Name'] =name;
     data['Token'] =token;
+    data['profileImage'] ='';
     return data;
   }
 }

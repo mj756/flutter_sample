@@ -26,6 +26,18 @@ dependencies:
   http: ^0.13.5
   path_provider: ^2.0.11
   flutter_screenutil: ^5.5.3+2
+  location: ^4.4.0
+  geocoding: ^2.0.5
+  google_maps_flutter: ^2.2.0
+  flutter_polyline_points: ^1.0.0
+  flutter_chat_ui: ^1.6.4
+  flutter_chat_types: ^3.4.5
+  file_picker: ^5.0.1
+  mime: ^1.0.2
+  intl: ^0.17.0
+  cloud_firestore: ^3.4.6
+  firebase_messaging: ^11.2.12
+  flutter_local_notifications: ^9.9.0
 
 dev_dependencies:
   flutter_test:

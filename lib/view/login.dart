@@ -16,7 +16,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _emailController.text='test134@gmil.com';
+    _emailController.text='test134@gmail.com';
     _passwordController.text='12345678';
 
     return ChangeNotifierProvider(

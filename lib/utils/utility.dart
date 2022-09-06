@@ -1,9 +1,126 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 class Utility
 {
+
+  static const String MESSAGE_TYPE_TEXT = "text";
+  static const String MESSAGE_TYPE_IMAGE = "image";
+  static const String MESSAGE_TYPE_AUDIO = "audio";
+  static const String MESSAGE_TYPE_FILE = "file";
+  static const String googleMapKey='add your own key here';
+  static const String serverDateFormat = "yyyy-MM-dd";
+  static String getRandomString({int length = 10}) {
+    const chars =
+        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    Random rnd = Random();
+    return String.fromCharCodes(Iterable.generate(
+        length, (_) => chars.codeUnitAt(rnd.nextInt(chars.length - 1))));
+  }
+  static DateTime dateFromJson(String? strDate) {
+    if (strDate != null && strDate.isNotEmpty) {
+      return DateFormat(serverDateFormat).parse(strDate, true).toLocal();
+    } else {
+      return DateFormat(serverDateFormat)
+          .parse(DateTime.now().toUtc().toString(), true)
+          .toLocal();
+    }
+  }
+
+  static String dateToJson(DateTime time) {
+    return time.toUtc().toIso8601String();
+  }
+
+  static void printLog(String message) {
+    if (kDebugMode) {
+      print(message);
+    }
+  }
+
+
+
+  static String utf8Encode(String? text) {
+    if (text != null) return utf8.encode(text).join(",");
+    return '';
+  }
+
+  static String utf8Decode(String? text) {
+    if (text != null) {
+      try {
+        if(double.tryParse(text)!=null)
+        {
+          return text;
+        }
+
+        List<int> bytes = text.split(",").map(int.parse).toList();
+        return utf8.decode(bytes);
+      } catch (ex, stackTrace) {
+        try {
+          List<int> bytes = text.codeUnits;
+          return utf8.decode(bytes);
+        } catch (ex, stackTrace) {
+          return text;
+        }
+      }
+    } else {
+      return '';
+    }
+  }
+  static bool boolFromJson(Object? value) {
+    if (value != null) {
+      if (value is bool) {
+        return value;
+      } else if (value is int) {
+        return value == 0 ? false : true;
+      }
+    }
+    return false;
+  }
+  static DateTime parseToLocal(DateTime utcDate) {
+    return DateTime.utc(
+      utcDate.year,
+      utcDate.month,
+      utcDate.day,
+      utcDate.hour,
+      utcDate.minute,
+      utcDate.second,
+      utcDate.millisecond,
+      utcDate.microsecond,
+    ).toLocal();
+  }
+  static int boolToJson(bool value) => value ? 1 : 0;
+
+  static bool? nullableBoolFromJson(Object? value) {
+    if (value != null) {
+      if (value is bool) {
+        return value;
+      } else if (value is int) {
+        return value == 0 ? false : true;
+      } else if (value is String) {
+        return value.toLowerCase() == "true" ? true : false;
+      }
+    }
+    return null;
+  }
+
+  static int? nullableBoolToJson(bool? value) =>
+      value != null ? (value ? 1 : 0) : null;
+
+  static int getEpochTime(DateTime date) {
+    return (date.millisecondsSinceEpoch/1000).floor();
+  }
+
+  static DateTime getEpochToDate(int ephochTime, {bool isUtcTime= false}) {
+    return DateTime.fromMillisecondsSinceEpoch(ephochTime * 1000,
+        isUtc: isUtcTime);
+  }
+
+
   static String getDurationBetweenTwoDates(
       BuildContext context, DateTime from) {
     String duration = '';
