@@ -99,7 +99,15 @@ Answer: https://stackoverflow.com/questions/41490878/how-can-i-delete-a-bundle-i
     Step 2: Convert to HTML using Git BASH shell: ./genhtml.perl ./coverage/lcov.info -o coverage/html
 
 https://stackoverflow.com/questions/67366702/flutter-mockito-with-null-safety-throws-null-type-error
-run "flutter pub run build_runner build --delete-conflicting-outputs" for build runner to build the stub files for you  
+run "flutter pub run build_runner build --delete-conflicting-outputs" for build runner to build the stub files for you
+
+
+
+
+
+notes:
+ if  we add google login in our app then we need to add release sha1 key and debug sha1(usuall in C:\Users\User\.android\debug.keystore
+) key other wise it will generate apiexception 10 while debug mode.
 
 
 
