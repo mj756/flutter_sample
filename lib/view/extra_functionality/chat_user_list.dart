@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sample/model/user.dart';
 import 'package:flutter_sample/view/extra_functionality/chat.dart';
 
+import '../../controller/preference_controller.dart';
+
 class ChatUserList extends StatelessWidget {
   const ChatUserList({Key? key}) : super(key: key);
 
@@ -17,22 +19,28 @@ class ChatUserList extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else {
             return ListView.builder(
-                itemCount:  snapShot.data!.length,
+                itemCount: snapShot.data!.length,
                 itemBuilder: (context, index) {
-              return ListTile(
-                onTap: () async => await Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ChatRoom(otherUser:snapShot.data![index]))),
-                leading: CircleAvatar(
-                  backgroundImage:
-                   Image.network(
-                    snapShot.data![index].profileImage.isNotEmpty ? snapShot.data![index].profileImage: 'https://picsum.photos/200/300',
-                    height: 30,
-                    width: 30,
-                  ).image,
-                ),
-                title: Text(snapShot.data![index].name),
-              );
-            });
+                  return ListTile(
+                    onTap: () async =>
+                    await Navigator.push(context,
+                        MaterialPageRoute(builder: (context) =>
+                            ChatRoom(otherUser: snapShot.data![index]))),
+                    leading: CircleAvatar(
+                      backgroundImage:
+                      Image
+                          .network(
+                        snapShot.data![index].profileImage.isNotEmpty
+                            ? snapShot.data![index].profileImage
+                            : 'https://picsum.photos/200/300',
+                        height: 30,
+                        width: 30,
+                      )
+                          .image,
+                    ),
+                    title: Text(snapShot.data![index].name),
+                  );
+                });
           }
         },
       ),
@@ -41,9 +49,37 @@ class ChatUserList extends StatelessWidget {
 
   Future<List<AppUser>> getAllUser() async {
     List<AppUser> users = List.empty(growable: true);
+    AppUser user = AppUser.fromJson(json.decode(PreferenceController.getString(
+        PreferenceController.prefKeyUserPayload)));
+    user.token=  PreferenceController.getString(PreferenceController.fcmToken);
+    {
+      final data = await FirebaseFirestore.instance
+          .collection('users')
+          .where('Email', isEqualTo: user.email)
+          .get();
+      final List<DocumentSnapshot> documents = data.docs;
+      if (documents.isNotEmpty) {
+        bool found=false;
+        for (int i = 0; i < documents.length; i++) {
+          if (AppUser
+              .fromJson(json.decode(json.encode(documents[i].data())))
+              .token != user.token) {
+            await documents[i].reference.delete();
+          }
+          else {
+            found=true;
+          }
+        }
+        if(found==false){
+          await FirebaseFirestore.instance.collection('users').add(user.toJson());
+        }
+      } else {
+        await FirebaseFirestore.instance.collection('users').add(user.toJson());
+      }
+    }
     final data = await FirebaseFirestore.instance
         .collection('users')
-        // .where("SenderId", isEqualTo: 101)
+        .where("Email", isNotEqualTo: user.email)
         .get();
     final List<DocumentSnapshot> documents = data.docs;
     if (documents.isNotEmpty) {

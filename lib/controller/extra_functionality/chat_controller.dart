@@ -24,7 +24,6 @@ class ChatController with ChangeNotifier {
   late StreamSubscription<ChatMessageEvent> subscription;
   @override
   void dispose() {
-    print('chat controller disposed');
     subscription.cancel();
     messages.clear();
     super.dispose();
@@ -211,7 +210,7 @@ class ChatController with ChangeNotifier {
       final msg = ChatMessage.init(
           uuid: Utility.getRandomString(),
           senderId: _currentUser.id,
-          receiverId: 102,
+          receiverId: _otherUser.id,
           messageType: Utility.MESSAGE_TYPE_FILE,
           status: '',
           insertedOn: DateTime.now().toUtc(),
@@ -255,7 +254,7 @@ class ChatController with ChangeNotifier {
       final msg = ChatMessage.init(
           uuid: Utility.getRandomString(),
           senderId: _currentUser.id,
-          receiverId: 102,
+          receiverId: _otherUser.id,
           messageType: Utility.MESSAGE_TYPE_IMAGE,
           status: '',
           insertedOn: DateTime.now().toUtc(),

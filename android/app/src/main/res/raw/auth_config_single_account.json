@@ -1,0 +1,14 @@
+{
+  "client_id": "f122a486-268c-43a0-8a9d-8cac3bfcbeb1",
+  "authorization_user_agent": "DEFAULT",
+  "redirect_uri": "msauth://com.flutter.sample/%2BJ%2B3yf%2FmrgPgKeg1llIttpSjcws%3D",
+  "authorities": [
+    {
+      "type": "AAD",
+      "audience": {
+        "type": "PersonalMicrosoftAccount",
+        "tenant_id": "consumers"
+      }
+    }
+  ]
+}

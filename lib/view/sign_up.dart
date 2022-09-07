@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sample/view/login.dart';
+import 'package:flutter_sample/widget/social_login.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../controller/sign_up_controller.dart';
@@ -162,6 +163,9 @@ class SignUpPage extends StatelessWidget
                                           child: Text(
                                             AppLocalizations.of(context)!
                                                 .label_sign_up,style: CustomStyles.customTextStyle(isLargeFont:true,defaultColor: CustomColors.whiteColor,isBold: true),)),
+
+                                      const SocialLogin(),
+
                                       Expanded( child: Align(
                                           alignment: Alignment.bottomCenter,
                                           child: RichText(

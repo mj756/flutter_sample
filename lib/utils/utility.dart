@@ -13,7 +13,7 @@ class Utility
   static const String MESSAGE_TYPE_IMAGE = "image";
   static const String MESSAGE_TYPE_AUDIO = "audio";
   static const String MESSAGE_TYPE_FILE = "file";
-  static const String googleMapKey='add your own key here';
+  static const String googleMapKey='your key';
   static const String serverDateFormat = "yyyy-MM-dd";
   static String getRandomString({int length = 10}) {
     const chars =

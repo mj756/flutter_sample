@@ -5,9 +5,7 @@ import 'package:flutter_sample/controller/home_controller.dart';
 import 'package:flutter_sample/view/extra_functionality/chat_user_list.dart';
 import 'package:flutter_sample/widget/drawer.dart';
 import 'package:provider/provider.dart';
-
 import '../widget/app_exit_dialog.dart';
-import 'extra_functionality/chat.dart';
 import 'extra_functionality/map.dart';
 class HomePage extends StatelessWidget
 {

@@ -7,10 +7,10 @@ import 'chat_media.dart';
 
 class ChatMessage {
   late String uuid;
-  late int senderId;
+  late String senderId;
   late String senderName;
   late String imageUrl;
-  late int receiverId;
+  late String receiverId;
   late String messageType;
   late String status;
 
@@ -63,7 +63,7 @@ class ChatMessage {
     return null;
   }
 
-  static ChatMessage parseFromMessage(int senderId, int receiverId,
+  static ChatMessage parseFromMessage(String senderId, String receiverId,
       types.Message message) {
     ChatMessage chatMessage = ChatMessage();
 
@@ -160,10 +160,10 @@ class ChatMessage {
 
   ChatMessage.fromJson(Map<String, dynamic> json) {
     uuid = json['Uuid'] as String;
-    senderId = json['SenderId'] as int;
+    senderId = json['SenderId'] as String;
     senderName = json['SenderName'] as String;
     imageUrl= json['ImageUrl'] as String;
-    receiverId = json['ReceiverId'] as int;
+    receiverId = json['ReceiverId'] as String;
     messageType = json['MessageType'] as String;
     status = json['Status'] as String;
     message = Utility.utf8Decode(json['Message'] as String?);

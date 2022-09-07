@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sample/controller/login_controller.dart';
 import 'package:flutter_sample/utils/app_colors.dart';
 import 'package:flutter_sample/utils/styles.dart';
+import 'package:flutter_sample/widget/social_login.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../utils/utility.dart';
@@ -190,7 +191,12 @@ class LoginPage extends StatelessWidget {
                                             defaultColor:
                                                 CustomColors.whiteColor,
                                             isBold: true),
-                                      ))
+                                      )),
+                                  const Expanded(
+                                    child: Align(
+                                        alignment: Alignment.bottomCenter,
+                                        child:  SocialLogin()),
+                                  )
                                 ],
                               ),
                             ),
@@ -237,7 +243,8 @@ class LoginPage extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                            )))
+                            ))),
+
                   ],
                 ),
               ),

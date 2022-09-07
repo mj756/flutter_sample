@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/app_colors.dart';
+import '../../utils/styles.dart';
 
 class GoogleView extends StatelessWidget {
   final TextEditingController addressController = TextEditingController();
@@ -28,111 +29,128 @@ class GoogleView extends StatelessWidget {
                   return const Center(child: Text('permission not provided'));
                 } else {
                   return SafeArea(
-                    child: Stack(
-                      children: [
-                        GoogleMap(
-                          padding: const EdgeInsets.only(top: 10.0),
-                          myLocationEnabled: true,
-                          compassEnabled: true,
-                          buildingsEnabled: false,
-                          myLocationButtonEnabled: true,
-                          zoomControlsEnabled: true,
-                          mapType: MapType.normal,
-                          mapToolbarEnabled: true,
-                          indoorViewEnabled: false,
-                          trafficEnabled: false,
-                          markers: Set<Marker>.of(
-                              context.watch<MyMapController>().markers),
-                          initialCameraPosition:
-                              context.watch<MyMapController>().kGooglePlex,
-                          onCameraMove:
-                              context.read<MyMapController>().onCameraMove,
-                          polylines: {
-                            Polyline(
-                              polylineId: const PolylineId("route"),
-                              points: List<LatLng>.of(context
-                                  .watch<MyMapController>()
-                                  .polylineCoordinates),
-                              color: const Color(0xFF7B61FF),
-                              width: 6,
-                            ),
-                          },
-                          onMapCreated: (GoogleMapController mapController) {
-                            if (!Provider.of<MyMapController>(context,
-                                    listen: false)
-                                .googleMapController
-                                .isCompleted) {
-                              context
-                                  .read<MyMapController>()
-                                  .googleMapController
-                                  .complete(mapController);
-                            }
-                          },
-                          onTap: (location) {
-                            FocusScope.of(context).unfocus();
-                          },
+                      child: Stack(children: [
+                    GoogleMap(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      myLocationEnabled: true,
+                      compassEnabled: true,
+                      buildingsEnabled: false,
+                      myLocationButtonEnabled: true,
+                      zoomControlsEnabled: true,
+                      mapType: context.watch<MyMapController>().currentMapType,
+                      mapToolbarEnabled: true,
+                      indoorViewEnabled: false,
+                      trafficEnabled: false,
+                      markers: Set<Marker>.of(
+                          context.watch<MyMapController>().markers),
+                      initialCameraPosition:
+                          context.watch<MyMapController>().kGooglePlex,
+                      onCameraMove:
+                          context.read<MyMapController>().onCameraMove,
+                      polylines: {
+                        Polyline(
+                          polylineId: const PolylineId("route"),
+                          points: List<LatLng>.of(context
+                              .watch<MyMapController>()
+                              .polylineCoordinates),
+                          color: const Color(0xFF7B61FF),
+                          width: 6,
                         ),
+                      },
+                      onMapCreated: (GoogleMapController mapController) {
+                        if (!Provider.of<MyMapController>(context,
+                                listen: false)
+                            .googleMapController
+                            .isCompleted) {
+                          context
+                              .read<MyMapController>()
+                              .googleMapController
+                              .complete(mapController);
+                        }
+                      },
+                      onTap: (location) {
+                        FocusScope.of(context).unfocus();
+                      },
+                    ),
                         Positioned(
                           top: 10,
-                          left: (MediaQuery.of(context).size.width / 2) -
-                              ((MediaQuery.of(context).size.width / 4) + 40),
+                          left: 10,
                           child: Container(
-                              height: 60,
-                              width:
-                                  (MediaQuery.of(context).size.width / 2) + 80,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(10)),
-                                  border: Border.all(color: Colors.white)),
+                              height: 50,
+                              width: MediaQuery.of(context).size.width - 30,
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(10)),
+                              ),
                               child: Row(
                                 children: [
-                                  IconButton(
-                                      onPressed: () async {
-                                        FocusScope.of(context).unfocus();
-                                        if (_typeController.text.isNotEmpty) {
-                                          await context
-                                              .read<MyMapController>()
-                                              .getNearByPlaces(context,
-                                                  type: _typeController.text);
-                                        } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(const SnackBar(
-                                                  content: Text(
-                                                      'Please enter category to search')));
-                                        }
+                                  Container(
+                                    height: 50,
+                                    width: 50,
+                                    decoration: const BoxDecoration(
+                                      color: CustomColors.whiteColor,
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(10),
+                                          bottomLeft: Radius.circular(10)),
+                                    ),
+                                    child: GestureDetector(
+                                      onTap: ()async{
+                                              context.read<MyMapController>().getNearByPlaces(type: _typeController.text);
                                       },
-                                      icon: const Icon(
+                                      child: const Icon(
                                         Icons.search,
-                                        color: CustomColors.themeColor,
-                                      )),
-                                  Expanded(
-                                    child: TextField(
-                                      controller: _typeController,
-                                      decoration: const InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: 'Search Location',
+                                        size: 30,
                                       ),
                                     ),
                                   ),
-                                  const VerticalDivider(
-                                    width: 1,
-                                    thickness: 1,
+                                  Expanded(
+                                    child: Container(
+                                      height: 50,
+                                      decoration: const BoxDecoration(
+                                        color: CustomColors.whiteColor,
+                                        borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(10),
+                                            bottomRight: Radius.circular(10)),
+                                      ),
+                                      child: TextField(
+                                        controller: _typeController,
+                                        decoration: InputDecoration(
+                                            border: InputBorder.none,
+                                            hintText: 'Search location',
+                                            hintStyle: CustomStyles.customTextStyle(
+                                                defaultColor: CustomColors.themeColor,
+                                                isNormalFont: true),
+                                            contentPadding: EdgeInsets.zero),
+                                      ),
+                                    ),
                                   ),
                                   const SizedBox(
-                                    height: 60,
-                                    width: 60,
-                                    child: Icon(
-                                      Icons.settings,
-                                      color: CustomColors.themeColor,
-                                    ),
+                                    width: 20,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                            context.read<MyMapController>().toggleMapType();
+                                    },
+                                    child: Container(
+                                        padding: const EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                            color: CustomColors.whiteColor,
+                                            borderRadius: const BorderRadius.all(
+                                                Radius.circular(10)),
+                                            border: Border.all(
+                                              color: CustomColors.whiteColor,
+                                            )),
+                                        height: double.maxFinite,
+                                        width: 50,
+                                        child: Image.asset(
+                                          'assets/Filter_icon.png',
+                                          height: 30,
+                                          width: 30,
+                                        )),
                                   )
                                 ],
                               )),
                         ),
-                      ],
-                    ),
-                  );
+                  ]));
                 }
               });
         });

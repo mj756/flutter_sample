@@ -5,6 +5,8 @@ class PreferenceController
   static const String prefKeyUserPayload="LoggedInUser";
   static const String prefKeyIsLoggedIn = "IsLogin";
   static const String prefKeyUserId = "UserId";
+  static const String prefKeyLoginType = "UserId";
+
   static const String prefKeyLanguage = "SelectedLanguage";
   static const loginTypeNormal='Normal';
   static const loginTypeGoogle='Google';

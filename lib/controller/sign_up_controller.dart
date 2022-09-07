@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_sample/controller/preference_controller.dart';
 import 'package:flutter_sample/controller/push_notification_controller.dart';
@@ -32,18 +31,14 @@ class SignUpController with ChangeNotifier
       {
         AppUser user=AppUser.fromJson(json.decode(json.encode(response.data)));
         PreferenceController.setBoolean(PreferenceController.prefKeyIsLoggedIn,true);
-        PreferenceController.setString(PreferenceController.prefKeyUserPayload,json.encode(user));
         await PushNotificationController.getFCMToken().then((value) {
           if(value!=null) {
             PreferenceController.setString(
                 PreferenceController.fcmToken, value);
+            user.token=value;
+            PreferenceController.setString(PreferenceController.prefKeyUserPayload,json.encode(user));
           }
         });
-        user.token=PreferenceController.getString(
-            PreferenceController.fcmToken);
-        final value =
-        await FirebaseFirestore.instance.collection('users').add(user.toJson());
-        return value;
       }else
       {
         status=response.message;

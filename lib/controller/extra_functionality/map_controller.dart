@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_sample/controller/extra_functionality/permission_handler.dart';
 import 'package:geocoding/geocoding.dart' as geoCoding;
-
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:math';
-
 import 'package:location/location.dart';
 import '../../model/extra_functionality/map_model.dart';
 import '../../model/extra_functionality/parking_detail.dart';
@@ -36,23 +34,40 @@ class MyMapController  extends MyPermissionManager with ChangeNotifier {
     super.dispose();
   }
   MyMapController() {
-    currentLocation = const LatLng( 37.41898, -122.0841);   //set to default latitude of google plex
+    currentLocation = const LatLng(45.521563, -122.677433);
     kGooglePlex = CameraPosition(
         bearing: 192.8334901395799,
         target: LatLng(currentLocation.latitude, currentLocation.longitude),
         tilt: 59.440717697143555,
         zoom: 10);
-      center = const LatLng(45.521563, -122.677433);
-
-  /*  getCurrentLocation().then((value) async {
-      if (value != null) {
-        final p = await googleMapController.future;
-        p.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-            target: LatLng(value.latitude!, value.longitude!),
-            zoom: 14.4746)));
-      }
-    });*/
+    center = const LatLng(45.521563, -122.677433);
+    getCurrentLocation().then((value) {
+      googleMapController.future.then((value2) {
+        value2.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(target: currentLocation, zoom: 16),
+          ),
+        ).then((value) {
+           /* getNearByPlaces().then((value1) {
+            notifyListeners();
+          });*/
+        });
+      });
+    });
   }
+  void toggleMapType()
+  {
+    print('toggle');
+      if(currentMapType == MapType.normal){
+        currentMapType=MapType.satellite;
+      }
+      else
+        {
+          currentMapType=MapType.normal;
+        }
+      notifyListeners();
+  }
+
 
   Future<void> showBottomSheet(BuildContext context,LatLng destination,int index) async{
 
@@ -119,7 +134,7 @@ class MyMapController  extends MyPermissionManager with ChangeNotifier {
     return temp;
   }
 
-  Future<String> getPolyPoints(LatLng source, LatLng destination) async {
+  Future<void> getPolyPoints(LatLng source, LatLng destination) async {
     polylineCoordinates.clear();
     PolylinePoints polylinePoints = PolylinePoints();
     final result = await polylinePoints.getRouteBetweenCoordinates(
@@ -133,11 +148,9 @@ class MyMapController  extends MyPermissionManager with ChangeNotifier {
           LatLng(point.latitude, point.longitude),
         );
       }
-    } else {
-      return result.errorMessage.toString();
-    }
 
-    return '';
+    }
+    notifyListeners();
   }
   Future<double> getPolyPointsWithCalculation(LatLng source, LatLng destination) async {
 
@@ -160,15 +173,16 @@ class MyMapController  extends MyPermissionManager with ChangeNotifier {
    return totalDistance;
   }
 
-  Future<void> getNearByPlaces(BuildContext context, {String type = 'petrol',int numberOfLocation=2}) async {
+  Future<void> getNearByPlaces({String type = 'petrol',int numberOfLocation=2}) async {
     try {
       markers.clear();
+      polylineCoordinates.clear();
       String url =
           'https://maps.googleapis.com/maps/api/place/nearbysearch/json?';
       url =
           '${url}location=${currentLocation.latitude},${currentLocation.longitude}';
       // url="$url&rankby=distance";
-      url = "$url&radius=5000";
+      url = "$url&radius=50000";
       //url="$url&type=gas_station";
       url = "$url&keyword=$type";
       url = "$url&key=${Utility.googleMapKey}";
@@ -176,7 +190,6 @@ class MyMapController  extends MyPermissionManager with ChangeNotifier {
       nearByPlaces = await ApiController.getNearByPlaces(url);
       if (nearByPlaces != null) {
       //  BitmapDescriptor icon=await BitmapDescriptor.fromAssetImage(const ImageConfiguration(size: Size(10,10)),'assets/dollar.jpg',mipmaps: false);
-
         for (int i = 0; i < nearByPlaces!.results.length; i++) {
           markers.add(Marker(
               markerId: MarkerId(LatLng(
@@ -185,8 +198,8 @@ class MyMapController  extends MyPermissionManager with ChangeNotifier {
                   .toString()),
               position: LatLng(nearByPlaces!.results[i].geometry!.location!.lat,
                   nearByPlaces!.results[i].geometry!.location!.lng),
-              infoWindow: const InfoWindow(
-                title: 'parking place',
+              infoWindow:  InfoWindow(
+                title: type,
                 //snippet: '5 Star Rating',
               ),
               icon: BitmapDescriptor.defaultMarker,
@@ -203,6 +216,7 @@ class MyMapController  extends MyPermissionManager with ChangeNotifier {
     } catch (e) {
       print(e);
     }
+    notifyListeners();
   }
 
   double getDistanceFromLatLonInKm(LatLng source, LatLng destination) {

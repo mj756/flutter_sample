@@ -1,19 +1,21 @@
+import 'dart:ffi';
+
 class AppUser {
-  //this is sample common api response format you can set your own by changing/adding fields
-  late int id;
+  late String id;
   late String name;
   late String email;
   late String token;
  late String profileImage;
   AppUser() {
-     id=0;
+     id='';
      name='';
      email='';
      token='';
      profileImage='';
+
   }
   AppUser.fromJson(Map<String, dynamic> json) {
-    id = json['Id'] as int;
+    id = (json['Id']).toString();
     email = json['Email'] as String;
     name = json['Name'] as String;
     token = json['Token'] as String;
@@ -26,7 +28,21 @@ class AppUser {
     data['Email'] =email;
     data['Name'] =name;
     data['Token'] =token;
-    data['profileImage'] =profileImage;
+    data['ProfileImage'] =profileImage;
+
     return data;
+  }
+  AppUser.fromGoogleJson(Map<String,dynamic> json) {
+    id = json['uid'] as String;
+    email = json['email'] as String;
+    name = json['displayName'] as String;
+    token = json['Token'] as String;
+    profileImage=json['photoURL'] as String;
+  }
+  AppUser.fromMicrosoftJson( Map<String, dynamic> json) {
+    id = json['UserId'] ?? '';
+    name = json['UserName'] ?? '';
+    email = json['UserEmail'] ?? '';
+    profileImage = json['ProfileImage'] ?? '';
   }
 }

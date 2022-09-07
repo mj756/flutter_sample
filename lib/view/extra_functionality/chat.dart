@@ -80,10 +80,7 @@ class ChatRoom extends StatelessWidget {
                       textMessageOptions:
                           TextMessageOptions(onLinkPressed: (value) {}),
                       onMessageLongPress: (context, message) {
-                        if (message.type == MessageType.image) {
-                          final msg =
-                              ChatMessage.parseFromMessage(101, 102, message);
-                        }
+
                       },
                       l10n: const ChatL10nEn(
                         inputPlaceholder: "message",
