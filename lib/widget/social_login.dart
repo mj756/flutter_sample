@@ -18,7 +18,12 @@ class SocialLogin extends StatelessWidget {
                 onPressed: () async {
                   await context
                       .read<SocialLoginController>()
-                      .googleLogin(context);
+                      .googleLogin(context).then((value) {
+                    if(value.isEmpty){
+                      Navigator.pushReplacementNamed(
+                          context,'/home');
+                    }
+                  });
                 },
                 icon: Image.asset('assets/google.png',height: 30,width: 30,),
                 iconSize: ScreenUtil().setHeight(50),
@@ -36,9 +41,14 @@ class SocialLogin extends StatelessWidget {
               IconButton(
                 padding:const EdgeInsets.only(right: 5),
                 onPressed: () async {
-                /*  await context
+                 await context
                           .read<SocialLoginController>()
-                          .facebookLogin(context);*/
+                          .facebookLogin(context).then((value) {
+                            if(value.isEmpty){
+                              Navigator.pushReplacementNamed(
+                                  context,'/home');
+                            }
+                 });
                 },
                 icon: Image.asset('assets/facebook.png',height: 30,width: 30,),
                 iconSize: ScreenUtil().setHeight(50),
@@ -46,7 +56,7 @@ class SocialLogin extends StatelessWidget {
               IconButton(
                 padding:const EdgeInsets.only(right: 5),
                 onPressed: () async {
-                /* await context.read<SocialLoginController>().microsoftLogin();*/
+                 await context.read<SocialLoginController>().microsoftLogin();
                 },
                 icon: Image.asset('assets/microsoft.png',height: 20,width: 20,),
                 iconSize: ScreenUtil().setHeight(30),

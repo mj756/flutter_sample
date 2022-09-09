@@ -10,7 +10,7 @@ class SignUpController with ChangeNotifier
   bool isPasswordVisible=false;
   @override
   void dispose() {
-    print('disposed');
+  // do your stuff here
     super.dispose();
   }
   void changePasswordVisibility()

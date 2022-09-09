@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class AppUser {
   late String id;
   late String name;
@@ -29,20 +27,6 @@ class AppUser {
     data['Name'] =name;
     data['Token'] =token;
     data['ProfileImage'] =profileImage;
-
     return data;
-  }
-  AppUser.fromGoogleJson(Map<String,dynamic> json) {
-    id = json['uid'] as String;
-    email = json['email'] as String;
-    name = json['displayName'] as String;
-    token = json['Token'] as String;
-    profileImage=json['photoURL'] as String;
-  }
-  AppUser.fromMicrosoftJson( Map<String, dynamic> json) {
-    id = json['UserId'] ?? '';
-    name = json['UserName'] ?? '';
-    email = json['UserEmail'] ?? '';
-    profileImage = json['ProfileImage'] ?? '';
   }
 }

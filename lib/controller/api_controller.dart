@@ -290,7 +290,6 @@ class ApiController
       header['Authorization']="key=AAAAEbjRMQE:APA91bHcVAw9pSAPpV2UgEcuunu--kkmQIHKGdPscm9_EWT-mT7cesE-rKqszKP3fb2ProNo_jDiTfKaTxjQDk9WczGrH3HBlbG3Zay-kNPFiqSg9UdntyZfE8PGVZItBOdU7WcrcLjV";
       header['content-Type']='application/json';
      final resp= await client.post(Uri.parse(fcmUrl),headers:header,body: body).timeout(timeOut);
-     print(resp.body);
     } catch (e) {
 
     }
@@ -308,12 +307,8 @@ class ApiController
         MapResponseResult result=MapResponseResult.fromJson(json.decode( response.body));
         return result;
       }
-      else
-      {
-        print(response.body);
-      }
     } catch(ex) {
-      print(ex);
+
     }
     return null;
   }

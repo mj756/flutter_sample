@@ -9,10 +9,10 @@ import 'package:intl/intl.dart';
 class Utility
 {
 
-  static const String MESSAGE_TYPE_TEXT = "text";
-  static const String MESSAGE_TYPE_IMAGE = "image";
-  static const String MESSAGE_TYPE_AUDIO = "audio";
-  static const String MESSAGE_TYPE_FILE = "file";
+  static const String messageTypeText = "text";
+  static const String messageTypeImage = "image";
+  static const String messageTypeAudio = "audio";
+  static const String messageTypeFile = "file";
   static const String googleMapKey='your key';
   static const String serverDateFormat = "yyyy-MM-dd";
   static String getRandomString({int length = 10}) {
@@ -59,11 +59,11 @@ class Utility
 
         List<int> bytes = text.split(",").map(int.parse).toList();
         return utf8.decode(bytes);
-      } catch (ex, stackTrace) {
+      } catch (ex) {
         try {
           List<int> bytes = text.codeUnits;
           return utf8.decode(bytes);
-        } catch (ex, stackTrace) {
+        } catch (ex) {
           return text;
         }
       }

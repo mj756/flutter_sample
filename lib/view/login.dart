@@ -17,8 +17,8 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _emailController.text='test134@gmail.com';
-    _passwordController.text='12345678';
+    _emailController.text = 'test134@gmail.com';
+    _passwordController.text = '12345678';
 
     return ChangeNotifierProvider(
         create: (context) => LoginController(),
@@ -44,10 +44,13 @@ class LoginPage extends StatelessWidget {
                     Align(
                         alignment: Alignment.topRight,
                         child: InkWell(
-                            onTap: ()async {
-                             await Navigator.pushNamed(context,'/language');
+                            onTap: () async {
+                              await Navigator.pushNamed(context, '/language');
                             },
-                            child: const Icon(Icons.language,size: 30,))),
+                            child: const Icon(
+                              Icons.language,
+                              size: 30,
+                            ))),
                     Expanded(
                       flex: 9,
                       child: Stack(children: [
@@ -104,9 +107,10 @@ class LoginPage extends StatelessWidget {
                                     decoration: InputDecoration(
                                       prefixIcon: const Icon(Icons.lock),
                                       suffixIcon: GestureDetector(
-                                        onTap: (){
-                                          Provider.of
-                                              <LoginController>(context,listen: false).changePasswordVisibility();
+                                        onTap: () {
+                                          Provider.of<LoginController>(context,
+                                                  listen: false)
+                                              .changePasswordVisibility();
                                         },
                                         child: Icon(context
                                                     .watch<LoginController>()
@@ -172,8 +176,9 @@ class LoginPage extends StatelessWidget {
                                                       _passwordController.text)
                                                   .then((value) {
                                                 if (value.isEmpty) {
-                                                  Navigator.pushReplacementNamed(
-                                                      context,'/home');
+                                                  Navigator
+                                                      .pushReplacementNamed(
+                                                          context, '/home');
                                                 } else {
                                                   Utility.showSnackBar(
                                                       context, value);
@@ -195,7 +200,7 @@ class LoginPage extends StatelessWidget {
                                   const Expanded(
                                     child: Align(
                                         alignment: Alignment.bottomCenter,
-                                        child:  SocialLogin()),
+                                        child: SocialLogin()),
                                   )
                                 ],
                               ),
@@ -232,19 +237,17 @@ class LoginPage extends StatelessWidget {
                                             1),
                                     style: CustomStyles.customTextStyle(
                                         defaultColor: CustomColors.whiteColor,
-                                        isLargeFont:true,
+                                        isLargeFont: true,
                                         isBold: true),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
                                         Navigator.pushReplacementNamed(
-                                            context,'/signup'
-                                            );
+                                            context, '/signup');
                                       },
                                   ),
                                 ],
                               ),
                             ))),
-
                   ],
                 ),
               ),
@@ -326,7 +329,7 @@ class LoginPage extends StatelessWidget {
                     child: Text(
                       AppLocalizations.of(context)!.label_send,
                       style: CustomStyles.customTextStyle(
-                         isLargeFont: true,
+                          isLargeFont: true,
                           defaultColor: CustomColors.whiteColor,
                           isBold: true),
                     ))

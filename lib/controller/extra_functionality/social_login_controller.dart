@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_sample/model/user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:msal_flutter/msal_flutter.dart';
@@ -9,8 +10,8 @@ import '../preference_controller.dart';
 class SocialLoginController with ChangeNotifier{
   late FirebaseAuth firebaseAuth;
   PublicClientApplication? pca;
-  Future<void> googleLogin(BuildContext context) async{
-
+  Future<String> googleLogin(BuildContext context) async{
+    String status='';
     try
     {
       FirebaseAuth auth=FirebaseAuth.instance;
@@ -30,16 +31,14 @@ class SocialLoginController with ChangeNotifier{
         User? googleUser = userCredential.user;
         if(googleUser!=null)
         {
-          print('google login successful');
-
-
-          AppUser user= AppUser.fromGoogleJson(json.decode(json.encode(googleUser)));
+          AppUser user=AppUser();
+          user.email=googleUser.email!;
+          user.name=googleUser.displayName!;
+          user.id=googleUser.uid;
+          user.profileImage=googleUser.photoURL!;
           PreferenceController.setString(PreferenceController.prefKeyUserPayload,json.encode(user));
           PreferenceController.setBoolean(PreferenceController.prefKeyIsLoggedIn,true);
           PreferenceController.setString(PreferenceController.prefKeyLoginType,PreferenceController.loginTypeGoogle);
-
-
-
         }
       }
     }catch(e)
@@ -49,10 +48,11 @@ class SocialLoginController with ChangeNotifier{
         print(e.toString());
       }
     }
+    return status;
   }
 
-  /*
 
+/*
   Future<void> appleLogin(BuildContext context) async{
     // 1. perform the sign-in request
 
@@ -115,10 +115,15 @@ class SocialLoginController with ChangeNotifier{
       }
     }
   }
-  Future<void> facebookLogin(BuildContext context) async{
+
+  */
+
+
+  Future<String> facebookLogin(BuildContext context) async{
+    String status='';
     try
     {
-      final LoginResult result = await FacebookAuth.instance.login();
+      final LoginResult result = await FacebookAuth.instance.login(permissions: ['email', 'public_profile']);
 
       // Create a credential from the access token
       final facebookAuthCredential =
@@ -130,7 +135,11 @@ class SocialLoginController with ChangeNotifier{
       User? firebaseUser = userCredential.user;
       if(firebaseUser!=null)
       {
-        AppUser user= AppUser.fromGoogleJson(json.decode(json.encode(firebaseUser)));
+        AppUser user=AppUser();
+        user.email=firebaseUser.email!;
+        user.name=firebaseUser.displayName!;
+        user.id=firebaseUser.uid;
+        user.profileImage=firebaseUser.photoURL!;
         PreferenceController.setString(PreferenceController.prefKeyUserPayload,json.encode(user));
         PreferenceController.setBoolean(PreferenceController.prefKeyIsLoggedIn,true);
         PreferenceController.setString(PreferenceController.prefKeyLoginType,PreferenceController.loginTypeFaceBook);
@@ -148,30 +157,14 @@ class SocialLoginController with ChangeNotifier{
         print(e.toString());
       }
     }
-    return null;
+    return status;
   }
   Future<bool> logOut() async
   {
-    try
-    {
-      String loginType= PreferenceController.getString(PreferenceController.prefKeyLoginType);
-      switch(loginType)
-      {
-        case PreferenceController.loginTypeGoogle:
-          await firebaseAuth.signOut();
-          break;
-        case PreferenceController.loginTypeMicrosoft:
 
-          break;
-        case PreferenceController.loginTypeFaceBook:
-          await firebaseAuth.signOut();
-          break;
-        case PreferenceController.loginTypeApple:
-          await firebaseAuth.signOut();
-          break;
-      }
-       PreferenceController.clearLoginCredential();
-      return true;
+    try
+    { await FirebaseAuth.instance.signOut();
+    return true;
     }catch(e)
     {
       if(kDebugMode)
@@ -189,15 +182,12 @@ class SocialLoginController with ChangeNotifier{
       {
 
         await PublicClientApplication.createPublicClientApplication(
-          'f122a486-268c-43a0-8a9d-8cac3bfcbeb1',
+          '485ebd43-1224-4bd8-b6bd-c352d96686ff',
           authority: 'https://login.microsoftonline.com/common',
-          androidRedirectUri: 'msauth://com.flutter.sample/%2BJ%2B3yf%2FmrgPgKeg1llIttpSjcws%3D',
+          androidRedirectUri: 'msauth://com.flutter.sample/2jmj7l5rSw0yVb%2FvlWAYkK%2FYBwk%3D',
           );
       }
       return '';
-      String token=  isSilent==false ? await pca!.acquireToken(["user.read"]):await pca!.acquireTokenSilent(["User.Read"]);
-
-      return token;
     } catch (e) {
       if(kDebugMode)
       {
@@ -208,5 +198,5 @@ class SocialLoginController with ChangeNotifier{
   }
 
 
-  */
+
 }

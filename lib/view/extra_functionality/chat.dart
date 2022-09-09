@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_sample/controller/extra_functionality/chat_controller.dart';
-import 'package:flutter_sample/model/extra_functionality/chat_message.dart';
 import 'package:flutter_sample/model/user.dart';
 import 'package:flutter_sample/utils/app_colors.dart';
 import 'package:flutter_sample/utils/styles.dart';
@@ -19,12 +18,12 @@ class ChatRoom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   final _currentUser = AppUser.fromJson(json.decode(PreferenceController.getString(
+   final currentUser = AppUser.fromJson(json.decode(PreferenceController.getString(
         PreferenceController.prefKeyUserPayload)));
    final user = User(
-      firstName: _currentUser.name,
-      id: _currentUser.id.toString(),
-      imageUrl:_currentUser.profileImage.isNotEmpty ?_currentUser.profileImage:  'https://picsum.photos/200/300',
+      firstName: currentUser.name,
+      id: currentUser.id.toString(),
+      imageUrl:currentUser.profileImage.isNotEmpty ?currentUser.profileImage:  'https://picsum.photos/200/300',
     );
 
     return ChangeNotifierProvider(

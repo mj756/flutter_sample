@@ -1,13 +1,17 @@
 com.flutter.sampleandroid:host="com.flutter.sample"{
-  "client_id" : "f122a486-268c-43a0-8a9d-8cac3bfcbeb1",
+  "client_id" : "485ebd43-1224-4bd8-b6bd-c352d96686ff",
   "authorization_user_agent" : "DEFAULT",
-  "redirect_uri" : "msauth://com.flutter.sample/%2BJ%2B3yf%2FmrgPgKeg1llIttpSjcws%3D",
+  "redirect_uri" : "msauth://com.flutter.sample/2jmj7l5rSw0yVb%2FvlWAYkK%2FYBwk%3D",
   "authorities" : [
     {
       "type": "AAD",
       "audience": {
-        "type": "PersonalMicrosoftAccount",
-        "tenant_id": "consumers"
+        "type": "AzureADandPersonalMicrosoftAccount",
+        "tenant_id": "common"
       }
     }
   ]
+}
+
+
+2jmj7l5rSw0yVb/vlWAYkK/YBwk=

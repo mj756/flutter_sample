@@ -110,6 +110,8 @@ notes:
 ) key other wise it will generate apiexception 10 while debug mode.
 
 
+generate keyhash for facebook,microsoft login
+keytool -exportcert -alias SIGNATURE_ALIAS -keystore "C:\Users\User\Documents\GitHub\flutter_sample\android\app\key.jks" | openssl sha1 -binary | openssl base64
 
 
 

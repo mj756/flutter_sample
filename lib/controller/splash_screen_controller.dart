@@ -12,7 +12,7 @@ class SplashScreenController with ChangeNotifier{
   bool dataLoaded=false;
   @override
   void dispose() {
-    print('disposed');
+    //do your stuff here
     super.dispose();
   }
   SplashScreenController(BuildContext context){

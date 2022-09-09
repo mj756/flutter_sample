@@ -3,7 +3,8 @@
     <string
         name="googleMapKey"
         >your key</string>
-    <string name="facebook_app_id">{your-app-id}</string>
-    <string name="fb_login_protocol_scheme">fb1234</string>
-    <string name="facebook_client_token">YOUR_CLIENT_TOKEN</string>
+    <string name="app_name">Flutter Sample</string>
+    <string name="facebook_app_id">380783437590227</string>
+    <string name="fb_login_protocol_scheme">fb380783437590227</string>
+    <string name="facebook_client_token">96f3d6b3cd6ff774395ba3bd56ccebdd</string>
 </resources>

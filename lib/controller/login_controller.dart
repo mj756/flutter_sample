@@ -10,7 +10,6 @@ class LoginController with ChangeNotifier
     bool isPasswordVisible=false;
     @override
     void dispose() {
-      print('disposed');
       super.dispose();
     }
     void changePasswordVisibility()
@@ -30,7 +29,7 @@ class LoginController with ChangeNotifier
            {
              AppUser user=AppUser.fromJson(json.decode(json.encode(response.data)));
              PreferenceController.setBoolean(PreferenceController.prefKeyIsLoggedIn,true);
-            print(json.encode(user));
+             PreferenceController.setString(PreferenceController.prefKeyLoginType,PreferenceController.loginTypeNormal);
              await PushNotificationController.getFCMToken().then((value) {
                if(value!=null) {
                  PreferenceController.setString(

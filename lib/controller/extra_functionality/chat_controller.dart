@@ -19,8 +19,8 @@ class ChatController with ChangeNotifier {
   List<types.Message> messages =
         List.empty(growable: true);
   final String _tableChat = 'chatTable';
-  late AppUser _currentUser;
-  late AppUser _otherUser;
+  late final AppUser _currentUser;
+  late final AppUser _otherUser;
   late StreamSubscription<ChatMessageEvent> subscription;
   @override
   void dispose() {
@@ -137,7 +137,7 @@ class ChatController with ChangeNotifier {
         }
       });
     } catch (e) {
-      print(e);
+
     }
     notifyListeners();
   }

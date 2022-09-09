@@ -41,6 +41,8 @@ dependencies:
   event_bus: ^2.0.0
   google_sign_in: ^5.4.1
   firebase_auth: ^3.7.0
+  flutter_facebook_auth: ^4.4.1
+  msal_flutter: ^2.0.0-alpha.5
 
 dev_dependencies:
   flutter_test:

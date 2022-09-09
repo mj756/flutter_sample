@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_sample/controller/extra_functionality/permission_handler.dart';
-import 'package:geocoding/geocoding.dart' as geoCoding;
+import 'package:geocoding/geocoding.dart' as geo_coding;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:math';
 import 'package:location/location.dart';
@@ -30,7 +30,6 @@ class MyMapController  extends MyPermissionManager with ChangeNotifier {
   late LatLng selectedMarker = const LatLng(0, 0);
   @override
   void dispose() {
-    print('disposed');
     super.dispose();
   }
   MyMapController() {
@@ -57,7 +56,7 @@ class MyMapController  extends MyPermissionManager with ChangeNotifier {
   }
   void toggleMapType()
   {
-    print('toggle');
+
       if(currentMapType == MapType.normal){
         currentMapType=MapType.satellite;
       }
@@ -76,7 +75,7 @@ class MyMapController  extends MyPermissionManager with ChangeNotifier {
         currentLocation.longitude),
         destination);
 
-    geoCoding.Placemark place = (await geoCoding.placemarkFromCoordinates(
+    geo_coding.Placemark place = (await geo_coding.placemarkFromCoordinates(
         destination.latitude, destination.longitude))
         .first;
 
@@ -214,7 +213,7 @@ class MyMapController  extends MyPermissionManager with ChangeNotifier {
         }
       }
     } catch (e) {
-      print(e);
+
     }
     notifyListeners();
   }
