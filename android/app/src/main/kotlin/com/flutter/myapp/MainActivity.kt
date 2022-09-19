@@ -1,4 +1,4 @@
-package com.flutter.sample
+package com.flutter.myapp
 
 import android.Manifest
 import android.content.pm.PackageManager

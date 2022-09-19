@@ -5,11 +5,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_sample/model/user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:msal_flutter/msal_flutter.dart';
+//import 'package:msal_flutter/msal_flutter.dart';
+import '../../utils/utility.dart';
 import '../preference_controller.dart';
 class SocialLoginController with ChangeNotifier{
   late FirebaseAuth firebaseAuth;
-  PublicClientApplication? pca;
+ // PublicClientApplication? pca;
   Future<String> googleLogin(BuildContext context) async{
     String status='';
     try
@@ -47,6 +48,7 @@ class SocialLoginController with ChangeNotifier{
       {
         print(e.toString());
       }
+      status=e.toString();
     }
     return status;
   }
@@ -135,6 +137,7 @@ class SocialLoginController with ChangeNotifier{
       User? firebaseUser = userCredential.user;
       if(firebaseUser!=null)
       {
+
         AppUser user=AppUser();
         user.email=firebaseUser.email!;
         user.name=firebaseUser.displayName!;
@@ -145,6 +148,8 @@ class SocialLoginController with ChangeNotifier{
         PreferenceController.setString(PreferenceController.prefKeyLoginType,PreferenceController.loginTypeFaceBook);
       }
     } on FirebaseAuthException catch (e) {
+      status=e.toString();
+      Utility.showSnackBar(context,status);
       if (e.code == 'account-exists-with-different-credential') {
 
       } else if (e.code == 'invalid-credential') {
@@ -152,10 +157,7 @@ class SocialLoginController with ChangeNotifier{
       }
     }catch(e)
     {
-      if(kDebugMode)
-      {
-        print(e.toString());
-      }
+      status=e.toString();
     }
     return status;
   }
@@ -174,7 +176,7 @@ class SocialLoginController with ChangeNotifier{
     }
     return false;
   }
-
+/*
   Future<String> microsoftLogin({bool isSilent=false}) async
   {
     try {
@@ -197,6 +199,6 @@ class SocialLoginController with ChangeNotifier{
     return '';
   }
 
-
+*/
 
 }

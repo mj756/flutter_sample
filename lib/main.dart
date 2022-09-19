@@ -5,6 +5,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_sample/controller/app_setting_controller.dart';
 import 'package:flutter_sample/utils/app_colors.dart';
+import 'package:flutter_sample/view/extra_functionality/chat_user_list.dart';
+import 'package:flutter_sample/view/extra_functionality/database_operation.dart';
+import 'package:flutter_sample/view/extra_functionality/map.dart';
 import 'package:flutter_sample/view/home.dart';
 import 'package:flutter_sample/view/language_selection.dart';
 import 'package:flutter_sample/view/login.dart';
@@ -15,6 +18,7 @@ import 'package:provider/provider.dart';
 
 import 'controller/firebase_controller.dart';
 import 'controller/push_notification_controller.dart';
+import 'model/extra_functionality/video.dart';
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
   await FirebaseController().initialize();
@@ -49,10 +53,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
+   /* SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
-    ]);
+    ]);*/
     return ScreenUtilInit(
         designSize: const Size(360, 690),
         minTextAdapt: true,
@@ -90,6 +94,10 @@ class MyApp extends StatelessWidget {
                     '/signup': (context) =>  SignUpPage(),
                     '/home': (context) =>  HomePage(),
                     '/language': (context) =>  const SelectLanguage(),
+                    '/map':(context)=>GoogleView(),
+                    '/chatting':(context)=>const ChatUserList(),
+                    '/database':(context)=> DatabaseOperation(),
+                    '/video':(context)=>  VideoPlayerView(),
                   },
                 );
               });

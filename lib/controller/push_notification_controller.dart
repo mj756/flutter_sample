@@ -63,7 +63,7 @@ class PushNotificationController {
     final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
     late final String imageUrl;
     Map<String,dynamic>  jsonData=Map<String, dynamic>.from(json.decode(message.data['notificationPayload']));
-    if(message.data['notificationType']==Utility.MESSAGE_TYPE_TEXT){
+    if(message.data['notificationType']==Utility.messageTypeText){
       imageUrl=jsonData['ImageUrl'];
     }
     /*  final String largeIconPath = await ApiController.downloadAndSaveFile(
@@ -89,7 +89,7 @@ class PushNotificationController {
           // styleInformation: bigPictureStyleInformation
         ),
         iOS: const IOSNotificationDetails());
-    if(message.data['notificationType']==Utility.MESSAGE_TYPE_TEXT)
+    if(message.data['notificationType']==Utility.messageTypeText)
     {
 
       await flutterNotificationPlugin.show(

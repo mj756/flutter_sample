@@ -56,7 +56,7 @@ class SocialLogin extends StatelessWidget {
               IconButton(
                 padding:const EdgeInsets.only(right: 5),
                 onPressed: () async {
-                 await context.read<SocialLoginController>().microsoftLogin();
+                /* await context.read<SocialLoginController>().microsoftLogin();*/
                 },
                 icon: Image.asset('assets/microsoft.png',height: 20,width: 20,),
                 iconSize: ScreenUtil().setHeight(30),

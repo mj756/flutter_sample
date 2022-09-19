@@ -74,11 +74,11 @@ class ChatMessage {
     chatMessage.insertedOn = Utility.getEpochToDate(message.createdAt!).toUtc();
     if (message is types.TextMessage) {
       /// Text message parsing
-      chatMessage.messageType = Utility.MESSAGE_TYPE_TEXT;
+      chatMessage.messageType = Utility.messageTypeText;
       chatMessage.message = message.text;
     } else if (message is types.ImageMessage) {
       /// Image message parsing
-      chatMessage.messageType = Utility.MESSAGE_TYPE_IMAGE;
+      chatMessage.messageType = Utility.messageTypeImage;
       chatMessage.media = ChatMedia.init(
           id: Random().nextInt(10000),
           name: message.name,
@@ -87,7 +87,7 @@ class ChatMessage {
           size: int.parse(message.size.toString()));
     } else if (message is types.FileMessage) {
       /// File message parsing
-      chatMessage.messageType = Utility.MESSAGE_TYPE_FILE;
+      chatMessage.messageType = Utility.messageTypeFile;
       chatMessage.media = ChatMedia.init(
           id: Random().nextInt(10000),
           name: message.name,
@@ -100,7 +100,7 @@ class ChatMessage {
   }
 
   static types.Message parseFromChatMessage(ChatMessage chatMessage) {
-    if (chatMessage.messageType == Utility.MESSAGE_TYPE_IMAGE &&
+    if (chatMessage.messageType == Utility.messageTypeImage &&
         chatMessage.media != null) {
       /// Image message parsing
       return types.ImageMessage.fromPartial(
@@ -115,7 +115,7 @@ class ChatMessage {
           size: chatMessage.media!.size,
         ),
       );
-    } else if (chatMessage.messageType == Utility.MESSAGE_TYPE_FILE &&
+    } else if (chatMessage.messageType == Utility.messageTypeFile &&
         chatMessage.media != null) {
       /// File message parsing
       return types.FileMessage.fromPartial(

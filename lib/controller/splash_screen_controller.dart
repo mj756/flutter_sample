@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sample/controller/app_setting_controller.dart';
+import 'package:flutter_sample/controller/extra_functionality/local_storage_controller.dart';
 import 'package:flutter_sample/controller/preference_controller.dart';
 import 'package:flutter_sample/controller/push_notification_controller.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +33,7 @@ class SplashScreenController with ChangeNotifier{
       String language=PreferenceController.getString(PreferenceController.prefKeyLanguage);
       context.read<AppSettingController>().changeLanguage(language.isEmpty ? 'es':language);
     });
+    await StorageController.initDatabase();
     await ApiController.checkInternetStatus().then((value) async {
       if (value == true) {
         await FirebaseController().initialize();

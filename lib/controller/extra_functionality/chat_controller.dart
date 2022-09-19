@@ -34,7 +34,7 @@ class ChatController with ChangeNotifier {
     _currentUser = AppUser.fromJson(json.decode(PreferenceController.getString(
         PreferenceController.prefKeyUserPayload)));
     subscription=eventBus.on<ChatMessageEvent>().listen((event) {
-      if (event.message.data['notificationType'] == Utility.MESSAGE_TYPE_TEXT) {
+      if (event.message.data['notificationType'] == Utility.messageTypeText) {
         Map<String, dynamic> jsonData = Map<String, dynamic>.from(
             json.decode(event.message.data['notificationPayload']));
         ChatMessage temp = ChatMessage.fromJson(jsonData);
@@ -107,7 +107,7 @@ class ChatController with ChangeNotifier {
         documents.map((doc) => doc.data()).forEach((element) {
           ChatMessage temp =
           ChatMessage.fromJson(json.decode(json.encode(element)));
-          if (temp.messageType == Utility.MESSAGE_TYPE_TEXT) {
+          if (temp.messageType == Utility.messageTypeText) {
             types.TextMessage msg1 = types.TextMessage(
                 author: types.User(
                     firstName: temp.senderName,
@@ -211,7 +211,7 @@ class ChatController with ChangeNotifier {
           uuid: Utility.getRandomString(),
           senderId: _currentUser.id,
           receiverId: _otherUser.id,
-          messageType: Utility.MESSAGE_TYPE_FILE,
+          messageType: Utility.messageTypeFile,
           status: '',
           insertedOn: DateTime.now().toUtc(),
           media: ChatMedia.init(
@@ -255,7 +255,7 @@ class ChatController with ChangeNotifier {
           uuid: Utility.getRandomString(),
           senderId: _currentUser.id,
           receiverId: _otherUser.id,
-          messageType: Utility.MESSAGE_TYPE_IMAGE,
+          messageType: Utility.messageTypeImage,
           status: '',
           insertedOn: DateTime.now().toUtc(),
           media: ChatMedia.init(

@@ -11,7 +11,11 @@ class ChatUserList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final arguments = (ModalRoute.of(context)?.settings.arguments ?? <String, dynamic>{}) as Map;
     return Scaffold(
+      appBar: AppBar(
+        title: Text(arguments['title']),
+      ),
       body: FutureBuilder(
         future: getAllUser(),
         builder: (context, AsyncSnapshot<List<AppUser>> snapShot) {
