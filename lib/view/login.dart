@@ -1,13 +1,14 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_sample/controller/login_controller.dart';
 import 'package:flutter_sample/utils/app_colors.dart';
 import 'package:flutter_sample/utils/styles.dart';
 import 'package:flutter_sample/widget/social_login.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+
 import '../utils/utility.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -17,8 +18,8 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _emailController.text = 'test134@gmail.com';
-    _passwordController.text = '12345678';
+    _emailController.text = 'demo1314134@gmail.com';
+    _passwordController.text = '1234567890';
 
     return ChangeNotifierProvider(
         create: (context) => LoginController(),

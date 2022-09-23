@@ -11,27 +11,29 @@ import '../../model/extra_functionality/parking_detail.dart';
 import '../../utils/utility.dart';
 import '../api_controller.dart';
 
-class MyMapController  extends MyPermissionManager with ChangeNotifier {
+class MyMapController extends MyPermissionManager with ChangeNotifier {
   MapResponseResult? nearByPlaces;
   Completer<GoogleMapController> googleMapController = Completer();
   MapType currentMapType = MapType.normal;
   List<LatLng> polylineCoordinates = List.empty(growable: true);
   CameraPosition kGooglePlex = const CameraPosition(
-          bearing: 192.8334901395799,
-          target: LatLng(45.521563, -122.677433),
-          tilt: 59.440717697143555,
-          zoom: 5)
-      ;
+      bearing: 192.8334901395799,
+      target: LatLng(45.521563, -122.677433),
+      tilt: 59.440717697143555,
+      zoom: 5);
+
   double distance = 0.0;
   Set<Marker> markers = <Marker>{};
   LatLng center = const LatLng(45.521563, -122.677433);
   LatLng currentLocation = const LatLng(45.521563, -122.677433);
   LatLng previousLocation = const LatLng(45.521563, -122.677433);
   late LatLng selectedMarker = const LatLng(0, 0);
+
   @override
   void dispose() {
     super.dispose();
   }
+
   MyMapController() {
     currentLocation = const LatLng(45.521563, -122.677433);
     kGooglePlex = CameraPosition(
@@ -42,51 +44,59 @@ class MyMapController  extends MyPermissionManager with ChangeNotifier {
     center = const LatLng(45.521563, -122.677433);
     getCurrentLocation().then((value) {
       googleMapController.future.then((value2) {
-        value2.animateCamera(
+        value2
+            .animateCamera(
           CameraUpdate.newCameraPosition(
             CameraPosition(target: currentLocation, zoom: 16),
           ),
-        ).then((value) {
-           /* getNearByPlaces().then((value1) {
+        )
+            .then((value) {
+          /* getNearByPlaces().then((value1) {
             notifyListeners();
           });*/
         });
       });
     });
   }
-  void toggleMapType()
-  {
 
-      if(currentMapType == MapType.normal){
-        currentMapType=MapType.satellite;
-      }
-      else
-        {
-          currentMapType=MapType.normal;
-        }
-      notifyListeners();
+  void toggleMapType() {
+    if (currentMapType == MapType.normal) {
+      currentMapType = MapType.satellite;
+    } else {
+      currentMapType = MapType.normal;
+    }
+    notifyListeners();
   }
 
-
-  Future<void> showBottomSheet(BuildContext context,LatLng destination,int index) async{
-
-    ParkingAddress address=ParkingAddress();
-      address.distance=await getPolyPointsWithCalculation( LatLng(currentLocation.latitude,
-        currentLocation.longitude),
+  Future<void> showBottomSheet(
+      BuildContext context, LatLng destination, int index) async {
+    ParkingAddress address = ParkingAddress();
+    address.distance = await getPolyPointsWithCalculation(
+        LatLng(currentLocation.latitude, currentLocation.longitude),
         destination);
 
     geo_coding.Placemark place = (await geo_coding.placemarkFromCoordinates(
-        destination.latitude, destination.longitude))
+            destination.latitude, destination.longitude))
         .first;
 
-      address.title=index==0 ?  'Lawnfield park' :'Skyy’s Drop';
-      address.address='${place.name ??''}, ${place.street ?? ''}, ${place.locality}';//1024, Lawnfield road, New York';
-      address.imageUrl=index==0 ?  'https://www.himalmag.com/wp-content/uploads/2019/07/sample-profile-picture.png': 'https://www.fairtravel4u.org/wp-content/uploads/2018/06/sample-profile-pic.png';
-      address.workingHour='08:00 AM - 10:00 PM';
-      address.description='Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500.';
-      address.facilities.addAll(['Covered roof','Cameras','Overnight','Charging','Disabled parking']);
-      address.charge=5.0;
-      address.spot=15;
+    address.title = index == 0 ? 'Lawnfield park' : 'Skyy’s Drop';
+    address.address =
+        '${place.name ?? ''}, ${place.street ?? ''}, ${place.locality}'; //1024, Lawnfield road, New York';
+    address.imageUrl = index == 0
+        ? 'https://www.himalmag.com/wp-content/uploads/2019/07/sample-profile-picture.png'
+        : 'https://www.fairtravel4u.org/wp-content/uploads/2018/06/sample-profile-pic.png';
+    address.workingHour = '08:00 AM - 10:00 PM';
+    address.description =
+        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500.';
+    address.facilities.addAll([
+      'Covered roof',
+      'Cameras',
+      'Overnight',
+      'Charging',
+      'Disabled parking'
+    ]);
+    address.charge = 5.0;
+    address.spot = 15;
   }
 
   void onCameraMove(CameraPosition position) {
@@ -94,9 +104,8 @@ class MyMapController  extends MyPermissionManager with ChangeNotifier {
   }
 
   void changeMapType() {
-    currentMapType = currentMapType == MapType.normal
-        ? MapType.satellite
-        : MapType.normal;
+    currentMapType =
+        currentMapType == MapType.normal ? MapType.satellite : MapType.normal;
   }
 
   void addMarker(LatLng value) async {
@@ -109,16 +118,13 @@ class MyMapController  extends MyPermissionManager with ChangeNotifier {
           snippet: '5 Star Rating',
         ),
         icon: BitmapDescriptor.defaultMarker,
-
         onTap: () async {
           await getPolyPoints(
-              LatLng(currentLocation.latitude,
-                  currentLocation.longitude),
+              LatLng(currentLocation.latitude, currentLocation.longitude),
               value);
         }));
     await getPolyPoints(
-        LatLng(currentLocation.latitude, currentLocation.longitude),
-        value);
+        LatLng(currentLocation.latitude, currentLocation.longitude), value);
   }
 
   Future<LocationData?> getCurrentLocation() async {
@@ -147,13 +153,13 @@ class MyMapController  extends MyPermissionManager with ChangeNotifier {
           LatLng(point.latitude, point.longitude),
         );
       }
-
     }
     notifyListeners();
   }
-  Future<double> getPolyPointsWithCalculation(LatLng source, LatLng destination) async {
 
-    double totalDistance=0.0;
+  Future<double> getPolyPointsWithCalculation(
+      LatLng source, LatLng destination) async {
+    double totalDistance = 0.0;
 
     PolylinePoints polylinePoints = PolylinePoints();
     final result = await polylinePoints.getRouteBetweenCoordinates(
@@ -164,15 +170,16 @@ class MyMapController  extends MyPermissionManager with ChangeNotifier {
     if (result.points.isNotEmpty) {
       for (var i = 0; i < result.points.length - 1; i++) {
         totalDistance += getDistanceFromLatLonInKm(
-          LatLng(result.points[i].latitude,result.points[i].longitude),
-          LatLng(result.points[i+1].latitude,result.points[i+1].longitude)
-        );
+            LatLng(result.points[i].latitude, result.points[i].longitude),
+            LatLng(
+                result.points[i + 1].latitude, result.points[i + 1].longitude));
       }
     }
-   return totalDistance;
+    return totalDistance;
   }
 
-  Future<void> getNearByPlaces({String type = 'petrol',int numberOfLocation=2}) async {
+  Future<void> getNearByPlaces(
+      {String type = 'petrol', int numberOfLocation = 2}) async {
     try {
       markers.clear();
       polylineCoordinates.clear();
@@ -181,14 +188,14 @@ class MyMapController  extends MyPermissionManager with ChangeNotifier {
       url =
           '${url}location=${currentLocation.latitude},${currentLocation.longitude}';
       // url="$url&rankby=distance";
-      url = "$url&radius=50000";
+      url = "$url&radius=10000";
       //url="$url&type=gas_station";
       url = "$url&keyword=$type";
       url = "$url&key=${Utility.googleMapKey}";
 
       nearByPlaces = await ApiController.getNearByPlaces(url);
       if (nearByPlaces != null) {
-      //  BitmapDescriptor icon=await BitmapDescriptor.fromAssetImage(const ImageConfiguration(size: Size(10,10)),'assets/dollar.jpg',mipmaps: false);
+        //  BitmapDescriptor icon=await BitmapDescriptor.fromAssetImage(const ImageConfiguration(size: Size(10,10)),'assets/dollar.jpg',mipmaps: false);
         for (int i = 0; i < nearByPlaces!.results.length; i++) {
           markers.add(Marker(
               markerId: MarkerId(LatLng(
@@ -197,7 +204,7 @@ class MyMapController  extends MyPermissionManager with ChangeNotifier {
                   .toString()),
               position: LatLng(nearByPlaces!.results[i].geometry!.location!.lat,
                   nearByPlaces!.results[i].geometry!.location!.lng),
-              infoWindow:  InfoWindow(
+              infoWindow: InfoWindow(
                 title: type,
                 //snippet: '5 Star Rating',
               ),
@@ -205,16 +212,13 @@ class MyMapController  extends MyPermissionManager with ChangeNotifier {
               //icon:icon,
               onTap: () async {
                 await getPolyPoints(
-                    LatLng(currentLocation.latitude,
-                        currentLocation.longitude),
+                    LatLng(currentLocation.latitude, currentLocation.longitude),
                     LatLng(nearByPlaces!.results[i].geometry!.location!.lat,
                         nearByPlaces!.results[i].geometry!.location!.lng));
-                          }));
+              }));
         }
       }
-    } catch (e) {
-
-    }
+    } catch (e) {}
     notifyListeners();
   }
 
@@ -228,5 +232,4 @@ class MyMapController  extends MyPermissionManager with ChangeNotifier {
             2;
     return 12742 * asin(sqrt(a));
   }
-
 }

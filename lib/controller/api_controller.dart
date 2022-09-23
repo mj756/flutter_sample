@@ -9,186 +9,165 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import '../model/extra_functionality/map_model.dart';
 
-class ApiController
-{
+class ApiController {
+  static const Duration timeOut = Duration(seconds: 30);
+  static const String baseAddress =
+      'http://restapi.adequateshop.com/api/authaccount/'; //put your own api endpoint address
+  static const String endpointLogin = "${baseAddress}login";
+  static const String endpointRegistration = "${baseAddress}registration";
+  static const String endpointForGotPassword = "${baseAddress}forgot-password";
+  static const String endpointChangePassword = "${baseAddress}change-password";
+  static const String endpointAboutUs = "${baseAddress}about";
+  static const String endpointTopUsers = "${baseAddress}profile-detail";
+  static const String endpointLogout = "${baseAddress}logout";
+  static const String endpointSetting = "${baseAddress}setting";
 
-  static const Duration timeOut=Duration(seconds: 30);
-  static const String baseAddress='http://restapi.adequateshop.com/api/authaccount/';   //put your own api endpoint address
-  static const String endpointLogin="${baseAddress}login";
-  static const String endpointRegistration="${baseAddress}registration";
-  static const String endpointForGotPassword="${baseAddress}forgot-password";
-  static const String endpointChangePassword="${baseAddress}change-password";
-  static const String endpointAboutUs="${baseAddress}about";
-  static const String endpointTopUsers="${baseAddress}profile-detail";
-  static const String endpointLogout="${baseAddress}logout";
-  static const String endpointSetting="${baseAddress}setting";
-
-  static Future<bool> checkInternetStatus()async{
+  static Future<bool> checkInternetStatus() async {
     try {
-      final result = await InternetAddress.lookup('example.com').timeout(const Duration(seconds: 10));
+      final result = await InternetAddress.lookup('example.com')
+          .timeout(const Duration(seconds: 10));
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         return true;
       }
     } on SocketException catch (_) {
       return false;
-    }catch(e)
-    {
+    } catch (e) {
       return false;
     }
     return false;
   }
-  static Map<String,String> geHeader({String method='POST'})
-  {
-    Map<String,String> header=<String,String>{};
-    try
-    {
 
-        header['Authorization']=PreferenceController.getString(
-            PreferenceController.apiToken);
-      if(method!="GET") {
-        header['Content-type']="application/json";
+  static Map<String, String> geHeader({String method = 'POST'}) {
+    Map<String, String> header = <String, String>{};
+    try {
+      header['Authorization'] =
+          PreferenceController.getString(PreferenceController.apiToken);
+      if (method != "GET") {
+        header['Content-type'] = "application/json";
       }
-        header['Language']=PreferenceController.getString(PreferenceController.prefKeyLanguage);
-    }catch(e)
-    {
-
-    }
+      header['Language'] =
+          PreferenceController.getString(PreferenceController.prefKeyLanguage);
+    } catch (e) {}
 
     return header;
   }
-  static Future<ApiResponse> get(String url) async{
-    ApiResponse apiResponse=ApiResponse();
-    try {
 
-      if(await checkInternetStatus()==false)
-      {
-        apiResponse.code=-1;
+  static Future<ApiResponse> get(String url) async {
+    ApiResponse apiResponse = ApiResponse();
+    try {
+      if (await checkInternetStatus() == false) {
+        apiResponse.code = -1;
         return apiResponse;
       }
       var client = http.Client();
-      final response = await client.get(Uri.parse(url),headers: geHeader(method: 'GET')).timeout(timeOut);
-      if(kDebugMode)
-        {
-          print(response.body);
-        }
-      if(response.statusCode==200)
-      {
-        apiResponse=ApiResponse.fromJson(json.decode(response.body));
+      final response = await client
+          .get(Uri.parse(url), headers: geHeader(method: 'GET'))
+          .timeout(timeOut);
+      if (kDebugMode) {
+        print(response.body);
+      }
+      if (response.statusCode == 200) {
+        apiResponse = ApiResponse.fromJson(json.decode(response.body));
         return apiResponse;
+      } else {
+        apiResponse.code = response.statusCode;
       }
-      else
-      {
-        apiResponse.code=response.statusCode;
-      }
-    } catch(ex) {
-      apiResponse.code=-1;
-      apiResponse.message=ex.toString();
-      if(kDebugMode)
-      {
+    } catch (ex) {
+      apiResponse.code = -1;
+      apiResponse.message = ex.toString();
+      if (kDebugMode) {
         print(ex);
       }
     }
     return apiResponse;
   }
 
-  static Future<ApiResponse> post(String url,String body,{bool isLoginApiCall=false}) async{
-    ApiResponse apiResponse=ApiResponse();
+  static Future<ApiResponse> post(String url, String body,
+      {bool isLoginApiCall = false}) async {
+    ApiResponse apiResponse = ApiResponse();
     try {
-      if(await checkInternetStatus()==false)
-      {
-
-        apiResponse.code=-1;
+      if (await checkInternetStatus() == false) {
+        apiResponse.code = -1;
         return apiResponse;
       }
       var client = http.Client();
-      final response =await client.post(Uri.parse(url),body:body , headers: geHeader()).timeout(timeOut);
-      if(kDebugMode)
-      {
+      final response = await client
+          .post(Uri.parse(url), body: body, headers: geHeader())
+          .timeout(timeOut);
+      if (kDebugMode) {
         print(response.body);
       }
-      if(response.statusCode==200)
-      {
-        apiResponse=ApiResponse.fromJson(json.decode(response.body));
+      if (response.statusCode == 200) {
+        apiResponse = ApiResponse.fromJson(json.decode(response.body));
         return apiResponse;
+      } else {
+        apiResponse.code = response.statusCode;
+        apiResponse.data = null;
       }
-      else
-      {
-        apiResponse.code=response.statusCode;
-        apiResponse.data=null;
-      }
-    } catch(ex) {
-      apiResponse.code=-1;
-      apiResponse.message=ex.toString();
-      if(kDebugMode)
-      {
+    } catch (ex) {
+      apiResponse.code = -1;
+      apiResponse.message = ex.toString();
+      if (kDebugMode) {
         print(ex);
       }
     }
     return apiResponse;
   }
 
-  static Future<ApiResponse> put(String url,String body) async{
-    ApiResponse apiResponse=ApiResponse();
+  static Future<ApiResponse> put(String url, String body) async {
+    ApiResponse apiResponse = ApiResponse();
     try {
-      if(await checkInternetStatus()==false)
-      {
-        apiResponse.code=-1;
+      if (await checkInternetStatus() == false) {
+        apiResponse.code = -1;
         return apiResponse;
       }
       var client = http.Client();
-      final response = await client.put(Uri.parse(url),body:body , headers: geHeader()).timeout(timeOut);
-      if(kDebugMode)
-      {
+      final response = await client
+          .put(Uri.parse(url), body: body, headers: geHeader())
+          .timeout(timeOut);
+      if (kDebugMode) {
         print(response.body);
       }
-      if(response.statusCode==200)
-      {
-        apiResponse=ApiResponse.fromJson(json.decode(response.body));
+      if (response.statusCode == 200) {
+        apiResponse = ApiResponse.fromJson(json.decode(response.body));
         return apiResponse;
+      } else {
+        apiResponse.code = response.statusCode;
+        apiResponse.data = null;
       }
-      else
-      {
-        apiResponse.code=response.statusCode;
-        apiResponse.data=null;
-      }
-    } catch(ex) {
-      apiResponse.code=-1;
-      apiResponse.message=ex.toString();
-      if(kDebugMode)
-      {
+    } catch (ex) {
+      apiResponse.code = -1;
+      apiResponse.message = ex.toString();
+      if (kDebugMode) {
         print(ex);
       }
     }
     return apiResponse;
   }
-  static Future<ApiResponse> delete(String url,String body) async{
-    ApiResponse apiResponse=ApiResponse();
-    try {
-      if(await checkInternetStatus()==false)
-      {
 
-        apiResponse.code=-1;
+  static Future<ApiResponse> delete(String url, String body) async {
+    ApiResponse apiResponse = ApiResponse();
+    try {
+      if (await checkInternetStatus() == false) {
+        apiResponse.code = -1;
         return apiResponse;
       }
       var client = http.Client();
-      final response = await client.delete(Uri.parse(url),body:body , headers: geHeader()).timeout(timeOut);
-      if(kDebugMode)
-      {
+      final response = await client
+          .delete(Uri.parse(url), body: body, headers: geHeader())
+          .timeout(timeOut);
+      if (kDebugMode) {
         print(response.body);
       }
-      if(response.statusCode==200)
-      {
-        apiResponse=ApiResponse.fromJson(json.decode(response.body));
+      if (response.statusCode == 200) {
+        apiResponse = ApiResponse.fromJson(json.decode(response.body));
         return apiResponse;
+      } else {
+        apiResponse.code = response.statusCode;
+        apiResponse.data = null;
       }
-      else
-      {
-        apiResponse.code=response.statusCode;
-        apiResponse.data=null;
-      }
-    } catch(ex) {
-      if(kDebugMode)
-      {
+    } catch (ex) {
+      if (kDebugMode) {
         print(ex);
       }
     }
@@ -196,10 +175,7 @@ class ApiController
   }
 
   static Future<String> downloadAndSaveFile(String url, String fileName) async {
-
-    if(await checkInternetStatus()==false)
-    {
-
+    if (await checkInternetStatus() == false) {
       return '';
     }
     final Directory directory = await getApplicationDocumentsDirectory();
@@ -210,66 +186,56 @@ class ApiController
     return filePath;
   }
 
-  static Future<ApiResponse> postFormData(String url, String filepath,Map<String,String>? param,{String method="POST"}) async{
-    ApiResponse apiResponse=ApiResponse();
-    try
-    {
-
-      if(await checkInternetStatus()==false)
-      {
-
-        apiResponse.code=-1;
+  static Future<ApiResponse> postFormData(
+      String url, String filepath, Map<String, String>? param,
+      {String method = "POST"}) async {
+    ApiResponse apiResponse = ApiResponse();
+    try {
+      if (await checkInternetStatus() == false) {
+        apiResponse.code = -1;
         return apiResponse;
       }
       var request = http.MultipartRequest(method, Uri.parse(url));
-      if(param!=null)
-      {
+      if (param != null) {
         request.fields.addAll(param);
       }
-     // String? contentType=lookupMimeType(filepath, headerBytes: [0xFF, 0xD8]);
+      // String? contentType=lookupMimeType(filepath, headerBytes: [0xFF, 0xD8]);
       http.MultipartFile multipartFile = http.MultipartFile.fromBytes(
-        'image',File(filepath).readAsBytesSync(),
-        filename: basename(filepath),
+          'image', File(filepath).readAsBytesSync(),
+          filename: basename(filepath),
 
-      //  contentType:MediaType(contentType!.substring(0,contentType.indexOf('/')),contentType.substring(contentType.lastIndexOf('/')+1)),
-          contentType:  MediaType("image", "jpeg")
-      );
+          //  contentType:MediaType(contentType!.substring(0,contentType.indexOf('/')),contentType.substring(contentType.lastIndexOf('/')+1)),
+          contentType: MediaType("image", "jpeg"));
 
-      request.files.add(
-          multipartFile
-      );
+      request.files.add(multipartFile);
 
       var res = await request.send();
-      final response= await http.Response.fromStream(res) ;//   var responseData = await res.stream.toBytes();
-      if(kDebugMode)
-      {
+      final response = await http.Response.fromStream(
+          res); //   var responseData = await res.stream.toBytes();
+      if (kDebugMode) {
         print(response.body);
       }
-      if(response.statusCode==200)
-      {
-
-        apiResponse=ApiResponse.fromJson(json.decode(response.body));
+      if (response.statusCode == 200) {
+        apiResponse = ApiResponse.fromJson(json.decode(response.body));
+      } else {
+        apiResponse.code = response.statusCode;
+        apiResponse.data = null;
       }
-      else
-      {
-        apiResponse.code=response.statusCode;
-        apiResponse.data=null;
-      }
-    }catch(ex)
-    {
-      apiResponse.code=-1;
-      apiResponse.message=ex.toString();
-      if(kDebugMode)
-      {
+    } catch (ex) {
+      apiResponse.code = -1;
+      apiResponse.message = ex.toString();
+      if (kDebugMode) {
         print(ex);
       }
     }
     return apiResponse;
   }
-  static Future<void> sendPushChatMessage(Map<String,dynamic> chatMessage,String otherUserFCMToken)async {
+
+  static Future<void> sendPushChatMessage(
+      Map<String, dynamic> chatMessage, String otherUserFCMToken) async {
     try {
       const String fcmUrl = 'https://fcm.googleapis.com/fcm/send';
-      List<String> registrationIds=List.empty(growable: true);
+      List<String> registrationIds = List.empty(growable: true);
       registrationIds.add(otherUserFCMToken);
       String body = jsonEncode({
         "registration_ids": registrationIds,
@@ -278,38 +244,33 @@ class ApiController
         "priority": "high",
         "data": {
           "title": chatMessage['SenderName'],
-          "notificationType":'text',
-          "notificationPayload":  chatMessage
+          "notificationType": 'text',
+          "notificationPayload": chatMessage
         }
       });
 
-
-
       var client = http.Client();
-      Map<String,String> header=<String,String>{};
-      header['Authorization']="key=AAAAaJhlW8c:APA91bELMQnl_TS65NxfJVh6KH3D1qVc2DjzsYF452VTbGfoov0vzOzKB1b_qtk4yuiCtX6sqs69_rx7Tm18AW0dn9oa8_v-bq-tVHqDVAv7fhDKR2Jk-VN9E752esBxPVs0IImM0Jhw";
-      header['content-Type']='application/json';
-     final resp= await client.post(Uri.parse(fcmUrl),headers:header,body: body).timeout(timeOut);
-    } catch (e) {
-
-    }
+      Map<String, String> header = <String, String>{};
+      header['Authorization'] =
+          "key=AAAAaJhlW8c:APA91bELMQnl_TS65NxfJVh6KH3D1qVc2DjzsYF452VTbGfoov0vzOzKB1b_qtk4yuiCtX6sqs69_rx7Tm18AW0dn9oa8_v-bq-tVHqDVAv7fhDKR2Jk-VN9E752esBxPVs0IImM0Jhw";
+      header['content-Type'] = 'application/json';
+      final resp = await client
+          .post(Uri.parse(fcmUrl), headers: header, body: body)
+          .timeout(timeOut);
+    } catch (e) {}
   }
-  static Future<MapResponseResult?> getNearByPlaces(String url) async{
-    try {
 
-      if(await checkInternetStatus()==false)
-      {
-      }
+  static Future<MapResponseResult?> getNearByPlaces(String url) async {
+    try {
+      if (await checkInternetStatus() == false) {}
       var client = http.Client();
       final response = await client.get(Uri.parse(url)).timeout(timeOut);
-      if(response.statusCode==200)
-      {
-        MapResponseResult result=MapResponseResult.fromJson(json.decode( response.body));
+      if (response.statusCode == 200) {
+        MapResponseResult result =
+            MapResponseResult.fromJson(json.decode(response.body));
         return result;
       }
-    } catch(ex) {
-
-    }
+    } catch (ex) {}
     return null;
   }
 }

@@ -13,7 +13,8 @@ class GoogleView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final arguments = (ModalRoute.of(context)?.settings.arguments ?? <String, dynamic>{}) as Map;
+    final arguments = (ModalRoute.of(context)?.settings.arguments ??
+        <String, dynamic>{}) as Map;
     return ChangeNotifierProvider(
         create: (context) => MyMapController(),
         lazy: false,

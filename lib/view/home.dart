@@ -2,18 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_sample/controller/home_controller.dart';
-import 'package:flutter_sample/view/extra_functionality/chat_user_list.dart';
 import 'package:flutter_sample/widget/drawer.dart';
 import 'package:provider/provider.dart';
+
 import '../widget/app_exit_dialog.dart';
-import 'extra_functionality/database_operation.dart';
-import 'extra_functionality/map.dart';
 
 class HomePage extends StatelessWidget {
   static const platform = MethodChannel('samples.flutter.dev/permission');
 
-  HomePage({Key? key}) : super(key: key);
-  final PageController _pageController = PageController();
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,42 +35,53 @@ class HomePage extends StatelessWidget {
               ),
               drawer: const SideBar(),
               body: ListView(
-
                 children: [
                   ListTile(
                     onTap: () async {
-                      await Navigator.pushNamed(context, '/map',arguments: {'title':'Google map'});
+                      await Navigator.pushNamed(context, '/map',
+                          arguments: {'title': 'Google map'});
                     },
-                    leading: Icon(Icons.map),
-                    title: Text('Google Map'),
+                    leading: const Icon(Icons.map),
+                    title: const Text('Google Map'),
                   ),
                   ListTile(
                     onTap: () async {
-                      await Navigator.pushNamed(context, '/chatting',arguments: {'title':'User list'});
+                      await Navigator.pushNamed(context, '/chatting',
+                          arguments: {'title': 'User list'});
                     },
-                    leading:  Icon(Icons.chat),
-                    title: Text('Chatting'),
+                    leading: const Icon(Icons.chat),
+                    title: const Text('Chatting'),
                   ),
                   ListTile(
                     onTap: () async {
-                      await Navigator.pushNamed(context, '/database',arguments: {'title':'Local Database'});
+                      await Navigator.pushNamed(context, '/database',
+                          arguments: {'title': 'Local Database'});
                     },
-                    leading:  Icon(Icons.data_object),
-                    title: Text('Local Database'),
+                    leading: const Icon(Icons.data_object),
+                    title: const Text('Local Database'),
                   ),
                   ListTile(
                     onTap: () async {
-                      await Navigator.pushNamed(context, '/video',arguments: {'title':'Video player'});
+                      await Navigator.pushNamed(context, '/video',
+                          arguments: {'title': 'Video player'});
                     },
-                    leading:  Icon(Icons.video_camera_back_rounded),
-                    title: Text('Video player'),
+                    leading: const Icon(Icons.video_camera_back_rounded),
+                    title: const Text('Video player'),
+                  ),
+                  ListTile(
+                    onTap: () async {
+                      await Navigator.pushNamed(context, '/advertisement',
+                          arguments: {'title': 'Google ads'});
+                    },
+                    leading: const Icon(Icons.video_camera_back_rounded),
+                    title: const Text('Google ads'),
                   )
                 ],
               ),
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
                 currentIndex: context.watch<HomeController>().currentPage,
-               /* onTap: (index) {
+                /* onTap: (index) {
                   Provider.of<HomeController>(context, listen: false)
                       .changePageIndex(index);
                   _pageController.jumpToPage(index);
