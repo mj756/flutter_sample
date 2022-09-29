@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:math';
+
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_sample/Utils/Utility.dart';
 import 'package:mime/mime.dart';
-import '../../Utils/Utility.dart';
+
 import 'chat_media.dart';
 
 class ChatMessage {
@@ -20,7 +22,6 @@ class ChatMessage {
   bool isRead = false;
   bool isDeleted = false;
   ChatMedia? media;
-
 
   ChatMessage();
 
@@ -63,8 +64,8 @@ class ChatMessage {
     return null;
   }
 
-  static ChatMessage parseFromMessage(String senderId, String receiverId,
-      types.Message message) {
+  static ChatMessage parseFromMessage(
+      String senderId, String receiverId, types.Message message) {
     ChatMessage chatMessage = ChatMessage();
 
     chatMessage.uuid = message.id;
@@ -108,7 +109,8 @@ class ChatMessage {
         id: chatMessage.uuid,
         status: getStatusFromString(chatMessage.status),
         createdAt:
-        Utility.getEpochTime(Utility.parseToLocal(chatMessage.insertedOn))*1000,
+            Utility.getEpochTime(Utility.parseToLocal(chatMessage.insertedOn)) *
+                1000,
         partialImage: types.PartialImage(
           name: chatMessage.media!.name,
           uri: chatMessage.media!.location,
@@ -123,7 +125,8 @@ class ChatMessage {
         id: chatMessage.uuid,
         status: getStatusFromString(chatMessage.status),
         createdAt:
-        Utility.getEpochTime(Utility.parseToLocal(chatMessage.insertedOn))*1000,
+            Utility.getEpochTime(Utility.parseToLocal(chatMessage.insertedOn)) *
+                1000,
         partialFile: types.PartialFile(
           name: chatMessage.media!.name,
           uri: chatMessage.media!.location,
@@ -139,7 +142,8 @@ class ChatMessage {
       id: chatMessage.uuid,
       status: getStatusFromString(chatMessage.status),
       createdAt:
-      Utility.getEpochTime(Utility.parseToLocal(chatMessage.insertedOn))*1000,
+          Utility.getEpochTime(Utility.parseToLocal(chatMessage.insertedOn)) *
+              1000,
       partialText: types.PartialText(text: chatMessage.message ?? ''),
     );
   }
@@ -157,12 +161,11 @@ class ChatMessage {
     return status != null ? status.toString().split(".")[1] : "";
   }
 
-
   ChatMessage.fromJson(Map<String, dynamic> json) {
     uuid = json['Uuid'] as String;
     senderId = json['SenderId'] as String;
     senderName = json['SenderName'] as String;
-    imageUrl= json['ImageUrl'] as String;
+    imageUrl = json['ImageUrl'] as String;
     receiverId = json['ReceiverId'] as String;
     messageType = json['MessageType'] as String;
     status = json['Status'] as String;
@@ -175,8 +178,7 @@ class ChatMessage {
   }
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> test =
-    {
+    Map<String, dynamic> test = {
       'Uuid': '',
       'SenderId': senderId,
       'ReceiverId': receiverId,
@@ -188,7 +190,7 @@ class ChatMessage {
       'IsRead': Utility.boolToJson(isRead),
       'IsDeleted': Utility.boolToJson(isDeleted),
       'Media': ChatMessage._mediaToJson(media),
-      'SenderName':senderName,
+      'SenderName': senderName,
       'ImageUrl': imageUrl
     };
     return test;

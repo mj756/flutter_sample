@@ -7,14 +7,14 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_sample/Utils/Utility.dart';
 import 'package:flutter_sample/controller/api_controller.dart';
 import 'package:flutter_sample/controller/preference_controller.dart';
 import 'package:flutter_sample/model/extra_functionality/chat_media.dart';
+import 'package:flutter_sample/model/extra_functionality/chat_message.dart';
 import 'package:flutter_sample/model/user.dart';
 import 'package:mime/mime.dart';
 
-import '../../../Utils/Utility.dart';
-import '../../model/extra_functionality/chat_message.dart';
 import 'event_bus.dart';
 
 class ChatController with ChangeNotifier {
