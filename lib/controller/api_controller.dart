@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_sample/controller/preference_controller.dart';
 import 'package:flutter_sample/model/api_response.dart';
@@ -7,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+
 import '../model/extra_functionality/map_model.dart';
 
 class ApiController {
@@ -254,7 +256,7 @@ class ApiController {
       header['Authorization'] =
           "key=AAAAaJhlW8c:APA91bELMQnl_TS65NxfJVh6KH3D1qVc2DjzsYF452VTbGfoov0vzOzKB1b_qtk4yuiCtX6sqs69_rx7Tm18AW0dn9oa8_v-bq-tVHqDVAv7fhDKR2Jk-VN9E752esBxPVs0IImM0Jhw";
       header['content-Type'] = 'application/json';
-      final resp = await client
+      await client
           .post(Uri.parse(fcmUrl), headers: header, body: body)
           .timeout(timeOut);
     } catch (e) {}

@@ -1,23 +1,24 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_sample/controller/api_controller.dart';
 import 'package:flutter_sample/controller/preference_controller.dart';
 import 'package:flutter_sample/model/extra_functionality/chat_media.dart';
 import 'package:flutter_sample/model/user.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:mime/mime.dart';
+
 import '../../../Utils/Utility.dart';
 import '../../model/extra_functionality/chat_message.dart';
 import 'event_bus.dart';
 
 class ChatController with ChangeNotifier {
-  List<types.Message> messages =
-        List.empty(growable: true);
+  List<types.Message> messages = List.empty(growable: true);
   final String _tableChat = 'chatTable';
   late final AppUser _currentUser;
   late final AppUser _otherUser;
@@ -29,11 +30,10 @@ class ChatController with ChangeNotifier {
     super.dispose();
   }
 
-
   ChatController(this._otherUser) {
     _currentUser = AppUser.fromJson(json.decode(PreferenceController.getString(
         PreferenceController.prefKeyUserPayload)));
-    subscription=eventBus.on<ChatMessageEvent>().listen((event) {
+    subscription = eventBus.on<ChatMessageEvent>().listen((event) {
       if (event.message.data['notificationType'] == Utility.messageTypeText) {
         Map<String, dynamic> jsonData = Map<String, dynamic>.from(
             json.decode(event.message.data['notificationPayload']));
@@ -51,7 +51,7 @@ class ChatController with ChangeNotifier {
       }
     });
   }
-  void send(PartialText message) async{
+  void send(PartialText message) async {
     final msg1 = types.TextMessage(
         author: types.User(
             firstName: _currentUser.name,
@@ -61,25 +61,27 @@ class ChatController with ChangeNotifier {
         id: Utility.getRandomString(),
         text: message.text,
         createdAt:
-        (DateTime.now().toUtc().millisecondsSinceEpoch / 1000).floor());
+            (DateTime.now().toUtc().millisecondsSinceEpoch / 1000).floor());
 
     ChatMessage msg =
-    ChatMessage.parseFromMessage(_currentUser.id, _otherUser.id, msg1);
+        ChatMessage.parseFromMessage(_currentUser.id, _otherUser.id, msg1);
     msg.senderName = _currentUser.name;
-   // msg.imageUrl = _currentUser.profileImage;
+    // msg.imageUrl = _currentUser.profileImage;
     msg.imageUrl = 'https://picsum.photos/200/300';
 
-    await ApiController.sendPushChatMessage(msg.toJson(),_otherUser.token).then((value) async {
-    await addData(_tableChat, msg.toJson());
-    messages.insert(0, msg1);
-    notifyListeners();
+    await ApiController.sendPushChatMessage(msg.toJson(), _otherUser.token)
+        .then((value) async {
+      await addData(_tableChat, msg.toJson());
+      messages.insert(0, msg1);
+      notifyListeners();
     });
   }
+
   void handlePreviewDataFetched(
-      types.TextMessage message,
-      types.PreviewData previewData,
-      ) {
-    final index = messages.indexWhere((element) => element.id == message.id);
+    types.TextMessage message,
+    types.PreviewData previewData,
+  ) {
+    messages.indexWhere((element) => element.id == message.id);
     // final updatedMessage = messages[index].copyWith(previewData: previewData);
     WidgetsBinding.instance.addPostFrameCallback((_) {});
   }
@@ -88,7 +90,7 @@ class ChatController with ChangeNotifier {
       String table, Map<String, dynamic> body) async {
     try {
       final value =
-      await FirebaseFirestore.instance.collection(table).add(body);
+          await FirebaseFirestore.instance.collection(table).add(body);
       return value;
     } catch (e) {
       return '';
@@ -99,14 +101,14 @@ class ChatController with ChangeNotifier {
     try {
       final data = await FirebaseFirestore.instance
           .collection(_tableChat)
-      // .where("SenderId", isEqualTo: 101)
-      // .where("ReceiverId", isEqualTo: 102)
+          // .where("SenderId", isEqualTo: 101)
+          // .where("ReceiverId", isEqualTo: 102)
           .get();
       final List<DocumentSnapshot> documents = data.docs;
       if (documents.isNotEmpty) {
         documents.map((doc) => doc.data()).forEach((element) {
           ChatMessage temp =
-          ChatMessage.fromJson(json.decode(json.encode(element)));
+              ChatMessage.fromJson(json.decode(json.encode(element)));
           if (temp.messageType == Utility.messageTypeText) {
             types.TextMessage msg1 = types.TextMessage(
                 author: types.User(
@@ -115,18 +117,17 @@ class ChatController with ChangeNotifier {
                     imageUrl: temp.imageUrl),
                 id: Utility.getRandomString(),
                 text: temp.message!,
-                createdAt: temp.insertedOn.toLocal().millisecondsSinceEpoch*1000);
+                createdAt:
+                    temp.insertedOn.toLocal().millisecondsSinceEpoch * 1000);
             messages.insert(0, msg1);
           } else {
-
-            messages.insert(0,ChatMessage.parseFromChatMessage(temp));
+            messages.insert(0, ChatMessage.parseFromChatMessage(temp));
           }
         });
-        messages.sort((a,b)=>b.createdAt!.compareTo(a.createdAt!));
+        messages.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
       }
     } catch (e) {}
     notifyListeners();
-
   }
 
   Future<void> deleteAllData() async {
@@ -136,9 +137,7 @@ class ChatController with ChangeNotifier {
           ds.reference.delete();
         }
       });
-    } catch (e) {
-
-    }
+    } catch (e) {}
     notifyListeners();
   }
 
@@ -237,8 +236,7 @@ class ChatController with ChangeNotifier {
       final image = await decodeImageFromList(bytes);
       final message = types.ImageMessage(
         author: types.User(
-            id: _currentUser.id
-                .toString(),
+            id: _currentUser.id.toString(),
             firstName: _currentUser.name,
             imageUrl: _currentUser.profileImage),
         createdAt: DateTime.now().millisecondsSinceEpoch,

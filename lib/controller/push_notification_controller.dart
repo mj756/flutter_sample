@@ -1,27 +1,28 @@
 import 'dart:convert';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 import '../Utils/Utility.dart';
 import 'api_controller.dart';
 import 'extra_functionality/event_bus.dart';
+
 class PushNotificationController {
   static const String notificationChannel = "high_importance_channel";
   static final flutterNotificationPlugin = FlutterLocalNotificationsPlugin();
-  static bool isInitialized=false;
+  static bool isInitialized = false;
 
-  static Future<void> initialize()async
-  {
+  static Future<void> initialize() async {
     if (!isInitialized) {
       {
         await flutterNotificationPlugin.initialize(const InitializationSettings(
-           android: AndroidInitializationSettings('@mipmap/ic_launcher'),
-           // android: AndroidInitializationSettings('@drawable/ic_launcher'),
-            iOS: IOSInitializationSettings(
+            android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+            // android: AndroidInitializationSettings('@drawable/ic_launcher'),
+            iOS: DarwinInitializationSettings(
                 requestSoundPermission: true,
                 requestBadgePermission: true,
                 requestAlertPermission: true,
-                onDidReceiveLocalNotification: onDidReceiveLocalNotification)
-        ));
+                onDidReceiveLocalNotification: onDidReceiveLocalNotification)));
         isInitialized = true;
       }
     }
@@ -34,23 +35,21 @@ class PushNotificationController {
   static Future<void> messageReceived(RemoteMessage message) async {
     await initialize();
     eventBus.fire(ChatMessageEvent(message));
-    showLocalNotification(
-        message);
+    showLocalNotification(message);
   }
 
   static Future<void> onBackgroundMessage(RemoteMessage message) async {
     await initialize();
     eventBus.fire(ChatMessageEvent(message));
-    showLocalNotification(
-        message);
+    showLocalNotification(message);
   }
 
   static Future<void> onMessageReceive(RemoteMessage message) async {
     await initialize();
     eventBus.fire(ChatMessageEvent(message));
-    showLocalNotification(
-        message);
+    showLocalNotification(message);
   }
+
   static Future<void> onMessageClick(RemoteMessage message) async {}
   static Future<void> getInitialMessage(RemoteMessage message) async {
     await initialize();
@@ -58,18 +57,20 @@ class PushNotificationController {
       showLocalNotification(message);
     } catch (e) {}
   }
-  static void showLocalNotification(RemoteMessage message,{String? title=''}) async {
 
+  static void showLocalNotification(RemoteMessage message,
+      {String? title = ''}) async {
     final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
     late final String imageUrl;
-    Map<String,dynamic>  jsonData=Map<String, dynamic>.from(json.decode(message.data['notificationPayload']));
-    if(message.data['notificationType']==Utility.messageTypeText){
-      imageUrl=jsonData['ImageUrl'];
+    Map<String, dynamic> jsonData = Map<String, dynamic>.from(
+        json.decode(message.data['notificationPayload']));
+    if (message.data['notificationType'] == Utility.messageTypeText) {
+      imageUrl = jsonData['ImageUrl'];
     }
     /*  final String largeIconPath = await ApiController.downloadAndSaveFile(
         imageUrl, 'largeIcon');*/
-    final String bigPicturePath = await ApiController.downloadAndSaveFile(
-        imageUrl, 'bigPicture');
+    final String bigPicturePath =
+        await ApiController.downloadAndSaveFile(imageUrl, 'bigPicture');
     /*   final BigPictureStyleInformation bigPictureStyleInformation =
     BigPictureStyleInformation(FilePathAndroidBitmap(bigPicturePath),
         largeIcon: FilePathAndroidBitmap(largeIconPath),
@@ -88,10 +89,8 @@ class PushNotificationController {
           // colorized: true
           // styleInformation: bigPictureStyleInformation
         ),
-        iOS: const IOSNotificationDetails());
-    if(message.data['notificationType']==Utility.messageTypeText)
-    {
-
+        iOS: const DarwinNotificationDetails());
+    if (message.data['notificationType'] == Utility.messageTypeText) {
       await flutterNotificationPlugin.show(
         id,
         jsonData['SenderName'],
@@ -107,12 +106,9 @@ class PushNotificationController {
   }
 
   static Future<void> selectNotification(String? payload) async {
-
     //implement code when click on notification
   }
   static void onMessageOpenedApp(RemoteMessage message) {
-    try {
-
-    } catch (e) {}
+    try {} catch (e) {}
   }
 }

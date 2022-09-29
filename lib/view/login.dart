@@ -23,6 +23,7 @@ class LoginPage extends StatelessWidget {
 
     return ChangeNotifierProvider(
         create: (context) => LoginController(),
+        lazy: false,
         builder: (context, child) {
           return Scaffold(
             resizeToAvoidBottomInset: false,

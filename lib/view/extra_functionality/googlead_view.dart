@@ -8,6 +8,7 @@ class BannerAdPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (context) => AdvertisementController(),
+        lazy: false,
         builder: (context, child) {
           return Scaffold(
               body: SafeArea(
