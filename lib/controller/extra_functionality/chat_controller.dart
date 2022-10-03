@@ -15,6 +15,7 @@ import 'package:flutter_sample/model/extra_functionality/chat_message.dart';
 import 'package:flutter_sample/model/user.dart';
 import 'package:mime/mime.dart';
 
+import '../../utils/constants.dart';
 import 'event_bus.dart';
 
 class ChatController with ChangeNotifier {
@@ -23,6 +24,7 @@ class ChatController with ChangeNotifier {
   late final AppUser _currentUser;
   late final AppUser _otherUser;
   late StreamSubscription<ChatMessageEvent> subscription;
+
   @override
   void dispose() {
     subscription.cancel();
@@ -34,7 +36,7 @@ class ChatController with ChangeNotifier {
     _currentUser = AppUser.fromJson(json.decode(PreferenceController.getString(
         PreferenceController.prefKeyUserPayload)));
     subscription = eventBus.on<ChatMessageEvent>().listen((event) {
-      if (event.message.data['notificationType'] == Utility.messageTypeText) {
+      if (event.message.data['notificationType'] == messageTypeText) {
         Map<String, dynamic> jsonData = Map<String, dynamic>.from(
             json.decode(event.message.data['notificationPayload']));
         ChatMessage temp = ChatMessage.fromJson(jsonData);
@@ -45,30 +47,32 @@ class ChatController with ChangeNotifier {
                 imageUrl: temp.imageUrl),
             id: Utility.getRandomString(),
             text: temp.message!,
-            createdAt: temp.insertedOn.toLocal().millisecondsSinceEpoch);
+            createdAt: temp.insertedOn);
         messages.insert(0, msg1);
         notifyListeners();
       }
     });
+    getAll();
   }
+
   void send(PartialText message) async {
     final msg1 = types.TextMessage(
         author: types.User(
             firstName: _currentUser.name,
             id: _currentUser.id.toString(),
             //imageUrl: _currentUser.profileImage?? ''),
-            imageUrl: 'https://picsum.photos/200/300'),
+            imageUrl: _currentUser.profileImage),
         id: Utility.getRandomString(),
         text: message.text,
-        createdAt:
-            (DateTime.now().toUtc().millisecondsSinceEpoch / 1000).floor());
+        createdAt: ChatMessage.getEpochTime(DateTime.now()));
 
-    ChatMessage msg =
-        ChatMessage.parseFromMessage(_currentUser.id, _otherUser.id, msg1);
+    ChatMessage msg = ChatMessage.parseFromMessage(
+        _currentUser.id, _otherUser.id, msg1,
+        isUtcTime: true);
     msg.senderName = _currentUser.name;
-    // msg.imageUrl = _currentUser.profileImage;
-    msg.imageUrl = 'https://picsum.photos/200/300';
-
+    msg.imageUrl = _currentUser.profileImage;
+    msg.insertedOn =
+        ChatMessage.getEpochTime(DateTime.now().toUtc(), needToConvert: false);
     await ApiController.sendPushChatMessage(msg.toJson(), _otherUser.token)
         .then((value) async {
       await addData(_tableChat, msg.toJson());
@@ -109,7 +113,7 @@ class ChatController with ChangeNotifier {
         documents.map((doc) => doc.data()).forEach((element) {
           ChatMessage temp =
               ChatMessage.fromJson(json.decode(json.encode(element)));
-          if (temp.messageType == Utility.messageTypeText) {
+          if (temp.messageType == messageTypeText) {
             types.TextMessage msg1 = types.TextMessage(
                 author: types.User(
                     firstName: temp.senderName,
@@ -117,16 +121,17 @@ class ChatController with ChangeNotifier {
                     imageUrl: temp.imageUrl),
                 id: Utility.getRandomString(),
                 text: temp.message!,
-                createdAt:
-                    temp.insertedOn.toLocal().millisecondsSinceEpoch * 1000);
+                createdAt: temp.insertedOn);
             messages.insert(0, msg1);
           } else {
             messages.insert(0, ChatMessage.parseFromChatMessage(temp));
           }
         });
         messages.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
-      }
-    } catch (e) {}
+      } else {}
+    } catch (e) {
+      print(e);
+    }
     notifyListeners();
   }
 
@@ -210,9 +215,9 @@ class ChatController with ChangeNotifier {
           uuid: Utility.getRandomString(),
           senderId: _currentUser.id,
           receiverId: _otherUser.id,
-          messageType: Utility.messageTypeFile,
+          messageType: messageTypeFile,
           status: '',
-          insertedOn: DateTime.now().toUtc(),
+          insertedOn: ChatMessage.getEpochTime(DateTime.now().toUtc()),
           media: ChatMedia.init(
               id: 101,
               name: _currentUser.name,
@@ -239,7 +244,7 @@ class ChatController with ChangeNotifier {
             id: _currentUser.id.toString(),
             firstName: _currentUser.name,
             imageUrl: _currentUser.profileImage),
-        createdAt: DateTime.now().millisecondsSinceEpoch,
+        createdAt: DateTime.now().toUtc().millisecondsSinceEpoch,
         height: image.height.toDouble(),
         id: Utility.getRandomString(),
         name: file.path,
@@ -248,14 +253,15 @@ class ChatController with ChangeNotifier {
         width: image.width.toDouble(),
       );
       messages.insert(0, message);
+      notifyListeners();
 
       final msg = ChatMessage.init(
           uuid: Utility.getRandomString(),
           senderId: _currentUser.id,
           receiverId: _otherUser.id,
-          messageType: Utility.messageTypeImage,
+          messageType: messageTypeImage,
           status: '',
-          insertedOn: DateTime.now().toUtc(),
+          insertedOn: ChatMessage.getEpochTime(DateTime.now().toUtc()),
           media: ChatMedia.init(
               id: 101,
               name: _currentUser.name,

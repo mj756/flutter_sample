@@ -5,46 +5,48 @@ import 'package:flutter_chat_types/flutter_chat_types.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_sample/controller/extra_functionality/chat_controller.dart';
 import 'package:flutter_sample/model/user.dart';
-import 'package:flutter_sample/utils/app_colors.dart';
 import 'package:flutter_sample/utils/styles.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../controller/preference_controller.dart';
+import '../../utils/constants.dart';
 
 class ChatRoom extends StatelessWidget {
   final AppUser otherUser;
-  const ChatRoom({Key? key,required this.otherUser}) : super(key: key);
+
+  const ChatRoom({Key? key, required this.otherUser}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-   final currentUser = AppUser.fromJson(json.decode(PreferenceController.getString(
-        PreferenceController.prefKeyUserPayload)));
-   final user = User(
+    final currentUser = AppUser.fromJson(json.decode(
+        PreferenceController.getString(
+            PreferenceController.prefKeyUserPayload)));
+    final user = User(
       firstName: currentUser.name,
       id: currentUser.id.toString(),
-      imageUrl:currentUser.profileImage.isNotEmpty ?currentUser.profileImage:  'https://picsum.photos/200/300',
+      imageUrl: currentUser.profileImage,
     );
-
     return ChangeNotifierProvider(
         create: (context) => ChatController(otherUser),
         lazy: false,
         builder: (context, child) {
           return Scaffold(
             appBar: AppBar(
-              title:   SizedBox(
+              title: SizedBox(
                 height: 50,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     CircleAvatar(
-                      backgroundImage:Image.network(otherUser.profileImage.isNotEmpty ? otherUser.profileImage:'https://picsum.photos/200/300').image,
+                      backgroundImage:
+                          Image.network(otherUser.profileImage).image,
                     ),
                     const SizedBox(
                       width: 10,
                     ),
-                     Expanded(child: Text(otherUser.name)),
+                    Expanded(child: Text(otherUser.name)),
                   ],
                 ),
               ),
@@ -59,7 +61,8 @@ class ChatRoom extends StatelessWidget {
                       theme: DefaultChatTheme(
                           inputMargin: const EdgeInsets.all(5),
                           inputPadding: const EdgeInsets.all(10),
-                          inputBorderRadius: const BorderRadius.all(Radius.circular(5)),
+                          inputBorderRadius:
+                              const BorderRadius.all(Radius.circular(5)),
                           inputBackgroundColor: Colors.blueAccent,
                           primaryColor: Colors.grey,
                           secondaryColor: Colors.blueAccent,
@@ -67,20 +70,17 @@ class ChatRoom extends StatelessWidget {
                           messageBorderRadius: 3.0,
                           receivedMessageBodyTextStyle:
                               CustomStyles.customTextStyle(
-                                  defaultColor: CustomColors.whiteColor,
-                                  isNormalFont: true),
-                          sentMessageBodyTextStyle: CustomStyles.customTextStyle(
-                              defaultColor: CustomColors.whiteColor,
-                              isNormalFont: true),
+                                  defaultColor: themeColor, isNormalFont: true),
+                          sentMessageBodyTextStyle:
+                              CustomStyles.customTextStyle(
+                                  defaultColor: blackColor, isNormalFont: true),
                           inputTextStyle:
                               CustomStyles.customTextStyle(isLargeFont: true),
                           messageInsetsHorizontal: 10,
                           messageInsetsVertical: 10),
                       textMessageOptions:
                           TextMessageOptions(onLinkPressed: (value) {}),
-                      onMessageLongPress: (context, message) {
-
-                      },
+                      onMessageLongPress: (context, message) {},
                       l10n: const ChatL10nEn(
                         inputPlaceholder: "message",
                         emptyChatPlaceholder: "",
@@ -93,9 +93,9 @@ class ChatRoom extends StatelessWidget {
                       onAttachmentPressed: () => context
                           .read<ChatController>()
                           .handleAttachmentPressed(context),
-
-                      onPreviewDataFetched:
-                          context.read<ChatController>().handlePreviewDataFetched,
+                      onPreviewDataFetched: context
+                          .read<ChatController>()
+                          .handlePreviewDataFetched,
                       onSendPressed: context.read<ChatController>().send,
                       user: user,
                     ),

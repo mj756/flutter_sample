@@ -1,19 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:intl/intl.dart';
-class Utility
-{
 
-  static const String messageTypeText = "text";
-  static const String messageTypeImage = "image";
-  static const String messageTypeAudio = "audio";
-  static const String messageTypeFile = "file";
-  static const String googleMapKey='your key';
-  static const String serverDateFormat = "yyyy-MM-dd";
+import '../widget/progress_indicator.dart';
+
+class Utility {
   static String getRandomString({int length = 10}) {
     const chars =
         'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
@@ -21,27 +15,25 @@ class Utility
     return String.fromCharCodes(Iterable.generate(
         length, (_) => chars.codeUnitAt(rnd.nextInt(chars.length - 1))));
   }
-  static DateTime dateFromJson(String? strDate) {
-    if (strDate != null && strDate.isNotEmpty) {
-      return DateFormat(serverDateFormat).parse(strDate, true).toLocal();
-    } else {
-      return DateFormat(serverDateFormat)
-          .parse(DateTime.now().toUtc().toString(), true)
-          .toLocal();
-    }
+
+  static LoadingProgressDialog showLoaderDialog(BuildContext context) {
+    LoadingProgressDialog progressDialog = LoadingProgressDialog();
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return WillPopScope(
+              onWillPop: () {
+                return Future.value(false);
+              },
+              child: progressDialog);
+        });
+    return progressDialog;
   }
 
-  static String dateToJson(DateTime time) {
-    return time.toUtc().toIso8601String();
+  static void hideDialog(BuildContext context) {
+    Navigator.pop(context);
   }
-
-  static void printLog(String message) {
-    if (kDebugMode) {
-      print(message);
-    }
-  }
-
-
 
   static String utf8Encode(String? text) {
     if (text != null) return utf8.encode(text).join(",");
@@ -51,8 +43,7 @@ class Utility
   static String utf8Decode(String? text) {
     if (text != null) {
       try {
-        if(double.tryParse(text)!=null)
-        {
+        if (double.tryParse(text) != null) {
           return text;
         }
 
@@ -70,55 +61,6 @@ class Utility
       return '';
     }
   }
-  static bool boolFromJson(Object? value) {
-    if (value != null) {
-      if (value is bool) {
-        return value;
-      } else if (value is int) {
-        return value == 0 ? false : true;
-      }
-    }
-    return false;
-  }
-  static DateTime parseToLocal(DateTime utcDate) {
-    return DateTime.utc(
-      utcDate.year,
-      utcDate.month,
-      utcDate.day,
-      utcDate.hour,
-      utcDate.minute,
-      utcDate.second,
-      utcDate.millisecond,
-      utcDate.microsecond,
-    ).toLocal();
-  }
-  static int boolToJson(bool value) => value ? 1 : 0;
-
-  static bool? nullableBoolFromJson(Object? value) {
-    if (value != null) {
-      if (value is bool) {
-        return value;
-      } else if (value is int) {
-        return value == 0 ? false : true;
-      } else if (value is String) {
-        return value.toLowerCase() == "true" ? true : false;
-      }
-    }
-    return null;
-  }
-
-  static int? nullableBoolToJson(bool? value) =>
-      value != null ? (value ? 1 : 0) : null;
-
-  static int getEpochTime(DateTime date) {
-    return (date.millisecondsSinceEpoch/1000).floor();
-  }
-
-  static DateTime getEpochToDate(int ephochTime, {bool isUtcTime= false}) {
-    return DateTime.fromMillisecondsSinceEpoch(ephochTime * 1000,
-        isUtc: isUtcTime);
-  }
-
 
   static String getDurationBetweenTwoDates(
       BuildContext context, DateTime from) {
@@ -129,23 +71,23 @@ class Utility
 
     if (diff.inMinutes < 60) {
       duration =
-      "${diff.inMinutes} ${AppLocalizations.of(context)!.label_minute_ago}";
+          "${diff.inMinutes} ${AppLocalizations.of(context)!.label_minute_ago}";
     } else if (diff.inHours >= 1 && diff.inHours <= 23) {
       duration =
-      "${diff.inHours} ${AppLocalizations.of(context)!.label_hours_ago}";
+          "${diff.inHours} ${AppLocalizations.of(context)!.label_hours_ago}";
     } else if (diff.inDays >= 1 && diff.inDays < 30) {
       duration =
-      "${diff.inDays} ${AppLocalizations.of(context)!.label_days_ago}";
+          "${diff.inDays} ${AppLocalizations.of(context)!.label_days_ago}";
     } else if (diff.inDays >= 30 && diff.inDays < 365) {
       duration =
-      "${(diff.inDays / 30).floor()} ${AppLocalizations.of(context)!.label_month_ago}";
+          "${(diff.inDays / 30).floor()} ${AppLocalizations.of(context)!.label_month_ago}";
     } else {
       int year = (diff.inDays / 365).floor();
-      duration =
-      "$year ${AppLocalizations.of(context)!.label_year_ago}";
+      duration = "$year ${AppLocalizations.of(context)!.label_year_ago}";
     }
     return duration;
   }
+
   static bool isValidEmail(email) {
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -179,19 +121,18 @@ class Utility
     } catch (ex) {}
   }
 
-  static Future<bool> checkInternetStatus()async{
+  static Future<bool> checkInternetStatus() async {
     try {
-      final result = await InternetAddress.lookup('example.com').timeout(const Duration(seconds: 10));
+      final result = await InternetAddress.lookup('example.com')
+          .timeout(const Duration(seconds: 10));
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         return true;
       }
     } on SocketException catch (_) {
       return false;
-    }catch(e)
-    {
+    } catch (e) {
       return false;
     }
     return false;
   }
-
 }

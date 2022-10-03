@@ -13,8 +13,7 @@ class MapResponseResult {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
-
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['next_page_token'] = nextPageToken;
     if (results != null) {
       data['results'] = results.map((v) => v.toJson()).toList();
@@ -31,13 +30,12 @@ class Results {
 
   Results.fromJson(Map<String, dynamic> json) {
     businessStatus = json['business_status'];
-    geometry = json['geometry'] != null
-        ? Geometry.fromJson(json['geometry'])
-        : null;
+    geometry =
+        json['geometry'] != null ? Geometry.fromJson(json['geometry']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['business_status'] = businessStatus;
     if (geometry != null) {
       data['geometry'] = geometry!.toJson();
@@ -53,16 +51,14 @@ class Geometry {
   Geometry();
 
   Geometry.fromJson(Map<String, dynamic> json) {
-    location = json['location'] != null
-        ? Location.fromJson(json['location'])
-        : null;
-    viewport = json['viewport'] != null
-        ? Viewport.fromJson(json['viewport'])
-        : null;
+    location =
+        json['location'] != null ? Location.fromJson(json['location']) : null;
+    viewport =
+        json['viewport'] != null ? Viewport.fromJson(json['viewport']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (location != null) {
       data['location'] = location!.toJson();
     }
@@ -99,16 +95,14 @@ class Viewport {
   Viewport();
 
   Viewport.fromJson(Map<String, dynamic> json) {
-    northeast = json['northeast'] != null
-        ? Location.fromJson(json['northeast'])
-        : null;
-    southwest = json['southwest'] != null
-        ? Location.fromJson(json['southwest'])
-        : null;
+    northeast =
+        json['northeast'] != null ? Location.fromJson(json['northeast']) : null;
+    southwest =
+        json['southwest'] != null ? Location.fromJson(json['southwest']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (northeast != null) {
       data['northeast'] = northeast!.toJson();
     }

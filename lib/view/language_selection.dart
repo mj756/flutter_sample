@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sample/controller/app_setting_controller.dart';
-import 'package:flutter_sample/utils/app_colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_sample/controller/app_setting_controller.dart';
 import 'package:flutter_sample/utils/styles.dart';
 import 'package:provider/provider.dart';
+
+import '../utils/constants.dart';
 
 class SelectLanguage extends StatelessWidget {
   const SelectLanguage({Key? key}) : super(key: key);
@@ -11,14 +12,16 @@ class SelectLanguage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: CustomColors.themeColor,
+      backgroundColor: themeColor,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: CustomColors.themeColor,
+        backgroundColor: themeColor,
         title: Text(
-          AppLocalizations.of(context)!
-              .label_select_language,style: CustomStyles.customTextStyle(defaultColor: CustomColors.whiteColor,isBold: true,isExtraLargeFont: true),
-          textAlign: TextAlign.center,),
+          AppLocalizations.of(context)!.label_select_language,
+          style: CustomStyles.customTextStyle(
+              defaultColor: whiteColor, isBold: true, isExtraLargeFont: true),
+          textAlign: TextAlign.center,
+        ),
       ),
       body: SafeArea(
         child: Column(
@@ -27,7 +30,7 @@ class SelectLanguage extends StatelessWidget {
             Expanded(
                 child: Container(
               decoration: BoxDecoration(
-                color: CustomColors.themeColor,
+                color: themeColor,
                 image: DecorationImage(
                     image: Image.asset(
                   'assets/ic_launcher.png',
@@ -38,9 +41,10 @@ class SelectLanguage extends StatelessWidget {
             Expanded(
                 child: Container(
               decoration: const BoxDecoration(
-                color: CustomColors.whiteColor,
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20))
-              ),
+                  color: whiteColor,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20))),
               child: Stack(
                 children: [
                   ListView.builder(
@@ -50,14 +54,16 @@ class SelectLanguage extends StatelessWidget {
                           leading: Radio(
                             value: AppLocalizations
                                 .supportedLocales[index].languageCode,
-                            groupValue:
-                            context.watch<AppSettingController>().appLanguage,
+                            groupValue: context
+                                .watch<AppSettingController>()
+                                .appLanguage,
                             onChanged: (String? value) {
-                              context.read<AppSettingController>().changeLanguage(
-                                  AppLocalizations
+                              context
+                                  .read<AppSettingController>()
+                                  .changeLanguage(AppLocalizations
                                       .supportedLocales[index].languageCode);
                             },
-                            activeColor: CustomColors.themeColor,
+                            activeColor: themeColor,
                           ),
                           title: Text(AppLocalizations
                               .supportedLocales[index].languageCode),
@@ -68,21 +74,19 @@ class SelectLanguage extends StatelessWidget {
                           ),
                         );
                       }),
-                   Positioned(
+                  Positioned(
                       right: 20,
                       bottom: 10,
                       child: CircleAvatar(
-                    radius: 20,
-                    backgroundColor: CustomColors.themeColor,
-                    child: GestureDetector(
-                        onTap: (){
-                          Navigator.pop(context);
-                        },
-
-                        child: const Icon(Icons.check)),
-                  ))
+                        radius: 20,
+                        backgroundColor: themeColor,
+                        child: GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Icon(Icons.check)),
+                      ))
                 ],
-
               ),
             ))
           ],

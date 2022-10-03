@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_sample/Utils/Utility.dart';
 
+import '../utils/constants.dart';
 import 'api_controller.dart';
 import 'extra_functionality/event_bus.dart';
 
@@ -26,6 +26,7 @@ class PushNotificationController {
         isInitialized = true;
       }
     }
+    await getFCMToken().then((value) {});
   }
 
   static Future<String?> getFCMToken() async {
@@ -33,19 +34,16 @@ class PushNotificationController {
   }
 
   static Future<void> messageReceived(RemoteMessage message) async {
-    await initialize();
     eventBus.fire(ChatMessageEvent(message));
     showLocalNotification(message);
   }
 
   static Future<void> onBackgroundMessage(RemoteMessage message) async {
-    await initialize();
     eventBus.fire(ChatMessageEvent(message));
     showLocalNotification(message);
   }
 
   static Future<void> onMessageReceive(RemoteMessage message) async {
-    await initialize();
     eventBus.fire(ChatMessageEvent(message));
     showLocalNotification(message);
   }
@@ -64,7 +62,7 @@ class PushNotificationController {
     late final String imageUrl;
     Map<String, dynamic> jsonData = Map<String, dynamic>.from(
         json.decode(message.data['notificationPayload']));
-    if (message.data['notificationType'] == Utility.messageTypeText) {
+    if (message.data['notificationType'] == messageTypeText) {
       imageUrl = jsonData['ImageUrl'];
     }
     /*  final String largeIconPath = await ApiController.downloadAndSaveFile(
@@ -90,7 +88,7 @@ class PushNotificationController {
           // styleInformation: bigPictureStyleInformation
         ),
         iOS: const DarwinNotificationDetails());
-    if (message.data['notificationType'] == Utility.messageTypeText) {
+    if (message.data['notificationType'] == messageTypeText) {
       await flutterNotificationPlugin.show(
         id,
         jsonData['SenderName'],

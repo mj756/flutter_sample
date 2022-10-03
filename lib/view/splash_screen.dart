@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_sample/controller/splash_screen_controller.dart';
-import 'package:flutter_sample/utils/app_colors.dart';
 import 'package:provider/provider.dart';
 
 import '../controller/preference_controller.dart';
+import '../utils/constants.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -40,7 +40,7 @@ class SplashScreen extends StatelessWidget {
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                      color: CustomColors.themeColor,
+                      color: themeColor,
                       image: DecorationImage(
                           image: Image.asset('assets/ic_launcher.png').image)),
                   child: const Text(

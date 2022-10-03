@@ -8,6 +8,11 @@ class DatabaseOperationController extends ChangeNotifier
   DatabaseOperationController(){
     getData();
   }
+  @override
+  void dispose() {
+    user.clear();
+    super.dispose();
+  }
   Future<void> addData(String name,String email,int id)
   async {
     user.clear();

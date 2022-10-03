@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../controller/sign_up_controller.dart';
-import '../utils/app_colors.dart';
+import '../utils/constants.dart';
 import '../utils/styles.dart';
 import '../utils/utility.dart';
 
@@ -21,6 +21,9 @@ class SignUpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _emailController.text = 'demo@gmail.com';
+    _passwordController.text = '1234567890';
+    _nameController.text = 'Milan';
     return ChangeNotifierProvider(
         create: (context) => SignUpController(),
         lazy: false,
@@ -33,10 +36,7 @@ class SignUpPage extends StatelessWidget {
                     gradient: const LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: [
-                        CustomColors.whiteColor,
-                        CustomColors.themeColor
-                      ],
+                      colors: [whiteColor, themeColor],
                     ),
                     borderRadius: BorderRadius.all(Radius.circular(2.w))),
                 child: Column(
@@ -64,8 +64,7 @@ class SignUpPage extends StatelessWidget {
                                         .label_registration,
                                     style: CustomStyles.customTextStyle(
                                         isBold: true,
-                                        defaultColor:
-                                            CustomColors.screenBackgroundColor,
+                                        defaultColor: screenBackgroundColor,
                                         isExtraLargeFont: true),
                                   ),
                                   SizedBox(height: 20.h),
@@ -144,7 +143,7 @@ class SignUpPage extends StatelessWidget {
                                   SizedBox(height: 20.h),
                                   ElevatedButton(
                                       style: CustomStyles
-                                          .themeBigFilledRoundedCornerButtonStyle(
+                                          .filledRoundedCornerButton(
                                               fullWidth: false),
                                       onPressed: () async {
                                         if (_formKey.currentState!.validate() ==
@@ -184,8 +183,7 @@ class SignUpPage extends StatelessWidget {
                                             .label_sign_up,
                                         style: CustomStyles.customTextStyle(
                                             isLargeFont: true,
-                                            defaultColor:
-                                                CustomColors.whiteColor,
+                                            defaultColor: whiteColor,
                                             isBold: true),
                                       )),
                                   const SocialLogin(),
@@ -224,8 +222,7 @@ class SignUpPage extends StatelessWidget {
                                                   style: CustomStyles
                                                       .customTextStyle(
                                                           defaultColor:
-                                                              CustomColors
-                                                                  .themeColor,
+                                                              themeColor,
                                                           isLargeFont: true,
                                                           isBold: true),
                                                   recognizer:
@@ -278,7 +275,7 @@ class SignUpPage extends StatelessWidget {
                                                       .lastIndexOf('terms') -
                                                   1),
                                       style: CustomStyles.customTextStyle(
-                                          defaultColor: CustomColors.whiteColor,
+                                          defaultColor: whiteColor,
                                           isNormalFont: true,
                                           isBold: true,
                                           isUnderLine: true),

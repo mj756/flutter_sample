@@ -1,14 +1,16 @@
 import 'dart:async';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_sample/controller/extra_functionality/permission_handler.dart';
+import 'package:flutter_sample/utils/constants.dart';
 import 'package:geocoding/geocoding.dart' as geo_coding;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'dart:math';
 import 'package:location/location.dart';
+
 import '../../model/extra_functionality/map_model.dart';
 import '../../model/extra_functionality/parking_detail.dart';
-import '../../utils/utility.dart';
 import '../api_controller.dart';
 
 class MyMapController extends MyPermissionManager with ChangeNotifier {
@@ -143,7 +145,7 @@ class MyMapController extends MyPermissionManager with ChangeNotifier {
     polylineCoordinates.clear();
     PolylinePoints polylinePoints = PolylinePoints();
     final result = await polylinePoints.getRouteBetweenCoordinates(
-      Utility.googleMapKey, // Your Google Map Key
+      googleMapKey, // Your Google Map Key
       PointLatLng(source.latitude, source.longitude),
       PointLatLng(destination.latitude, destination.longitude),
     );
@@ -163,7 +165,7 @@ class MyMapController extends MyPermissionManager with ChangeNotifier {
 
     PolylinePoints polylinePoints = PolylinePoints();
     final result = await polylinePoints.getRouteBetweenCoordinates(
-      Utility.googleMapKey, // Your Google Map Key
+      googleMapKey, // Your Google Map Key
       PointLatLng(source.latitude, source.longitude),
       PointLatLng(destination.latitude, destination.longitude),
     );
@@ -191,7 +193,7 @@ class MyMapController extends MyPermissionManager with ChangeNotifier {
       url = "$url&radius=10000";
       //url="$url&type=gas_station";
       url = "$url&keyword=$type";
-      url = "$url&key=${Utility.googleMapKey}";
+      url = "$url&key=${googleMapKey}";
 
       nearByPlaces = await ApiController.getNearByPlaces(url);
       if (nearByPlaces != null) {

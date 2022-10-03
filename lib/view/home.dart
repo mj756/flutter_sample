@@ -75,6 +75,14 @@ class HomePage extends StatelessWidget {
                     },
                     leading: const Icon(Icons.video_camera_back_rounded),
                     title: const Text('Google ads'),
+                  ),
+                  ListTile(
+                    onTap: () async {
+                      await Navigator.pushNamed(context, '/audio',
+                          arguments: {'title': 'Audio player'});
+                    },
+                    leading: const Icon(Icons.library_music_sharp),
+                    title: const Text('Audio player'),
                   )
                 ],
               ),

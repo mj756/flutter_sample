@@ -2,12 +2,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_sample/controller/login_controller.dart';
-import 'package:flutter_sample/utils/app_colors.dart';
 import 'package:flutter_sample/utils/styles.dart';
 import 'package:flutter_sample/widget/social_login.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../utils/constants.dart';
 import '../utils/utility.dart';
 
 class LoginPage extends StatelessWidget {
@@ -18,7 +18,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _emailController.text = 'demo1314134@gmail.com';
+    _emailController.text = 'iliptamflutter@gmail.com';
     _passwordController.text = '1234567890';
 
     return ChangeNotifierProvider(
@@ -34,10 +34,7 @@ class LoginPage extends StatelessWidget {
                     gradient: const LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: [
-                        CustomColors.whiteColor,
-                        CustomColors.themeColor
-                      ],
+                      colors: [whiteColor, themeColor],
                     ),
                     borderRadius: BorderRadius.all(Radius.circular(2.w))),
                 child: Column(
@@ -74,8 +71,7 @@ class LoginPage extends StatelessWidget {
                                     'Login',
                                     style: CustomStyles.customTextStyle(
                                         isBold: true,
-                                        defaultColor:
-                                            CustomColors.screenBackgroundColor,
+                                        defaultColor: screenBackgroundColor,
                                         isExtraLargeFont: true),
                                   ),
                                   SizedBox(height: 20.h),
@@ -100,7 +96,7 @@ class LoginPage extends StatelessWidget {
                                       return null;
                                     },
                                   ),
-                                  SizedBox(height: 20.h),
+                                  spaceHeight20,
                                   TextFormField(
                                     controller: _passwordController,
                                     obscureText: !context
@@ -138,7 +134,7 @@ class LoginPage extends StatelessWidget {
                                       return null;
                                     },
                                   ),
-                                  SizedBox(height: 20.h),
+                                  spaceHeight20,
                                   Align(
                                     alignment: Alignment.centerRight,
                                     child: InkWell(
@@ -149,15 +145,15 @@ class LoginPage extends StatelessWidget {
                                           AppLocalizations.of(context)!
                                               .label_forgot_password,
                                           style: CustomStyles.customTextStyle(
-                                              defaultColor: CustomColors
-                                                  .screenBackgroundColor,
+                                              defaultColor:
+                                                  screenBackgroundColor,
                                               isBold: true)),
                                     ),
                                   ),
-                                  SizedBox(height: 20.h),
+                                  spaceHeight20,
                                   ElevatedButton(
                                       style: CustomStyles
-                                          .themeBigFilledRoundedCornerButtonStyle(
+                                          .filledRoundedCornerButton(
                                               fullWidth: false),
                                       onPressed: () async {
                                         if (_formKey.currentState!.validate() ==
@@ -170,6 +166,7 @@ class LoginPage extends StatelessWidget {
                                                   AppLocalizations.of(context)!
                                                       .message_no_internet_connection);
                                             } else {
+                                              //   LoadingProgressDialog dialog =Utility.showLoaderDialog(context);
                                               await Provider.of<
                                                           LoginController>(
                                                       context,
@@ -177,6 +174,7 @@ class LoginPage extends StatelessWidget {
                                                   .login(_emailController.text,
                                                       _passwordController.text)
                                                   .then((value) {
+                                                // dialog.hideDialog();
                                                 if (value.isEmpty) {
                                                   Navigator
                                                       .pushReplacementNamed(
@@ -195,8 +193,7 @@ class LoginPage extends StatelessWidget {
                                             .label_login,
                                         style: CustomStyles.customTextStyle(
                                             isLargeFont: true,
-                                            defaultColor:
-                                                CustomColors.whiteColor,
+                                            defaultColor: whiteColor,
                                             isBold: true),
                                       )),
                                   const Expanded(
@@ -238,7 +235,7 @@ class LoginPage extends StatelessWidget {
                                                 .lastIndexOf(' ') +
                                             1),
                                     style: CustomStyles.customTextStyle(
-                                        defaultColor: CustomColors.whiteColor,
+                                        defaultColor: whiteColor,
                                         isLargeFont: true,
                                         isBold: true),
                                     recognizer: TapGestureRecognizer()
@@ -291,11 +288,9 @@ class LoginPage extends StatelessWidget {
                     return null;
                   },
                 ),
-                SizedBox(
-                  height: 20.h,
-                ),
+                spaceHeight20,
                 ElevatedButton(
-                    style: CustomStyles.themeBigFilledRoundedCornerButtonStyle(
+                    style: CustomStyles.filledRoundedCornerButton(
                         fullWidth: false),
                     onPressed: () async {
                       if (Utility.isValidEmail(forgotPasswordController.text) ==
@@ -332,7 +327,7 @@ class LoginPage extends StatelessWidget {
                       AppLocalizations.of(context)!.label_send,
                       style: CustomStyles.customTextStyle(
                           isLargeFont: true,
-                          defaultColor: CustomColors.whiteColor,
+                          defaultColor: whiteColor,
                           isBold: true),
                     ))
               ],

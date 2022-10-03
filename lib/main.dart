@@ -4,7 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_sample/controller/app_setting_controller.dart';
-import 'package:flutter_sample/utils/app_colors.dart';
+import 'package:flutter_sample/utils/constants.dart';
+import 'package:flutter_sample/view/extra_functionality/audio_player.dart';
 import 'package:flutter_sample/view/extra_functionality/chat_user_list.dart';
 import 'package:flutter_sample/view/extra_functionality/database_operation.dart';
 import 'package:flutter_sample/view/extra_functionality/googlead_view.dart';
@@ -86,11 +87,11 @@ class MyApp extends StatelessWidget {
                   ],
                   theme: ThemeData(
                     fontFamily: 'Lato',
-                    primarySwatch: CustomColors.themeColor,
+                    primarySwatch: themeColor,
                     visualDensity: VisualDensity.adaptivePlatformDensity,
                     textTheme: Theme.of(context).textTheme,
                     iconTheme: const IconThemeData(
-                      color: CustomColors.themeColor,
+                      color: themeColor,
                       size: 20,
                     ),
                   ),
@@ -106,6 +107,7 @@ class MyApp extends StatelessWidget {
                     '/database': (context) => DatabaseOperation(),
                     '/video': (context) => VideoPlayerView(),
                     '/advertisement': (context) => BannerAdPage(),
+                    '/audio': (context) => AudioDemo(),
                   },
                 );
               });

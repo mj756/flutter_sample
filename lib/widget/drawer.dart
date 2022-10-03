@@ -1,17 +1,20 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_sample/controller/firebase_controller.dart';
 import 'package:flutter_sample/controller/preference_controller.dart';
 import 'package:flutter_sample/model/user.dart';
 import 'package:flutter_sample/view/login.dart';
 import 'package:flutter_sample/view/setting.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SideBar extends StatelessWidget {
   const SideBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print(PreferenceController.getString(
+        PreferenceController.prefKeyUserPayload));
     AppUser currentUser = AppUser.fromJson(json.decode(
         PreferenceController.getString(
             PreferenceController.prefKeyUserPayload)));

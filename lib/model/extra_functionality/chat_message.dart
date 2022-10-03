@@ -5,6 +5,7 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_sample/Utils/Utility.dart';
 import 'package:mime/mime.dart';
 
+import '../../utils/constants.dart';
 import 'chat_media.dart';
 
 class ChatMessage {
@@ -15,9 +16,8 @@ class ChatMessage {
   late String receiverId;
   late String messageType;
   late String status;
-
   String? message;
-  late DateTime insertedOn;
+  late int insertedOn;
   bool isDelivered = false;
   bool isRead = false;
   bool isDeleted = false;
@@ -65,21 +65,22 @@ class ChatMessage {
   }
 
   static ChatMessage parseFromMessage(
-      String senderId, String receiverId, types.Message message) {
+      String senderId, String receiverId, types.Message message,
+      {bool isUtcTime = true}) {
     ChatMessage chatMessage = ChatMessage();
 
     chatMessage.uuid = message.id;
     chatMessage.senderId = senderId;
     chatMessage.receiverId = receiverId;
     chatMessage.status = getStringFromStatus(message.status);
-    chatMessage.insertedOn = Utility.getEpochToDate(message.createdAt!).toUtc();
+    chatMessage.insertedOn = message.createdAt!;
     if (message is types.TextMessage) {
       /// Text message parsing
-      chatMessage.messageType = Utility.messageTypeText;
+      chatMessage.messageType = messageTypeText;
       chatMessage.message = message.text;
     } else if (message is types.ImageMessage) {
       /// Image message parsing
-      chatMessage.messageType = Utility.messageTypeImage;
+      chatMessage.messageType = messageTypeImage;
       chatMessage.media = ChatMedia.init(
           id: Random().nextInt(10000),
           name: message.name,
@@ -88,45 +89,34 @@ class ChatMessage {
           size: int.parse(message.size.toString()));
     } else if (message is types.FileMessage) {
       /// File message parsing
-      chatMessage.messageType = Utility.messageTypeFile;
-      chatMessage.media = ChatMedia.init(
-          id: Random().nextInt(10000),
-          name: message.name,
-          location: message.uri,
-          mimeType: lookupMimeType(message.uri) ?? "image/jpeg",
-          size: int.parse(message.size.toString()));
+      chatMessage.messageType = messageTypeFile;
     }
-
     return chatMessage;
   }
 
   static types.Message parseFromChatMessage(ChatMessage chatMessage) {
-    if (chatMessage.messageType == Utility.messageTypeImage &&
+    if (chatMessage.messageType == messageTypeImage &&
         chatMessage.media != null) {
       /// Image message parsing
       return types.ImageMessage.fromPartial(
         author: types.User(id: chatMessage.senderId.toString(), imageUrl: ""),
         id: chatMessage.uuid,
         status: getStatusFromString(chatMessage.status),
-        createdAt:
-            Utility.getEpochTime(Utility.parseToLocal(chatMessage.insertedOn)) *
-                1000,
+        createdAt: chatMessage.insertedOn,
         partialImage: types.PartialImage(
           name: chatMessage.media!.name,
           uri: chatMessage.media!.location,
           size: chatMessage.media!.size,
         ),
       );
-    } else if (chatMessage.messageType == Utility.messageTypeFile &&
+    } else if (chatMessage.messageType == messageTypeFile &&
         chatMessage.media != null) {
       /// File message parsing
       return types.FileMessage.fromPartial(
         author: types.User(id: chatMessage.senderId.toString(), imageUrl: ""),
         id: chatMessage.uuid,
         status: getStatusFromString(chatMessage.status),
-        createdAt:
-            Utility.getEpochTime(Utility.parseToLocal(chatMessage.insertedOn)) *
-                1000,
+        createdAt: chatMessage.insertedOn,
         partialFile: types.PartialFile(
           name: chatMessage.media!.name,
           uri: chatMessage.media!.location,
@@ -141,9 +131,7 @@ class ChatMessage {
       author: types.User(id: chatMessage.senderId.toString(), imageUrl: ""),
       id: chatMessage.uuid,
       status: getStatusFromString(chatMessage.status),
-      createdAt:
-          Utility.getEpochTime(Utility.parseToLocal(chatMessage.insertedOn)) *
-              1000,
+      createdAt: chatMessage.insertedOn,
       partialText: types.PartialText(text: chatMessage.message ?? ''),
     );
   }
@@ -161,7 +149,7 @@ class ChatMessage {
     return status != null ? status.toString().split(".")[1] : "";
   }
 
-  ChatMessage.fromJson(Map<String, dynamic> json) {
+  ChatMessage.fromJson(Map<String, dynamic> json, {bool isUtcTime = true}) {
     uuid = json['Uuid'] as String;
     senderId = json['SenderId'] as String;
     senderName = json['SenderName'] as String;
@@ -170,13 +158,12 @@ class ChatMessage {
     messageType = json['MessageType'] as String;
     status = json['Status'] as String;
     message = Utility.utf8Decode(json['Message'] as String?);
-    insertedOn = DateTime.parse(json['InsertedOn'] as String);
-    isDelivered = Utility.boolFromJson(json['IsDelivered']);
-    isRead = Utility.boolFromJson(json['IsRead']);
-    isDeleted = Utility.boolFromJson(json['IsDeleted']);
+    insertedOn = json['InsertedOn'] as int;
+    isDelivered = true;
+    isRead = true;
+    isDeleted = false;
     media = ChatMessage._mediaFromJson(json['Media']);
   }
-
   Map<String, dynamic> toJson() {
     Map<String, dynamic> test = {
       'Uuid': '',
@@ -185,14 +172,31 @@ class ChatMessage {
       'MessageType': messageType,
       'Status': status,
       'Message': message,
-      'InsertedOn': insertedOn.toIso8601String(),
-      'IsDelivered': Utility.boolToJson(isDelivered),
-      'IsRead': Utility.boolToJson(isRead),
-      'IsDeleted': Utility.boolToJson(isDeleted),
+      'InsertedOn': insertedOn,
+      'IsDelivered': true,
+      'IsRead': true,
+      'IsDeleted': false,
       'Media': ChatMessage._mediaToJson(media),
       'SenderName': senderName,
       'ImageUrl': imageUrl
     };
     return test;
+  }
+
+  static int getEpochTime(DateTime date, {bool needToConvert = true}) {
+    if (needToConvert) {
+      print(date);
+      print(needToConvert);
+      int value = date.isUtc
+          ? (date.toLocal().millisecondsSinceEpoch)
+          : (date.millisecondsSinceEpoch);
+      print(value);
+      return value;
+    }
+    return date.millisecondsSinceEpoch;
+  }
+
+  static DateTime getEpochToDate(int epochTime, bool isUtc) {
+    return DateTime.fromMillisecondsSinceEpoch(epochTime * 1000, isUtc: isUtc);
   }
 }

@@ -1,34 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sample/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'constants.dart';
+
 class CustomStyles {
-
-   static const int extraSmallFont=10;
-   static const int smallFont=12;
-   static const int normalFont=14;
-   static const int largeFont=16;
-   static const int extraLargeFont=18;
-
-
-
   static TextStyle customTextStyle(
-      {Color defaultColor = CustomColors.blackColor,
+      {Color defaultColor = blackColor,
       bool isBold = false,
       bool isUnderLine = false,
-      isNormalFont=true,isExtraSmallFont=false,isSmallFont=false,isLargeFont=false,isExtraLargeFont=false}) {
-
-    int fontSize=14;
-    if(isExtraSmallFont==true) {
-      fontSize=extraSmallFont;
-    } else if(isSmallFont==true) {
-      fontSize=smallFont;
-    } else if(isLargeFont==true) {
-      fontSize=largeFont;
-    } else if(isExtraLargeFont==true) {
-      fontSize=extraLargeFont;
+      isNormalFont = true,
+      isExtraSmallFont = false,
+      isSmallFont = false,
+      isLargeFont = false,
+      isExtraLargeFont = false}) {
+    int fontSize = 14;
+    if (isExtraSmallFont == true) {
+      fontSize = extraSmallFont;
+    } else if (isSmallFont == true) {
+      fontSize = smallFont;
+    } else if (isLargeFont == true) {
+      fontSize = largeFont;
+    } else if (isExtraLargeFont == true) {
+      fontSize = extraLargeFont;
     } else {
-      fontSize=normalFont;
+      fontSize = normalFont;
     }
 
     return TextStyle(
@@ -41,9 +36,12 @@ class CustomStyles {
             : TextDecoration.none);
   }
 
-
-  static ButtonStyle themeBigFilledRoundedCornerButtonStyle(
-      {bool fullWidth = false, int minWidth = 200,double minimumHeight=45,Color defaultColor=CustomColors.themeColor,Color onPressColor=CustomColors.themeColor}) {
+  static ButtonStyle filledRoundedCornerButton(
+      {bool fullWidth = false,
+      int minWidth = 200,
+      double minimumHeight = 45,
+      Color defaultColor = themeColor,
+      Color onPressColor = themeColor}) {
     return ButtonStyle(
       shape: MaterialStateProperty.all(
         RoundedRectangleBorder(
@@ -52,7 +50,7 @@ class CustomStyles {
         ),
       ),
       backgroundColor: MaterialStateProperty.resolveWith<Color>(
-            (Set<MaterialState> states) {
+        (Set<MaterialState> states) {
           if (states.contains(MaterialState.pressed)) {
             return onPressColor;
           } else {
@@ -60,17 +58,15 @@ class CustomStyles {
           }
         },
       ),
-      textStyle: MaterialStateProperty.resolveWith<TextStyle>((Set<MaterialState> states) {
-        return  customTextStyle(defaultColor: CustomColors.whiteColor,isLargeFont: true);
+      textStyle: MaterialStateProperty.resolveWith<TextStyle>(
+          (Set<MaterialState> states) {
+        return customTextStyle(defaultColor: whiteColor, isLargeFont: true);
       }),
       minimumSize:
-      MaterialStateProperty.resolveWith<Size>((Set<MaterialState> states) {
+          MaterialStateProperty.resolveWith<Size>((Set<MaterialState> states) {
         return Size(
-            fullWidth ? double.infinity :  minWidth.toDouble(),
-            minimumHeight);
+            fullWidth ? double.infinity : minWidth.toDouble(), minimumHeight);
       }),
-
     );
   }
-
 }

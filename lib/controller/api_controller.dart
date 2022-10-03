@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_sample/controller/preference_controller.dart';
 import 'package:flutter_sample/model/api_response.dart';
+import 'package:flutter_sample/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart';
@@ -12,18 +13,6 @@ import 'package:path_provider/path_provider.dart';
 import '../model/extra_functionality/map_model.dart';
 
 class ApiController {
-  static const Duration timeOut = Duration(seconds: 30);
-  static const String baseAddress =
-      'http://restapi.adequateshop.com/api/authaccount/'; //put your own api endpoint address
-  static const String endpointLogin = "${baseAddress}login";
-  static const String endpointRegistration = "${baseAddress}registration";
-  static const String endpointForGotPassword = "${baseAddress}forgot-password";
-  static const String endpointChangePassword = "${baseAddress}change-password";
-  static const String endpointAboutUs = "${baseAddress}about";
-  static const String endpointTopUsers = "${baseAddress}profile-detail";
-  static const String endpointLogout = "${baseAddress}logout";
-  static const String endpointSetting = "${baseAddress}setting";
-
   static Future<bool> checkInternetStatus() async {
     try {
       final result = await InternetAddress.lookup('example.com')
@@ -58,13 +47,13 @@ class ApiController {
     ApiResponse apiResponse = ApiResponse();
     try {
       if (await checkInternetStatus() == false) {
-        apiResponse.code = -1;
+        apiResponse.status = -1;
         return apiResponse;
       }
       var client = http.Client();
       final response = await client
           .get(Uri.parse(url), headers: geHeader(method: 'GET'))
-          .timeout(timeOut);
+          .timeout(apiResponseTimeOut);
       if (kDebugMode) {
         print(response.body);
       }
@@ -72,10 +61,12 @@ class ApiController {
         apiResponse = ApiResponse.fromJson(json.decode(response.body));
         return apiResponse;
       } else {
-        apiResponse.code = response.statusCode;
+        apiResponse.status = response.statusCode;
+        apiResponse.data = null;
+        apiResponse.message = "Internal server error";
       }
     } catch (ex) {
-      apiResponse.code = -1;
+      apiResponse.status = -1;
       apiResponse.message = ex.toString();
       if (kDebugMode) {
         print(ex);
@@ -89,13 +80,13 @@ class ApiController {
     ApiResponse apiResponse = ApiResponse();
     try {
       if (await checkInternetStatus() == false) {
-        apiResponse.code = -1;
+        apiResponse.status = -1;
         return apiResponse;
       }
       var client = http.Client();
       final response = await client
           .post(Uri.parse(url), body: body, headers: geHeader())
-          .timeout(timeOut);
+          .timeout(apiResponseTimeOut);
       if (kDebugMode) {
         print(response.body);
       }
@@ -103,11 +94,12 @@ class ApiController {
         apiResponse = ApiResponse.fromJson(json.decode(response.body));
         return apiResponse;
       } else {
-        apiResponse.code = response.statusCode;
+        apiResponse.status = response.statusCode;
         apiResponse.data = null;
+        apiResponse.message = "Internal server error";
       }
     } catch (ex) {
-      apiResponse.code = -1;
+      apiResponse.status = -1;
       apiResponse.message = ex.toString();
       if (kDebugMode) {
         print(ex);
@@ -120,13 +112,13 @@ class ApiController {
     ApiResponse apiResponse = ApiResponse();
     try {
       if (await checkInternetStatus() == false) {
-        apiResponse.code = -1;
+        apiResponse.status = -1;
         return apiResponse;
       }
       var client = http.Client();
       final response = await client
           .put(Uri.parse(url), body: body, headers: geHeader())
-          .timeout(timeOut);
+          .timeout(apiResponseTimeOut);
       if (kDebugMode) {
         print(response.body);
       }
@@ -134,11 +126,12 @@ class ApiController {
         apiResponse = ApiResponse.fromJson(json.decode(response.body));
         return apiResponse;
       } else {
-        apiResponse.code = response.statusCode;
+        apiResponse.status = response.statusCode;
         apiResponse.data = null;
+        apiResponse.message = "Internal server error";
       }
     } catch (ex) {
-      apiResponse.code = -1;
+      apiResponse.status = -1;
       apiResponse.message = ex.toString();
       if (kDebugMode) {
         print(ex);
@@ -151,13 +144,13 @@ class ApiController {
     ApiResponse apiResponse = ApiResponse();
     try {
       if (await checkInternetStatus() == false) {
-        apiResponse.code = -1;
+        apiResponse.status = -1;
         return apiResponse;
       }
       var client = http.Client();
       final response = await client
           .delete(Uri.parse(url), body: body, headers: geHeader())
-          .timeout(timeOut);
+          .timeout(apiResponseTimeOut);
       if (kDebugMode) {
         print(response.body);
       }
@@ -165,8 +158,9 @@ class ApiController {
         apiResponse = ApiResponse.fromJson(json.decode(response.body));
         return apiResponse;
       } else {
-        apiResponse.code = response.statusCode;
+        apiResponse.status = response.statusCode;
         apiResponse.data = null;
+        apiResponse.message = "Internal server error";
       }
     } catch (ex) {
       if (kDebugMode) {
@@ -181,6 +175,9 @@ class ApiController {
       return '';
     }
     final Directory directory = await getApplicationDocumentsDirectory();
+    if (await File('${directory.path}/$fileName').exists()) {
+      return '${directory.path}/$fileName';
+    }
     final String filePath = '${directory.path}/$fileName';
     final http.Response response = await http.get(Uri.parse(url));
     final File file = File(filePath);
@@ -194,7 +191,7 @@ class ApiController {
     ApiResponse apiResponse = ApiResponse();
     try {
       if (await checkInternetStatus() == false) {
-        apiResponse.code = -1;
+        apiResponse.status = -1;
         return apiResponse;
       }
       var request = http.MultipartRequest(method, Uri.parse(url));
@@ -220,11 +217,12 @@ class ApiController {
       if (response.statusCode == 200) {
         apiResponse = ApiResponse.fromJson(json.decode(response.body));
       } else {
-        apiResponse.code = response.statusCode;
+        apiResponse.status = response.statusCode;
         apiResponse.data = null;
+        apiResponse.message = "Internal server error";
       }
     } catch (ex) {
-      apiResponse.code = -1;
+      apiResponse.status = -1;
       apiResponse.message = ex.toString();
       if (kDebugMode) {
         print(ex);
@@ -258,7 +256,7 @@ class ApiController {
       header['content-Type'] = 'application/json';
       await client
           .post(Uri.parse(fcmUrl), headers: header, body: body)
-          .timeout(timeOut);
+          .timeout(apiResponseTimeOut);
     } catch (e) {}
   }
 
@@ -266,7 +264,8 @@ class ApiController {
     try {
       if (await checkInternetStatus() == false) {}
       var client = http.Client();
-      final response = await client.get(Uri.parse(url)).timeout(timeOut);
+      final response =
+          await client.get(Uri.parse(url)).timeout(apiResponseTimeOut);
       if (response.statusCode == 200) {
         MapResponseResult result =
             MapResponseResult.fromJson(json.decode(response.body));
