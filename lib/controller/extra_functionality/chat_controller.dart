@@ -40,16 +40,47 @@ class ChatController with ChangeNotifier {
         Map<String, dynamic> jsonData = Map<String, dynamic>.from(
             json.decode(event.message.data['notificationPayload']));
         ChatMessage temp = ChatMessage.fromJson(jsonData);
+
         types.TextMessage msg1 = types.TextMessage(
             author: types.User(
                 firstName: temp.senderName,
                 id: temp.senderId.toString(),
                 imageUrl: temp.imageUrl),
-            id: Utility.getRandomString(),
+            id: temp.id,
             text: temp.message!,
             createdAt: temp.insertedOn);
         messages.insert(0, msg1);
         notifyListeners();
+      } else {
+        Map<String, dynamic> jsonData = Map<String, dynamic>.from(
+            json.decode(event.message.data['notificationPayload']));
+        ChatMessage temp = ChatMessage.fromJson(jsonData);
+
+        String fileName = temp.media!.location
+            .substring(temp.media!.location.lastIndexOf('/') + 1);
+        // fileName = fileName.substring(0, fileName.lastIndexOf('.'));
+        ApiController.downloadAndSaveFile(temp.media!.location, fileName)
+            .then((path) async {
+          print(path);
+          File file = File(path);
+          final bytes = await file.readAsBytes();
+          final image = await decodeImageFromList(bytes);
+          final message = types.ImageMessage(
+            author: types.User(
+                id: _currentUser.id.toString(),
+                firstName: _currentUser.name,
+                imageUrl: _currentUser.profileImage),
+            createdAt: DateTime.now().toUtc().millisecondsSinceEpoch,
+            id: Utility.getRandomString(),
+            height: image.height.toDouble(),
+            name: file.path,
+            size: bytes.length,
+            uri: file.path,
+            width: image.width.toDouble(),
+          );
+          messages.insert(0, message);
+          notifyListeners();
+        });
       }
     });
     getAll();
@@ -73,12 +104,13 @@ class ChatController with ChangeNotifier {
     msg.imageUrl = _currentUser.profileImage;
     msg.insertedOn =
         ChatMessage.getEpochTime(DateTime.now().toUtc(), needToConvert: false);
-    await ApiController.sendPushChatMessage(msg.toJson(), _otherUser.token)
+    await ApiController.post(endpointSendMessage, json.encode(msg));
+    /*   await ApiController.sendPushChatMessage(msg.toJson(), _otherUser.token)
         .then((value) async {
       await addData(_tableChat, msg.toJson());
       messages.insert(0, msg1);
       notifyListeners();
-    });
+    });*/
   }
 
   void handlePreviewDataFetched(
@@ -103,6 +135,36 @@ class ChatController with ChangeNotifier {
 
   Future<void> getAll() async {
     try {
+      await ApiController.post(
+              endpointGetMessage,
+              json.encode(
+                  {'senderId': _currentUser.id, 'receiverId': _otherUser.id}))
+          .then((response) {
+        if (response.status == 0) {
+          final result = json.decode(json.encode(response.data));
+          for (int i = 0; i < result.length; i++) {
+            ChatMessage temp =
+                ChatMessage.fromJson(json.decode(json.encode(result[i])));
+            if (temp.messageType == messageTypeText) {
+              types.TextMessage msg1 = types.TextMessage(
+                  author: types.User(
+                      firstName: temp.senderName,
+                      id: temp.senderId.toString(),
+                      imageUrl: temp.imageUrl),
+                  id: Utility.getRandomString(),
+                  text: temp.message!,
+                  createdAt: temp.insertedOn);
+              messages.insert(0, msg1);
+            } else {
+              messages.insert(0, ChatMessage.parseFromChatMessage(temp));
+            }
+          }
+          notifyListeners();
+        } else {
+          debugPrint(response.message);
+        }
+      });
+      return;
       final data = await FirebaseFirestore.instance
           .collection(_tableChat)
           // .where("SenderId", isEqualTo: 101)
@@ -199,7 +261,7 @@ class ChatController with ChangeNotifier {
     if (result != null && result.files.single.path != null) {
       final message = types.FileMessage(
         author: types.User(
-            id: _currentUser.name.toString(),
+            id: _currentUser.id.toString(),
             firstName: _currentUser.name,
             imageUrl: _currentUser.profileImage),
         type: MessageType.file,
@@ -210,9 +272,9 @@ class ChatController with ChangeNotifier {
         size: result.files.single.size,
         uri: result.files.single.path!,
       );
-      messages.insert(0, message);
+
       final msg = ChatMessage.init(
-          uuid: Utility.getRandomString(),
+          id: Utility.getRandomString(),
           senderId: _currentUser.id,
           receiverId: _otherUser.id,
           messageType: messageTypeFile,
@@ -226,7 +288,17 @@ class ChatController with ChangeNotifier {
               size: result.files.single.size));
       msg.senderName = _currentUser.name;
       msg.imageUrl = _currentUser.profileImage;
-      addData(_tableChat, msg.toJson());
+      await ApiController.postFormData(endpointSendMessage,
+              result.files.single.path!, json.decode(json.encode(msg)))
+          .then((response) {
+        print(response.status);
+        if (response.status == 0) {
+          messages.insert(0, message);
+          notifyListeners();
+        }
+      });
+
+      // addData(_tableChat, msg.toJson());
     }
   }
 
@@ -245,18 +317,22 @@ class ChatController with ChangeNotifier {
             firstName: _currentUser.name,
             imageUrl: _currentUser.profileImage),
         createdAt: DateTime.now().toUtc().millisecondsSinceEpoch,
-        height: image.height.toDouble(),
         id: Utility.getRandomString(),
+        height: image.height.toDouble(),
         name: file.path,
         size: bytes.length,
         uri: file.path,
         width: image.width.toDouble(),
       );
-      messages.insert(0, message);
-      notifyListeners();
 
+      Map<String, String> msgDetail = <String, String>{};
+      msgDetail['senderId'] = _currentUser.id;
+      msgDetail['receiverId'] = _otherUser.id;
+      msgDetail['messageType'] = messageTypeImage;
+      msgDetail['message'] = 'hello';
+      /*
       final msg = ChatMessage.init(
-          uuid: Utility.getRandomString(),
+          id: Utility.getRandomString(),
           senderId: _currentUser.id,
           receiverId: _otherUser.id,
           messageType: messageTypeImage,
@@ -269,8 +345,17 @@ class ChatController with ChangeNotifier {
               mimeType: lookupMimeType(result.files.single.path!)!,
               size: result.files.single.size));
       msg.senderName = _currentUser.name;
-      msg.imageUrl = _currentUser.profileImage;
-      addData(_tableChat, msg.toJson());
+      msg.imageUrl = _currentUser.profileImage;*/
+      await ApiController.postFormData(
+              endpointSendMessage, result.files.single.path!, msgDetail)
+          .then((response) {
+        if (response.status == 0) {
+          messages.insert(0, message);
+          notifyListeners();
+        }
+      });
+
+      //  addData(_tableChat, msg.toJson());
     }
   }
 }

@@ -9,7 +9,7 @@ import '../../utils/constants.dart';
 import 'chat_media.dart';
 
 class ChatMessage {
-  late String uuid;
+  late String id;
   late String senderId;
   late String senderName;
   late String imageUrl;
@@ -26,7 +26,7 @@ class ChatMessage {
   ChatMessage();
 
   ChatMessage.init({
-    required this.uuid,
+    required this.id,
     required this.senderId,
     required this.receiverId,
     required this.messageType,
@@ -69,7 +69,7 @@ class ChatMessage {
       {bool isUtcTime = true}) {
     ChatMessage chatMessage = ChatMessage();
 
-    chatMessage.uuid = message.id;
+    chatMessage.id = message.id;
     chatMessage.senderId = senderId;
     chatMessage.receiverId = receiverId;
     chatMessage.status = getStringFromStatus(message.status);
@@ -97,10 +97,12 @@ class ChatMessage {
   static types.Message parseFromChatMessage(ChatMessage chatMessage) {
     if (chatMessage.messageType == messageTypeImage &&
         chatMessage.media != null) {
+
+      print('image *************************************');
       /// Image message parsing
       return types.ImageMessage.fromPartial(
-        author: types.User(id: chatMessage.senderId.toString(), imageUrl: ""),
-        id: chatMessage.uuid,
+        author: types.User(id: chatMessage.senderId, imageUrl: ""),
+        id: chatMessage.id,
         status: getStatusFromString(chatMessage.status),
         createdAt: chatMessage.insertedOn,
         partialImage: types.PartialImage(
@@ -114,7 +116,7 @@ class ChatMessage {
       /// File message parsing
       return types.FileMessage.fromPartial(
         author: types.User(id: chatMessage.senderId.toString(), imageUrl: ""),
-        id: chatMessage.uuid,
+        id: chatMessage.id,
         status: getStatusFromString(chatMessage.status),
         createdAt: chatMessage.insertedOn,
         partialFile: types.PartialFile(
@@ -129,7 +131,7 @@ class ChatMessage {
     /// Text message parsing
     return types.TextMessage.fromPartial(
       author: types.User(id: chatMessage.senderId.toString(), imageUrl: ""),
-      id: chatMessage.uuid,
+      id: chatMessage.id,
       status: getStatusFromString(chatMessage.status),
       createdAt: chatMessage.insertedOn,
       partialText: types.PartialText(text: chatMessage.message ?? ''),
@@ -150,47 +152,45 @@ class ChatMessage {
   }
 
   ChatMessage.fromJson(Map<String, dynamic> json, {bool isUtcTime = true}) {
-    uuid = json['Uuid'] as String;
-    senderId = json['SenderId'] as String;
-    senderName = json['SenderName'] as String;
-    imageUrl = json['ImageUrl'] as String;
-    receiverId = json['ReceiverId'] as String;
-    messageType = json['MessageType'] as String;
-    status = json['Status'] as String;
-    message = Utility.utf8Decode(json['Message'] as String?);
-    insertedOn = json['InsertedOn'] as int;
+    print(json);
+    id = (json['id'] as int).toString();
+    senderId = (json['senderId'] as int).toString();
+    senderName = json['senderName'] as String;
+    imageUrl = json['imageUrl'] as String;
+    receiverId = (json['receiverId'] as int).toString();
+    messageType = json['messageType'] as String;
+    status = json['status'] as String;
+    message = Utility.utf8Decode(json['message'] as String?);
+    insertedOn = json['insertedOn'] as int;
     isDelivered = true;
     isRead = true;
     isDeleted = false;
-    media = ChatMessage._mediaFromJson(json['Media']);
+    media = ChatMessage._mediaFromJson(json['media']);
   }
   Map<String, dynamic> toJson() {
     Map<String, dynamic> test = {
-      'Uuid': '',
-      'SenderId': senderId,
-      'ReceiverId': receiverId,
-      'MessageType': messageType,
-      'Status': status,
-      'Message': message,
-      'InsertedOn': insertedOn,
-      'IsDelivered': true,
-      'IsRead': true,
-      'IsDeleted': false,
-      'Media': ChatMessage._mediaToJson(media),
-      'SenderName': senderName,
-      'ImageUrl': imageUrl
+      'id': id,
+      'senderId': senderId,
+      'receiverId': receiverId,
+      'messageType': messageType,
+      'status': status,
+      'message': message,
+      'insertedOn': insertedOn,
+      'isDelivered': true,
+      'isRead': true,
+      'isDeleted': false,
+      'media': ChatMessage._mediaToJson(media),
+      'senderName': senderName,
+      'imageUrl': imageUrl
     };
     return test;
   }
 
   static int getEpochTime(DateTime date, {bool needToConvert = true}) {
     if (needToConvert) {
-      print(date);
-      print(needToConvert);
       int value = date.isUtc
           ? (date.toLocal().millisecondsSinceEpoch)
           : (date.millisecondsSinceEpoch);
-      print(value);
       return value;
     }
     return date.millisecondsSinceEpoch;

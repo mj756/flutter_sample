@@ -14,6 +14,9 @@ const String endpointChangePassword = "${baseAddress}/user/changepassword";
 const String endpointTopUsers = "${baseAddress}/user/profile";
 const String endpointLogout = "${baseAddress}logout";
 
+const String endpointSendMessage = "${baseAddress}/message/";
+const String endpointGetMessage = "${baseAddress}/message/getMessages";
+
 const String messageTypeText = "text";
 const String messageTypeImage = "image";
 const String messageTypeAudio = "audio";

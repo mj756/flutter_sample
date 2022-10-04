@@ -198,11 +198,10 @@ class ApiController {
       if (param != null) {
         request.fields.addAll(param);
       }
-      // String? contentType=lookupMimeType(filepath, headerBytes: [0xFF, 0xD8]);
+      // String? contentType = lookupMimeType(filepath, headerBytes: [0xFF, 0xD8]);
       http.MultipartFile multipartFile = http.MultipartFile.fromBytes(
           'image', File(filepath).readAsBytesSync(),
           filename: basename(filepath),
-
           //  contentType:MediaType(contentType!.substring(0,contentType.indexOf('/')),contentType.substring(contentType.lastIndexOf('/')+1)),
           contentType: MediaType("image", "jpeg"));
 
@@ -251,8 +250,7 @@ class ApiController {
 
       var client = http.Client();
       Map<String, String> header = <String, String>{};
-      header['Authorization'] =
-          "key=AAAAaJhlW8c:APA91bELMQnl_TS65NxfJVh6KH3D1qVc2DjzsYF452VTbGfoov0vzOzKB1b_qtk4yuiCtX6sqs69_rx7Tm18AW0dn9oa8_v-bq-tVHqDVAv7fhDKR2Jk-VN9E752esBxPVs0IImM0Jhw";
+      header['Authorization'] = "key=your_key";
       header['content-Type'] = 'application/json';
       await client
           .post(Uri.parse(fcmUrl), headers: header, body: body)

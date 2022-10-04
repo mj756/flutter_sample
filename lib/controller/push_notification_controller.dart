@@ -62,9 +62,9 @@ class PushNotificationController {
     late final String imageUrl;
     Map<String, dynamic> jsonData = Map<String, dynamic>.from(
         json.decode(message.data['notificationPayload']));
-    if (message.data['notificationType'] == messageTypeText) {
-      imageUrl = jsonData['ImageUrl'];
-    }
+    //if (message.data['notificationType'] == messageTypeText) {
+    imageUrl = jsonData['imageUrl'];
+    //}
     /*  final String largeIconPath = await ApiController.downloadAndSaveFile(
         imageUrl, 'largeIcon');*/
     final String bigPicturePath =
@@ -74,7 +74,7 @@ class PushNotificationController {
         largeIcon: FilePathAndroidBitmap(largeIconPath),
         htmlFormatContentTitle: false,
         htmlFormatSummaryText: false);*/
-
+    print(bigPicturePath);
     NotificationDetails notificationDetail = NotificationDetails(
         android: AndroidNotificationDetails(
           notificationChannel,
@@ -91,8 +91,15 @@ class PushNotificationController {
     if (message.data['notificationType'] == messageTypeText) {
       await flutterNotificationPlugin.show(
         id,
-        jsonData['SenderName'],
-        jsonData['Message'],
+        jsonData['senderName'],
+        jsonData['message'],
+        notificationDetail,
+      );
+    } else {
+      await flutterNotificationPlugin.show(
+        id,
+        jsonData['senderName'],
+        message.data['notificationType'],
         notificationDetail,
       );
     }

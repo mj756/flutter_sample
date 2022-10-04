@@ -20,7 +20,6 @@ class AppUser {
   }
 
   AppUser.fromJson(Map<String, dynamic> json) {
-    print('hello');
     id = (json['id']).toString();
     name = json['name'] as String;
     email = json['email'] as String;

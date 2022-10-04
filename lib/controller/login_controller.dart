@@ -27,6 +27,7 @@ class LoginController with ChangeNotifier {
         json.encode({
           'email': email,
           'password': password,
+          'deviceId': 'testing',
           'fcmToken':
               PreferenceController.getString(PreferenceController.fcmToken)
         })).then((response) {
