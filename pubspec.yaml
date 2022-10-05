@@ -47,6 +47,7 @@ dependencies:
   google_mobile_ads: ^2.0.1
   just_audio_background: ^0.0.1-beta.7
   just_audio: ^0.9.29
+  firebase_remote_config: ^2.0.19
 
 dev_dependencies:
   flutter_test:

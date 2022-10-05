@@ -12,14 +12,14 @@ class SelectLanguage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: themeColor,
+      backgroundColor: AppConstants.themeColor,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: themeColor,
+        backgroundColor: AppConstants.themeColor,
         title: Text(
           AppLocalizations.of(context)!.label_select_language,
           style: CustomStyles.customTextStyle(
-              defaultColor: whiteColor, isBold: true, isExtraLargeFont: true),
+              defaultColor: AppConstants.whiteColor, isBold: true, isExtraLargeFont: true),
           textAlign: TextAlign.center,
         ),
       ),
@@ -30,7 +30,7 @@ class SelectLanguage extends StatelessWidget {
             Expanded(
                 child: Container(
               decoration: BoxDecoration(
-                color: themeColor,
+                color: AppConstants.themeColor,
                 image: DecorationImage(
                     image: Image.asset(
                   'assets/ic_launcher.png',
@@ -41,7 +41,7 @@ class SelectLanguage extends StatelessWidget {
             Expanded(
                 child: Container(
               decoration: const BoxDecoration(
-                  color: whiteColor,
+                  color: AppConstants.whiteColor,
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20))),
@@ -63,7 +63,7 @@ class SelectLanguage extends StatelessWidget {
                                   .changeLanguage(AppLocalizations
                                       .supportedLocales[index].languageCode);
                             },
-                            activeColor: themeColor,
+                            activeColor: AppConstants.themeColor,
                           ),
                           title: Text(AppLocalizations
                               .supportedLocales[index].languageCode),
@@ -79,7 +79,7 @@ class SelectLanguage extends StatelessWidget {
                       bottom: 10,
                       child: CircleAvatar(
                         radius: 20,
-                        backgroundColor: themeColor,
+                        backgroundColor: AppConstants.themeColor,
                         child: GestureDetector(
                             onTap: () {
                               Navigator.pop(context);

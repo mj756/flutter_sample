@@ -23,7 +23,7 @@ class LoginController with ChangeNotifier {
   Future<String> login(String email, String password) async {
     String status = '';
     await ApiController.post(
-        endpointLogin,
+        AppConstants.endpointLogin,
         json.encode({
           'email': email,
           'password': password,
@@ -50,7 +50,7 @@ class LoginController with ChangeNotifier {
   Future<String> forgotPassword(String email) async {
     String status = '';
     await ApiController.post(
-        endpointLogin,
+        AppConstants.endpointLogin,
         json.encode({
           'email': email,
         })).then((response) {

@@ -64,23 +64,29 @@ class ChatRoom extends StatelessWidget {
                           inputBorderRadius:
                               const BorderRadius.all(Radius.circular(5)),
                           inputBackgroundColor: Colors.blueAccent,
-                          primaryColor: Colors.grey,
-                          secondaryColor: Colors.blueAccent,
+                          primaryColor: Colors.green,
+                          secondaryColor: Colors.purple,
                           backgroundColor: Colors.white,
                           messageBorderRadius: 3.0,
                           receivedMessageBodyTextStyle:
                               CustomStyles.customTextStyle(
-                                  defaultColor: themeColor, isNormalFont: true),
+                                  defaultColor: AppConstants.whiteColor, isNormalFont: true),
                           sentMessageBodyTextStyle:
                               CustomStyles.customTextStyle(
-                                  defaultColor: blackColor, isNormalFont: true),
+                                  defaultColor: AppConstants.blackColor, isNormalFont: true),
                           inputTextStyle:
                               CustomStyles.customTextStyle(isLargeFont: true),
                           messageInsetsHorizontal: 10,
                           messageInsetsVertical: 10),
                       textMessageOptions:
                           TextMessageOptions(onLinkPressed: (value) {}),
-                      onMessageLongPress: (context, message) {},
+                      onMessageTap: (context, message)async{
+                        if(message.type==MessageType.image || message.type==MessageType.file)
+                       await context.read<ChatController>().downloadFile(context,message.id);
+                      },
+                      onMessageLongPress: (context, message) {
+
+                      },
                       l10n: const ChatL10nEn(
                         inputPlaceholder: "message",
                         emptyChatPlaceholder: "",
@@ -89,7 +95,7 @@ class ChatRoom extends StatelessWidget {
                         attachmentButtonAccessibilityLabel: "",
                       ),
                       messages: context.watch<ChatController>().messages,
-                      isTextMessageTextSelectable: false,
+                      isTextMessageTextSelectable: true,
                       onAttachmentPressed: () => context
                           .read<ChatController>()
                           .handleAttachmentPressed(context),

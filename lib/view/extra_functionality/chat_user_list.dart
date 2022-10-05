@@ -1,12 +1,9 @@
 import 'dart:convert';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sample/controller/api_controller.dart';
 import 'package:flutter_sample/model/user.dart';
+import 'package:flutter_sample/utils/constants.dart';
 import 'package:flutter_sample/view/extra_functionality/chat.dart';
-
-import '../../controller/preference_controller.dart';
 
 class ChatUserList extends StatelessWidget {
   const ChatUserList({Key? key}) : super(key: key);
@@ -57,14 +54,13 @@ class ChatUserList extends StatelessWidget {
 
   Future<List<AppUser>> getAllUser() async {
     List<AppUser> users = List.empty(growable: true);
-    final response =
-        await ApiController.get('http://192.168.21.9:8000/api/user/getalluser');
+    final response = await ApiController.get(AppConstants.endpointGetAllUser);
     final datas = json.decode(json.encode(response.data));
     for (int i = 0; i < datas.length; i++) {
       users.add(AppUser.fromJson(json.decode(json.encode(datas[i]))));
     }
     return users;
-    AppUser user = AppUser.fromJson(json.decode(PreferenceController.getString(
+    /* AppUser user = AppUser.fromJson(json.decode(PreferenceController.getString(
         PreferenceController.prefKeyUserPayload)));
     user.token = PreferenceController.getString(PreferenceController.fcmToken);
     {
@@ -107,5 +103,6 @@ class ChatUserList extends StatelessWidget {
       users.sort((a, b) => a.name.compareTo(b.name));
     }
     return users;
+    */
   }
 }

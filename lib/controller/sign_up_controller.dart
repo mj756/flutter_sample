@@ -23,7 +23,7 @@ class SignUpController with ChangeNotifier {
   Future<String> signUp(String name, String email, String password) async {
     String status = 'error';
     await ApiController.post(
-        endpointRegistration,
+        AppConstants.endpointRegistration,
         json.encode({
           'email': email,
           'name': name,
@@ -31,7 +31,6 @@ class SignUpController with ChangeNotifier {
           'gender': 'M',
           'dob': '${DateTime.now().toUtc()}'
         })).then((response) {
-      print(json.encode(response));
       if (response.status == 0) {
         AppUser user =
             AppUser.fromJson(json.decode(json.encode(response.data)));

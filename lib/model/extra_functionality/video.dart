@@ -30,7 +30,7 @@ class VideoPlayerView extends StatelessWidget {
                       child: Text(
                         'Play',
                         style: CustomStyles.customTextStyle(
-                            isLargeFont: true, defaultColor: whiteColor),
+                            isLargeFont: true, defaultColor: AppConstants.whiteColor),
                       ))
                 ],
               ),

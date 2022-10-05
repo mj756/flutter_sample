@@ -76,11 +76,11 @@ class ChatMessage {
     chatMessage.insertedOn = message.createdAt!;
     if (message is types.TextMessage) {
       /// Text message parsing
-      chatMessage.messageType = messageTypeText;
+      chatMessage.messageType = AppConstants.messageTypeText;
       chatMessage.message = message.text;
     } else if (message is types.ImageMessage) {
       /// Image message parsing
-      chatMessage.messageType = messageTypeImage;
+      chatMessage.messageType = AppConstants.messageTypeImage;
       chatMessage.media = ChatMedia.init(
           id: Random().nextInt(10000),
           name: message.name,
@@ -89,16 +89,14 @@ class ChatMessage {
           size: int.parse(message.size.toString()));
     } else if (message is types.FileMessage) {
       /// File message parsing
-      chatMessage.messageType = messageTypeFile;
+      chatMessage.messageType = AppConstants.messageTypeFile;
     }
     return chatMessage;
   }
 
   static types.Message parseFromChatMessage(ChatMessage chatMessage) {
-    if (chatMessage.messageType == messageTypeImage &&
+    if (chatMessage.messageType == AppConstants.messageTypeImage &&
         chatMessage.media != null) {
-
-      print('image *************************************');
       /// Image message parsing
       return types.ImageMessage.fromPartial(
         author: types.User(id: chatMessage.senderId, imageUrl: ""),
@@ -111,7 +109,7 @@ class ChatMessage {
           size: chatMessage.media!.size,
         ),
       );
-    } else if (chatMessage.messageType == messageTypeFile &&
+    } else if (chatMessage.messageType == AppConstants.messageTypeFile &&
         chatMessage.media != null) {
       /// File message parsing
       return types.FileMessage.fromPartial(
@@ -152,8 +150,9 @@ class ChatMessage {
   }
 
   ChatMessage.fromJson(Map<String, dynamic> json, {bool isUtcTime = true}) {
-    print(json);
+
     id = (json['id'] as int).toString();
+
     senderId = (json['senderId'] as int).toString();
     senderName = json['senderName'] as String;
     imageUrl = json['imageUrl'] as String;
@@ -165,6 +164,7 @@ class ChatMessage {
     isDelivered = true;
     isRead = true;
     isDeleted = false;
+
     media = ChatMessage._mediaFromJson(json['media']);
   }
   Map<String, dynamic> toJson() {

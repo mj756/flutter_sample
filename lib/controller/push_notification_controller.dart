@@ -74,7 +74,7 @@ class PushNotificationController {
         largeIcon: FilePathAndroidBitmap(largeIconPath),
         htmlFormatContentTitle: false,
         htmlFormatSummaryText: false);*/
-    print(bigPicturePath);
+
     NotificationDetails notificationDetail = NotificationDetails(
         android: AndroidNotificationDetails(
           notificationChannel,
@@ -88,7 +88,7 @@ class PushNotificationController {
           // styleInformation: bigPictureStyleInformation
         ),
         iOS: const DarwinNotificationDetails());
-    if (message.data['notificationType'] == messageTypeText) {
+    if (message.data['notificationType'] == AppConstants.messageTypeText) {
       await flutterNotificationPlugin.show(
         id,
         jsonData['senderName'],

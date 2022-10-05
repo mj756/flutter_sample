@@ -7,7 +7,15 @@ class ChatMedia {
   bool isDownloading = false;
   bool isDownloaded = false;
 
-  ChatMedia();
+  ChatMedia() {
+    id = 0;
+    size = 0;
+    name = '';
+    location = '';
+    mimeType = '';
+    isDownloaded = false;
+    isDownloading = false;
+  }
 
   ChatMedia.init({
     required this.id,

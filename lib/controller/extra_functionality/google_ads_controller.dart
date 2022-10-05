@@ -85,8 +85,7 @@ class AdvertisementController extends ChangeNotifier {
             rewardAd.setImmersiveMode(true);
             rewardAd.show(
                 onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {
-              print(
-                  '$ad with reward $RewardItem(${reward.amount}, ${reward.type})');
+
             });
           },
           onAdFailedToLoad: (error) {}),
@@ -114,8 +113,6 @@ class AdvertisementController extends ChangeNotifier {
             rewardedInterstitialAd.setImmersiveMode(true);
             rewardedInterstitialAd.show(
                 onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {
-              print(
-                  '$ad with reward $RewardItem(${reward.amount}, ${reward.type})');
             });
           },
           onAdFailedToLoad: (error) {}),

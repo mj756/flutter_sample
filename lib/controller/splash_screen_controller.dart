@@ -1,9 +1,11 @@
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_sample/controller/app_setting_controller.dart';
 import 'package:flutter_sample/controller/extra_functionality/local_storage_controller.dart';
 import 'package:flutter_sample/controller/preference_controller.dart';
 import 'package:flutter_sample/controller/push_notification_controller.dart';
+import 'package:flutter_sample/utils/constants.dart';
 import 'package:provider/provider.dart';
 
 import 'api_controller.dart';
@@ -43,6 +45,13 @@ class SplashScreenController with ChangeNotifier {
     await ApiController.checkInternetStatus().then((value) async {
       if (value == true) {
         await FirebaseController().initialize();
+
+       final FirebaseRemoteConfig config= await FirebaseRemoteConfig.instance;
+       await config.fetchAndActivate();
+       String baseAddress=await config.getString('apiAddress');
+       if(baseAddress.isNotEmpty){
+         AppConstants.baseAddress=baseAddress;
+       }
         await PushNotificationController.initialize();
         if (PreferenceController.getString(PreferenceController.fcmToken)
             .isEmpty) {

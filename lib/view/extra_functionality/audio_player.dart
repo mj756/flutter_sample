@@ -18,11 +18,11 @@ class _AudioDemoState extends State<AudioDemo> {
       final processingState = playerState.processingState;
       if (processingState == ProcessingState.loading ||
           processingState == ProcessingState.buffering) {
-        print('loading');
+
       } else if (!isPlaying) {
-        print('not playing');
+
       } else {
-        print('playing');
+
       }
     });
     super.initState();

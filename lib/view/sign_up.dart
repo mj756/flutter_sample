@@ -36,7 +36,7 @@ class SignUpPage extends StatelessWidget {
                     gradient: const LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: [whiteColor, themeColor],
+                      colors: [AppConstants.whiteColor,AppConstants. themeColor],
                     ),
                     borderRadius: BorderRadius.all(Radius.circular(2.w))),
                 child: Column(
@@ -64,7 +64,7 @@ class SignUpPage extends StatelessWidget {
                                         .label_registration,
                                     style: CustomStyles.customTextStyle(
                                         isBold: true,
-                                        defaultColor: screenBackgroundColor,
+                                        defaultColor: AppConstants.screenBackgroundColor,
                                         isExtraLargeFont: true),
                                   ),
                                   SizedBox(height: 20.h),
@@ -183,7 +183,7 @@ class SignUpPage extends StatelessWidget {
                                             .label_sign_up,
                                         style: CustomStyles.customTextStyle(
                                             isLargeFont: true,
-                                            defaultColor: whiteColor,
+                                            defaultColor: AppConstants.whiteColor,
                                             isBold: true),
                                       )),
                                   const SocialLogin(),
@@ -222,7 +222,7 @@ class SignUpPage extends StatelessWidget {
                                                   style: CustomStyles
                                                       .customTextStyle(
                                                           defaultColor:
-                                                              themeColor,
+                                                          AppConstants.themeColor,
                                                           isLargeFont: true,
                                                           isBold: true),
                                                   recognizer:
@@ -275,7 +275,7 @@ class SignUpPage extends StatelessWidget {
                                                       .lastIndexOf('terms') -
                                                   1),
                                       style: CustomStyles.customTextStyle(
-                                          defaultColor: whiteColor,
+                                          defaultColor: AppConstants.whiteColor,
                                           isNormalFont: true,
                                           isBold: true,
                                           isUnderLine: true),

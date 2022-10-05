@@ -12,8 +12,13 @@ class ApiResponse {
 
   ApiResponse.fromJson(Map<String, dynamic> json) {
     status = json['status'] as int;
+    if(status==0 && json['data'] !=null)
+      {
+        data = json['data'] as Object;
+      }else{
+      data=null;
+    }
     message = json['message'] as String;
-    data = json['data'] as Object;
   }
 
   Map<String, dynamic> toJson() {

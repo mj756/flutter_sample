@@ -82,7 +82,7 @@ class DatabaseOperation extends StatelessWidget {
                             'Add',
                             style: CustomStyles.customTextStyle(
                                 isLargeFont: true,
-                                defaultColor: whiteColor,
+                                defaultColor: AppConstants.whiteColor,
                                 isBold: true),
                           )),
                       SizedBox(
@@ -104,7 +104,7 @@ class DatabaseOperation extends StatelessWidget {
                             'Update',
                             style: CustomStyles.customTextStyle(
                                 isLargeFont: true,
-                                defaultColor: whiteColor,
+                                defaultColor: AppConstants.whiteColor,
                                 isBold: true),
                           )),
                     ],

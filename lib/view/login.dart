@@ -34,7 +34,7 @@ class LoginPage extends StatelessWidget {
                     gradient: const LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: [whiteColor, themeColor],
+                      colors: [AppConstants.whiteColor, AppConstants.themeColor],
                     ),
                     borderRadius: BorderRadius.all(Radius.circular(2.w))),
                 child: Column(
@@ -71,7 +71,7 @@ class LoginPage extends StatelessWidget {
                                     'Login',
                                     style: CustomStyles.customTextStyle(
                                         isBold: true,
-                                        defaultColor: screenBackgroundColor,
+                                        defaultColor: AppConstants.screenBackgroundColor,
                                         isExtraLargeFont: true),
                                   ),
                                   SizedBox(height: 20.h),
@@ -96,7 +96,7 @@ class LoginPage extends StatelessWidget {
                                       return null;
                                     },
                                   ),
-                                  spaceHeight20,
+                                  AppConstants.spaceHeight20,
                                   TextFormField(
                                     controller: _passwordController,
                                     obscureText: !context
@@ -134,7 +134,7 @@ class LoginPage extends StatelessWidget {
                                       return null;
                                     },
                                   ),
-                                  spaceHeight20,
+                                  AppConstants.spaceHeight20,
                                   Align(
                                     alignment: Alignment.centerRight,
                                     child: InkWell(
@@ -146,11 +146,11 @@ class LoginPage extends StatelessWidget {
                                               .label_forgot_password,
                                           style: CustomStyles.customTextStyle(
                                               defaultColor:
-                                                  screenBackgroundColor,
+                                              AppConstants.screenBackgroundColor,
                                               isBold: true)),
                                     ),
                                   ),
-                                  spaceHeight20,
+                                  AppConstants.spaceHeight20,
                                   ElevatedButton(
                                       style: CustomStyles
                                           .filledRoundedCornerButton(
@@ -193,7 +193,7 @@ class LoginPage extends StatelessWidget {
                                             .label_login,
                                         style: CustomStyles.customTextStyle(
                                             isLargeFont: true,
-                                            defaultColor: whiteColor,
+                                            defaultColor: AppConstants.whiteColor,
                                             isBold: true),
                                       )),
                                   const Expanded(
@@ -235,7 +235,7 @@ class LoginPage extends StatelessWidget {
                                                 .lastIndexOf(' ') +
                                             1),
                                     style: CustomStyles.customTextStyle(
-                                        defaultColor: whiteColor,
+                                        defaultColor: AppConstants.whiteColor,
                                         isLargeFont: true,
                                         isBold: true),
                                     recognizer: TapGestureRecognizer()
@@ -288,7 +288,7 @@ class LoginPage extends StatelessWidget {
                     return null;
                   },
                 ),
-                spaceHeight20,
+                AppConstants.spaceHeight20,
                 ElevatedButton(
                     style: CustomStyles.filledRoundedCornerButton(
                         fullWidth: false),
@@ -327,7 +327,7 @@ class LoginPage extends StatelessWidget {
                       AppLocalizations.of(context)!.label_send,
                       style: CustomStyles.customTextStyle(
                           isLargeFont: true,
-                          defaultColor: whiteColor,
+                          defaultColor: AppConstants.whiteColor,
                           isBold: true),
                     ))
               ],

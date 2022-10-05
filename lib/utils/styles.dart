@@ -5,7 +5,7 @@ import 'constants.dart';
 
 class CustomStyles {
   static TextStyle customTextStyle(
-      {Color defaultColor = blackColor,
+      {Color defaultColor = AppConstants.blackColor,
       bool isBold = false,
       bool isUnderLine = false,
       isNormalFont = true,
@@ -15,15 +15,15 @@ class CustomStyles {
       isExtraLargeFont = false}) {
     int fontSize = 14;
     if (isExtraSmallFont == true) {
-      fontSize = extraSmallFont;
+      fontSize = AppConstants.extraSmallFont;
     } else if (isSmallFont == true) {
-      fontSize = smallFont;
+      fontSize = AppConstants.smallFont;
     } else if (isLargeFont == true) {
-      fontSize = largeFont;
+      fontSize = AppConstants.largeFont;
     } else if (isExtraLargeFont == true) {
-      fontSize = extraLargeFont;
+      fontSize = AppConstants.extraLargeFont;
     } else {
-      fontSize = normalFont;
+      fontSize = AppConstants.normalFont;
     }
 
     return TextStyle(
@@ -40,8 +40,8 @@ class CustomStyles {
       {bool fullWidth = false,
       int minWidth = 200,
       double minimumHeight = 45,
-      Color defaultColor = themeColor,
-      Color onPressColor = themeColor}) {
+      Color defaultColor = AppConstants.themeColor,
+      Color onPressColor = AppConstants.themeColor}) {
     return ButtonStyle(
       shape: MaterialStateProperty.all(
         RoundedRectangleBorder(
@@ -60,7 +60,7 @@ class CustomStyles {
       ),
       textStyle: MaterialStateProperty.resolveWith<TextStyle>(
           (Set<MaterialState> states) {
-        return customTextStyle(defaultColor: whiteColor, isLargeFont: true);
+        return customTextStyle(defaultColor: AppConstants.whiteColor, isLargeFont: true);
       }),
       minimumSize:
           MaterialStateProperty.resolveWith<Size>((Set<MaterialState> states) {

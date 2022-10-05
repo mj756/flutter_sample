@@ -87,11 +87,11 @@ class MyApp extends StatelessWidget {
                   ],
                   theme: ThemeData(
                     fontFamily: 'Lato',
-                    primarySwatch: themeColor,
+                    primarySwatch: AppConstants.themeColor,
                     visualDensity: VisualDensity.adaptivePlatformDensity,
                     textTheme: Theme.of(context).textTheme,
                     iconTheme: const IconThemeData(
-                      color: themeColor,
+                      color: AppConstants.themeColor,
                       size: 20,
                     ),
                   ),

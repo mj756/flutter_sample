@@ -95,7 +95,7 @@ class GoogleView extends StatelessWidget {
                                   height: 50,
                                   width: 50,
                                   decoration: const BoxDecoration(
-                                    color: whiteColor,
+                                    color: AppConstants.whiteColor,
                                     borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(10),
                                         bottomLeft: Radius.circular(10)),
@@ -117,7 +117,7 @@ class GoogleView extends StatelessWidget {
                                   child: Container(
                                     height: 50,
                                     decoration: const BoxDecoration(
-                                      color: whiteColor,
+                                      color: AppConstants.whiteColor,
                                       borderRadius: BorderRadius.only(
                                           topRight: Radius.circular(10),
                                           bottomRight: Radius.circular(10)),
@@ -129,7 +129,7 @@ class GoogleView extends StatelessWidget {
                                           hintText: 'Search location',
                                           hintStyle:
                                               CustomStyles.customTextStyle(
-                                                  defaultColor: themeColor,
+                                                  defaultColor: AppConstants.themeColor,
                                                   isNormalFont: true),
                                           contentPadding: EdgeInsets.zero),
                                     ),
@@ -147,11 +147,11 @@ class GoogleView extends StatelessWidget {
                                   child: Container(
                                       padding: const EdgeInsets.all(10),
                                       decoration: BoxDecoration(
-                                          color: whiteColor,
+                                          color: AppConstants.whiteColor,
                                           borderRadius: const BorderRadius.all(
                                               Radius.circular(10)),
                                           border: Border.all(
-                                            color: whiteColor,
+                                            color: AppConstants.whiteColor,
                                           )),
                                       height: double.maxFinite,
                                       width: 50,

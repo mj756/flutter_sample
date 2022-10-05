@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_sample/model/user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-//import 'package:msal_flutter/msal_flutter.dart';
 import '../../utils/utility.dart';
 import '../preference_controller.dart';
 class SocialLoginController with ChangeNotifier{
@@ -44,10 +42,7 @@ class SocialLoginController with ChangeNotifier{
       }
     }catch(e)
     {
-      if(kDebugMode)
-      {
-        print(e.toString());
-      }
+
       status=e.toString();
     }
     return status;
@@ -111,10 +106,7 @@ class SocialLoginController with ChangeNotifier{
           throw UnimplementedError();
       }
     } catch (e) {
-      if(kDebugMode)
-      {
-        print(e.toString());
-      }
+
     }
   }
 
@@ -169,10 +161,7 @@ class SocialLoginController with ChangeNotifier{
     return true;
     }catch(e)
     {
-      if(kDebugMode)
-      {
-        print(e.toString());
-      }
+
     }
     return false;
   }
@@ -191,10 +180,7 @@ class SocialLoginController with ChangeNotifier{
       }
       return '';
     } catch (e) {
-      if(kDebugMode)
-      {
-        print(e.toString());
-      }
+
     }
     return '';
   }

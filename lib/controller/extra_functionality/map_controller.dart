@@ -145,7 +145,7 @@ class MyMapController extends MyPermissionManager with ChangeNotifier {
     polylineCoordinates.clear();
     PolylinePoints polylinePoints = PolylinePoints();
     final result = await polylinePoints.getRouteBetweenCoordinates(
-      googleMapKey, // Your Google Map Key
+      AppConstants.googleMapKey, // Your Google Map Key
       PointLatLng(source.latitude, source.longitude),
       PointLatLng(destination.latitude, destination.longitude),
     );
@@ -165,7 +165,7 @@ class MyMapController extends MyPermissionManager with ChangeNotifier {
 
     PolylinePoints polylinePoints = PolylinePoints();
     final result = await polylinePoints.getRouteBetweenCoordinates(
-      googleMapKey, // Your Google Map Key
+      AppConstants.googleMapKey, // Your Google Map Key
       PointLatLng(source.latitude, source.longitude),
       PointLatLng(destination.latitude, destination.longitude),
     );
@@ -193,7 +193,7 @@ class MyMapController extends MyPermissionManager with ChangeNotifier {
       url = "$url&radius=10000";
       //url="$url&type=gas_station";
       url = "$url&keyword=$type";
-      url = "$url&key=${googleMapKey}";
+      url = "$url&key=${AppConstants.googleMapKey}";
 
       nearByPlaces = await ApiController.getNearByPlaces(url);
       if (nearByPlaces != null) {

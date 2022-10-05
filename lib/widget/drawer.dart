@@ -13,8 +13,6 @@ class SideBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(PreferenceController.getString(
-        PreferenceController.prefKeyUserPayload));
     AppUser currentUser = AppUser.fromJson(json.decode(
         PreferenceController.getString(
             PreferenceController.prefKeyUserPayload)));
