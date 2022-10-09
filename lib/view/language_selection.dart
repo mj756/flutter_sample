@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_sample/controller/app_setting_controller.dart';
+import 'package:flutter_sample/utils/constants.dart';
 import 'package:flutter_sample/utils/styles.dart';
 import 'package:provider/provider.dart';
 
-import '../utils/constants.dart';
 
 class SelectLanguage extends StatelessWidget {
   const SelectLanguage({Key? key}) : super(key: key);

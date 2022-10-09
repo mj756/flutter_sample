@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sample/controller/extra_functionality/map_controller.dart';
+import 'package:flutter_sample/utils/constants.dart';
+import 'package:flutter_sample/utils/styles.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
-import '../../utils/constants.dart';
-import '../../utils/styles.dart';
 
 class GoogleView extends StatelessWidget {
   final TextEditingController addressController = TextEditingController();

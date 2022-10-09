@@ -12,9 +12,9 @@ import 'package:flutter_sample/controller/api_controller.dart';
 import 'package:flutter_sample/controller/preference_controller.dart';
 import 'package:flutter_sample/model/extra_functionality/chat_message.dart';
 import 'package:flutter_sample/model/user.dart';
+import 'package:flutter_sample/utils/constants.dart';
 import 'package:mime/mime.dart';
 
-import '../../utils/constants.dart';
 import 'event_bus.dart';
 
 class ChatController with ChangeNotifier {

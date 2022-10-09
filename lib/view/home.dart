@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_sample/controller/home_controller.dart';
+import 'package:flutter_sample/widget/app_exit_dialog.dart';
 import 'package:flutter_sample/widget/drawer.dart';
 import 'package:provider/provider.dart';
 
-import '../widget/app_exit_dialog.dart';
 
 class HomePage extends StatelessWidget {
   static const platform = MethodChannel('samples.flutter.dev/permission');

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_sample/controller/extra_functionality/database_operation_controller.dart';
+import 'package:flutter_sample/utils/constants.dart';
+import 'package:flutter_sample/utils/styles.dart';
 import 'package:provider/provider.dart';
 
-import '../../controller/extra_functionality/database_operation_controller.dart';
-import '../../utils/constants.dart';
-import '../../utils/styles.dart';
 
 class DatabaseOperation extends StatelessWidget {
   DatabaseOperation({super.key});

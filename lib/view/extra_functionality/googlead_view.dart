@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_sample/controller/extra_functionality/google_ads_controller.dart';
 import 'package:provider/provider.dart';
 
-import '../../controller/extra_functionality/google_ads_controller.dart';
+
 
 class BannerAdPage extends StatelessWidget {
   @override

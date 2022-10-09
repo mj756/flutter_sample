@@ -1,14 +1,14 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_sample/Utils/Utility.dart';
 import 'package:flutter_sample/controller/login_controller.dart';
+import 'package:flutter_sample/utils/constants.dart';
 import 'package:flutter_sample/utils/styles.dart';
 import 'package:flutter_sample/widget/social_login.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../utils/constants.dart';
-import '../utils/utility.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);

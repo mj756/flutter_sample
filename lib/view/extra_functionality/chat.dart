@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_sample/controller/extra_functionality/chat_controller.dart';
+import 'package:flutter_sample/controller/preference_controller.dart';
 import 'package:flutter_sample/model/user.dart';
+import 'package:flutter_sample/utils/constants.dart';
 import 'package:flutter_sample/utils/styles.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../../controller/preference_controller.dart';
-import '../../utils/constants.dart';
 
 class ChatRoom extends StatelessWidget {
   final AppUser otherUser;

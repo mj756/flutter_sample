@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:flutter_sample/Utils/Utility.dart';
+import 'package:flutter_sample/controller/preference_controller.dart';
 import 'package:flutter_sample/model/user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import '../../utils/utility.dart';
-import '../preference_controller.dart';
 class SocialLoginController with ChangeNotifier{
   late FirebaseAuth firebaseAuth;
  // PublicClientApplication? pca;

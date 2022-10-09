@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_sample/controller/preference_controller.dart';
 import 'package:flutter_sample/model/api_response.dart';
+import 'package:flutter_sample/model/extra_functionality/map_model.dart';
 import 'package:flutter_sample/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../model/extra_functionality/map_model.dart';
 
 class ApiController {
   static Future<bool> checkInternetStatus() async {

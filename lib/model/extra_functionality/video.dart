@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sample/controller/extra_functionality/video_controller.dart';
+import 'package:flutter_sample/utils/constants.dart';
 import 'package:flutter_sample/utils/styles.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../utils/constants.dart';
 
 class VideoPlayerView extends StatelessWidget {
   VideoPlayerView({super.key});

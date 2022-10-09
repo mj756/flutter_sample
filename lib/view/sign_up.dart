@@ -1,15 +1,15 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_sample/Utils/Utility.dart';
+import 'package:flutter_sample/controller/sign_up_controller.dart';
+import 'package:flutter_sample/utils/constants.dart';
+import 'package:flutter_sample/utils/styles.dart';
 import 'package:flutter_sample/view/login.dart';
 import 'package:flutter_sample/widget/social_login.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../controller/sign_up_controller.dart';
-import '../utils/constants.dart';
-import '../utils/styles.dart';
-import '../utils/utility.dart';
 
 class SignUpPage extends StatelessWidget {
   SignUpPage({Key? key}) : super(key: key);

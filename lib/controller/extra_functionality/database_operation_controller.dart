@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_sample/controller/extra_functionality/local_storage_controller.dart';
-import '../../model/user.dart';
+import 'package:flutter_sample/model/user.dart';
 
 class DatabaseOperationController extends ChangeNotifier
 {
