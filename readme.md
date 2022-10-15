@@ -1,4 +1,4 @@
-#Getting started
+##Getting started
 1. Change package name of this project using change_app_package_name library (preferred)
 2. Create new project in firebase and add debug sha1 and release sha1 keys.
 3. Add google services.json and key.jks file in android/app folder.
