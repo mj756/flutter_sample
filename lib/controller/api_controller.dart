@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
+
 import 'package:flutter_sample/controller/preference_controller.dart';
 import 'package:flutter_sample/model/api_response.dart';
 import 'package:flutter_sample/model/extra_functionality/map_model.dart';
@@ -30,14 +32,16 @@ class ApiController {
     Map<String, String> header = <String, String>{};
     try {
       header['Authorization'] =
-          PreferenceController.getString(PreferenceController.apiToken);
+          'Bearer ${PreferenceController.getString(PreferenceController.apiToken)}';
       if (method != "GET") {
         header['Content-type'] = "application/json";
       }
       header['Language'] =
           PreferenceController.getString(PreferenceController.prefKeyLanguage);
+      header['timeZone'] = DateTime.now().timeZoneName;
     } catch (e) {}
 
+    log(json.encode(header));
     return header;
   }
 
@@ -52,6 +56,7 @@ class ApiController {
       final response = await client
           .get(Uri.parse(url), headers: geHeader(method: 'GET'))
           .timeout(AppConstants.apiResponseTimeOut);
+      log(response.body);
       if (response.statusCode == 200) {
         apiResponse = ApiResponse.fromJson(json.decode(response.body));
         return apiResponse;
@@ -63,14 +68,12 @@ class ApiController {
     } catch (ex) {
       apiResponse.status = -1;
       apiResponse.message = ex.toString();
-
     }
     return apiResponse;
   }
 
   static Future<ApiResponse> post(String url, String body,
       {bool isLoginApiCall = false}) async {
-
     ApiResponse apiResponse = ApiResponse();
     try {
       if (await checkInternetStatus() == false) {
@@ -81,7 +84,7 @@ class ApiController {
       final response = await client
           .post(Uri.parse(url), body: body, headers: geHeader())
           .timeout(AppConstants.apiResponseTimeOut);
-
+      log(response.body);
       if (response.statusCode == 200) {
         apiResponse = ApiResponse.fromJson(json.decode(response.body));
         return apiResponse;
@@ -93,7 +96,6 @@ class ApiController {
     } catch (ex) {
       apiResponse.status = -1;
       apiResponse.message = ex.toString();
-
     }
     return apiResponse;
   }
@@ -109,6 +111,7 @@ class ApiController {
       final response = await client
           .put(Uri.parse(url), body: body, headers: geHeader())
           .timeout(AppConstants.apiResponseTimeOut);
+      log(response.body);
       if (response.statusCode == 200) {
         apiResponse = ApiResponse.fromJson(json.decode(response.body));
         return apiResponse;
@@ -120,7 +123,6 @@ class ApiController {
     } catch (ex) {
       apiResponse.status = -1;
       apiResponse.message = ex.toString();
-
     }
     return apiResponse;
   }
@@ -136,7 +138,7 @@ class ApiController {
       final response = await client
           .delete(Uri.parse(url), body: body, headers: geHeader())
           .timeout(AppConstants.apiResponseTimeOut);
-
+      log(response.body);
       if (response.statusCode == 200) {
         apiResponse = ApiResponse.fromJson(json.decode(response.body));
         return apiResponse;
@@ -145,20 +147,21 @@ class ApiController {
         apiResponse.data = null;
         apiResponse.message = "Internal server error";
       }
-    } catch (ex) {
-
-    }
+    } catch (ex) {}
     return apiResponse;
   }
 
-  static Future<String> downloadAndSaveFile(String url, String fileName,{bool isPermanentStore=false}) async {
+  static Future<String> downloadAndSaveFile(String url, String fileName,
+      {bool isPermanentStore = false}) async {
     if (await checkInternetStatus() == false) {
       return '';
     }
-   // final Directory directory = await getApplicationDocumentsDirectory();
-   // final Directory? directory = await getExternalStorageDirectory();
-    final Directory? directory =isPermanentStore ? Directory('/storage/emulated/0/Download'):await getExternalStorageDirectory();
-    if(directory==null){
+    // final Directory directory = await getApplicationDocumentsDirectory();
+    // final Directory? directory = await getExternalStorageDirectory();
+    final Directory? directory = isPermanentStore
+        ? Directory('/storage/emulated/0/Download')
+        : await getExternalStorageDirectory();
+    if (directory == null) {
       return '';
     }
 
@@ -183,22 +186,24 @@ class ApiController {
         return apiResponse;
       }
       var request = http.MultipartRequest(method, Uri.parse(url));
+      request.headers.addAll(geHeader());
       if (param != null) {
         request.fields.addAll(param);
       }
-      // String? contentType = lookupMimeType(filepath, headerBytes: [0xFF, 0xD8]);
-      http.MultipartFile multipartFile = http.MultipartFile.fromBytes(
-          'image', File(filepath).readAsBytesSync(),
-          filename: basename(filepath),
-          //  contentType:MediaType(contentType!.substring(0,contentType.indexOf('/')),contentType.substring(contentType.lastIndexOf('/')+1)),
-          contentType: MediaType("image", "jpeg"));
+      //String? contentType = lookupMimeType(filepath, headerBytes: [0xFF, 0xD8]);
+      if (filepath.isNotEmpty) {
+        http.MultipartFile multipartFile = http.MultipartFile.fromBytes(
+            'image', File(filepath).readAsBytesSync(),
+            filename: basename(filepath),
+            //  contentType:MediaType(contentType!.substring(0,contentType.indexOf('/')),contentType.substring(contentType.lastIndexOf('/')+1)),
+            contentType: MediaType("image", "jpeg"));
 
-      request.files.add(multipartFile);
-
+        request.files.add(multipartFile);
+      }
       var res = await request.send();
       final response = await http.Response.fromStream(
           res); //   var responseData = await res.stream.toBytes();
-
+      log(response.body);
       if (response.statusCode == 200) {
         apiResponse = ApiResponse.fromJson(json.decode(response.body));
       } else {
@@ -209,7 +214,6 @@ class ApiController {
     } catch (ex) {
       apiResponse.status = -1;
       apiResponse.message = ex.toString();
-
     }
     return apiResponse;
   }

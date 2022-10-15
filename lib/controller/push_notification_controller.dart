@@ -23,10 +23,26 @@ class PushNotificationController {
                 requestBadgePermission: true,
                 requestAlertPermission: true,
                 onDidReceiveLocalNotification: onDidReceiveLocalNotification)));
+
+        subscribeMessages();
         isInitialized = true;
       }
     }
     await getFCMToken().then((value) {});
+  }
+
+  static void subscribeMessages() {
+    FirebaseMessaging.onBackgroundMessage(onBackgroundMessage);
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      if (message != null) {
+        getInitialMessage(message);
+      }
+    });
+    FirebaseMessaging.onMessage
+        .listen(PushNotificationController.onMessageReceive);
+    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      onMessageOpenedApp(event);
+    });
   }
 
   static Future<String?> getFCMToken() async {
@@ -114,6 +130,7 @@ class PushNotificationController {
     //implement code when click on notification
   }
   static void onMessageOpenedApp(RemoteMessage message) {
+    print('onMessageOpenedApp');
     try {} catch (e) {}
   }
 }

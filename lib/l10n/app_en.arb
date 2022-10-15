@@ -29,5 +29,10 @@
       "label_enter_user_name":"Enter user name",
       "label_name":"Name",
       "label_terms_and_condition":  "By signing up your agree with our terms and conditions",
-       "label_select_language":"Select language"
+       "label_select_language":"Select language",
+       "label_profile":"Profile",
+       "label_gender":"Gender",
+       "label_male":"Male",
+       "label_female":"Female",
+       "label_other":"Other"
 }

@@ -22,12 +22,12 @@ class LoginController with ChangeNotifier {
 
   Future<String> login(String email, String password) async {
     String status = '';
+
     await ApiController.post(
         AppConstants.endpointLogin,
         json.encode({
           'email': email,
           'password': password,
-          'deviceId': 'testing',
           'fcmToken':
               PreferenceController.getString(PreferenceController.fcmToken)
         })).then((response) {
@@ -38,8 +38,12 @@ class LoginController with ChangeNotifier {
             PreferenceController.prefKeyUserPayload, json.encode(user));
         PreferenceController.setBoolean(
             PreferenceController.prefKeyIsLoggedIn, true);
+        PreferenceController.setString(
+            PreferenceController.prefKeyUserId, user.id);
         PreferenceController.setString(PreferenceController.prefKeyLoginType,
             PreferenceController.loginTypeNormal);
+        PreferenceController.setString(
+            PreferenceController.apiToken, user.token);
       } else {
         status = response.message;
       }
@@ -50,13 +54,14 @@ class LoginController with ChangeNotifier {
   Future<String> forgotPassword(String email) async {
     String status = '';
     await ApiController.post(
-        AppConstants.endpointLogin,
+        AppConstants.endpointForGotPassword,
         json.encode({
           'email': email,
         })).then((response) {
       if (response.status == 0) {
+        status = '${response.status}-${response.message}';
       } else {
-        status = response.message;
+        status = '${response.status}-${response.message}';
       }
     });
     return status;

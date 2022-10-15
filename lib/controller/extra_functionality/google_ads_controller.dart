@@ -12,7 +12,13 @@ class AdvertisementController extends ChangeNotifier {
   // late AdWidget adWidget;
   // late AdWidget nativeAdWidget;
 
-  AdvertisementController() {}
+  AdvertisementController() {
+    MobileAds.instance.initialize().then((value) {
+      RequestConfiguration configuration = RequestConfiguration(
+          testDeviceIds: ["79D189AD178449F9A8A6BD36DBB5CA91"]);
+      MobileAds.instance.updateRequestConfiguration(configuration);
+    });
+  }
 
   @override
   void dispose() {
@@ -84,9 +90,7 @@ class AdvertisementController extends ChangeNotifier {
             );
             rewardAd.setImmersiveMode(true);
             rewardAd.show(
-                onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {
-
-            });
+                onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {});
           },
           onAdFailedToLoad: (error) {}),
     );
@@ -112,8 +116,7 @@ class AdvertisementController extends ChangeNotifier {
             );
             rewardedInterstitialAd.setImmersiveMode(true);
             rewardedInterstitialAd.show(
-                onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {
-            });
+                onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {});
           },
           onAdFailedToLoad: (error) {}),
     );

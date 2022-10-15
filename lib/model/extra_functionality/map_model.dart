@@ -15,7 +15,7 @@ class MapResponseResult {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['next_page_token'] = nextPageToken;
-    if (results != null) {
+    if (results.isNotEmpty) {
       data['results'] = results.map((v) => v.toJson()).toList();
     }
     return data;

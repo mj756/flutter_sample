@@ -1,11 +1,11 @@
 import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
-class StorageController extends ChangeNotifier
-{
+class StorageController extends ChangeNotifier {
   static const _databaseName = "flutter.db";
   static const _databaseVersion = 1;
   static Database? database;
@@ -29,11 +29,13 @@ class StorageController extends ChangeNotifier
 
   static String createUserTable() {
     const String tableUser = 'User';
-    const userId = 'Id';
-    const userName = 'Name';
-    const userEmail = 'Email';
-    const userImage = 'ProfileImage';
-    const token = 'Token';
+    const userId = 'id';
+    const userName = 'name';
+    const userEmail = 'email';
+    const userImage = 'profileImage';
+    const token = 'token';
+    const gender = 'gender';
+    const dob = 'dob';
 
     return '''
           CREATE TABLE $tableUser (
@@ -41,26 +43,42 @@ class StorageController extends ChangeNotifier
             $userName TEXT,
             $userEmail TEXT,
             $userImage TEXT,
-            $token TEXT
+            $token TEXT,
+            $gender TEXT,
+            $dob TEXT
           )
           ''';
   }
 
-  static Future<int> insertData(String tableName, Map<String, dynamic> data) async {
+  static Future<int> insertData(
+      String tableName, Map<String, dynamic> data) async {
     return await database!
         .insert(tableName, data, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  static Future<int> updateUser(String tableName, Map<String, dynamic> data, String id) async {
-    return await database!.rawUpdate(
-        'UPDATE $tableName SET Name = ?, Email = ? WHERE Id = ?',
-        [data['Name'], data['Email'], id]);
+  static Future<int> updateUser(
+      String tableName, Map<String, dynamic> data, String id) async {
+    String query = "UPDATE $tableName SET ";
+    List<dynamic> values = List.empty(growable: true);
+    data.forEach((key, value) {
+      query = query + '$key=?,';
+      values.add(value);
+    });
+    query = query.substring(0, query.length - 1);
+    query = query + " where id=?";
+    values.add(data['id']);
+    return await database!.rawUpdate(query, values);
   }
 
-  static Future<int> deleteData(String tableName,int id) async {
-    return await database!.delete( tableName,where: "Id = ?",whereArgs: [id]);
+  static Future<int> deleteData(String tableName, int id) async {
+    return await database!.delete(tableName, where: "id = ?", whereArgs: [id]);
   }
-  static Future<List<Map>> getData(String tableName, int id) async {
+
+  static Future<void> deleteAllData(String tableName) async {
+    await database!.rawQuery('delete from $tableName');
+  }
+
+  static Future<List<Map>> getData(String tableName) async {
     return await database!.rawQuery('SELECT * FROM $tableName');
   }
 }

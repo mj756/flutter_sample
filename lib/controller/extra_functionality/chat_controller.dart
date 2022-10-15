@@ -40,7 +40,6 @@ class ChatController with ChangeNotifier {
         Map<String, dynamic> jsonData = Map<String, dynamic>.from(
             json.decode(event.message.data['notificationPayload']));
         ChatMessage temp = ChatMessage.fromJson(jsonData);
-
         types.TextMessage msg1 = types.TextMessage(
             author: types.User(
                 firstName: temp.senderName,
@@ -60,7 +59,8 @@ class ChatController with ChangeNotifier {
         String fileName = temp.media!.location
             .substring(temp.media!.location.lastIndexOf('/') + 1);
         // fileName = fileName.substring(0, fileName.lastIndexOf('.'));
-        ApiController.downloadAndSaveFile(temp.media!.location, fileName,isPermanentStore: true)
+        ApiController.downloadAndSaveFile(temp.media!.location, fileName,
+                isPermanentStore: true)
             .then((path) async {
           File file = File(path);
           final bytes = await file.readAsBytes();
@@ -70,8 +70,8 @@ class ChatController with ChangeNotifier {
                 id: temp.senderId.toString(),
                 firstName: temp.senderName,
                 imageUrl: temp.imageUrl),
-            createdAt: DateTime.now().toUtc().millisecondsSinceEpoch,
-            id: Utility.getRandomString(),
+            createdAt: temp.insertedOn,
+            id: temp.id.toString(),
             height: image.height.toDouble(),
             name: file.path,
             size: bytes.length,
@@ -90,7 +90,8 @@ class ChatController with ChangeNotifier {
         String fileName = temp.media!.location
             .substring(temp.media!.location.lastIndexOf('/') + 1);
         // fileName = fileName.substring(0, fileName.lastIndexOf('.'));
-        ApiController.downloadAndSaveFile(temp.media!.location, fileName,isPermanentStore: true)
+        ApiController.downloadAndSaveFile(temp.media!.location, fileName,
+                isPermanentStore: true)
             .then((path) async {
           File file = File(path);
           final message = types.FileMessage(
@@ -99,7 +100,7 @@ class ChatController with ChangeNotifier {
                 firstName: temp.senderName,
                 imageUrl: temp.imageUrl),
             type: MessageType.file,
-            createdAt: DateTime.now().millisecondsSinceEpoch,
+            createdAt: temp.insertedOn,
             id: temp.id.toString(),
             mimeType: lookupMimeType(path),
             name: fileName,
@@ -113,7 +114,6 @@ class ChatController with ChangeNotifier {
     });
     getAll();
   }
-
   void send(PartialText message) async {
     final msg1 = types.TextMessage(
         author: types.User(
@@ -123,29 +123,35 @@ class ChatController with ChangeNotifier {
             imageUrl: _currentUser.profileImage),
         id: Utility.getRandomString(),
         text: message.text,
-        createdAt: ChatMessage.getEpochTime(DateTime.now()));
+        createdAt: 10000);
 
     ChatMessage msg = ChatMessage.parseFromMessage(
-        _currentUser.id, _otherUser.id, msg1,
-        isUtcTime: true);
+      _currentUser.id,
+      _otherUser.id,
+      msg1,
+    );
     msg.senderName = _currentUser.name;
     msg.imageUrl = _currentUser.profileImage;
-    msg.insertedOn =
-        ChatMessage.getEpochTime(DateTime.now().toUtc(), needToConvert: false);
-    await ApiController.post(
-        AppConstants.endpointSendMessage, json.encode(msg)).then((response) {
-       print(response.status);
-          if(response.status==0){
-         messages.insert(0,msg1);
-         notifyListeners();
-       }
+    await ApiController.post(AppConstants.endpointSendMessage, json.encode(msg))
+        .then((response) {
+      if (response.status == 0) {
+        Map<String, dynamic> jsonData =
+            Map<String, dynamic>.from(json.decode(json.encode(response.data)));
+
+        ChatMessage temp = ChatMessage.fromJson(jsonData);
+        messages.insert(
+            0,
+            types.TextMessage(
+                author: types.User(
+                    firstName: _currentUser.name,
+                    id: _currentUser.id.toString(),
+                    imageUrl: _currentUser.profileImage),
+                id: temp.id.toString(),
+                text: message.text,
+                createdAt: temp.insertedOn));
+        notifyListeners();
+      }
     });
-    /*   await ApiController.sendPushChatMessage(msg.toJson(), _otherUser.token)
-        .then((value) async {
-      await addData(_tableChat, msg.toJson());
-      messages.insert(0, msg1);
-      notifyListeners();
-    });*/
   }
 
   void handlePreviewDataFetched(
@@ -179,7 +185,8 @@ class ChatController with ChangeNotifier {
           final result = json.decode(json.encode(response.data));
 
           for (int i = 0; i < result.length; i++) {
-
+            print(
+                'date value=>${json.decode(json.encode(result[i]))['insertedOn']}');
             ChatMessage temp =
                 ChatMessage.fromJson(json.decode(json.encode(result[i])));
             if (temp.messageType == AppConstants.messageTypeText) {
@@ -188,7 +195,7 @@ class ChatController with ChangeNotifier {
                       firstName: temp.senderName,
                       id: temp.senderId.toString(),
                       imageUrl: temp.imageUrl),
-                  id: Utility.getRandomString(),
+                  id: temp.id.toString(),
                   text: temp.message!,
                   createdAt: temp.insertedOn);
               messages.insert(0, msg1);
@@ -228,9 +235,7 @@ class ChatController with ChangeNotifier {
         messages.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
       } else {}
       */
-    } catch (e) {
-
-    }
+    } catch (e) {}
     notifyListeners();
   }
 
@@ -291,10 +296,8 @@ class ChatController with ChangeNotifier {
   }
 
   Future<void> _handleFileSelection() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.any,
-      allowCompression: false
-    );
+    final result = await FilePicker.platform
+        .pickFiles(type: FileType.any, allowCompression: false);
 
     if (result != null && result.files.single.path != null) {
       final message = types.FileMessage(
@@ -347,16 +350,14 @@ class ChatController with ChangeNotifier {
   }
 
   Future<void> _handleImageSelection(BuildContext context) async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.image,
-      allowCompression: false
-    );
+    FilePickerResult? result = await FilePicker.platform
+        .pickFiles(type: FileType.image, allowCompression: false);
 
     if (result != null) {
       File file = File(result.files.single.path!);
 
-      if ((await file.length() / 1024) > 1024) {
-        Utility.showSnackBar(context, 'File size must be less than 1mb');
+      if ((await file.length() / 1024) > 500) {
+        Utility.showSnackBar(context, 'File size must be less than 500kb');
         return;
       }
 
@@ -410,13 +411,16 @@ class ChatController with ChangeNotifier {
     }
   }
 
-
-  Future<void> downloadFile(BuildContext context,String msgId) async{
-    final fileUrl=json.decode(json.encode(messages[messages.indexWhere((element) => element.id==msgId)]))['uri'].toString();
-    await ApiController.downloadAndSaveFile(fileUrl,fileUrl.substring(fileUrl.lastIndexOf('/')+1),isPermanentStore: true).then((value) {
-      Utility.showSnackBar(context, 'file downloaded',isSuccess: true);
+  Future<void> downloadFile(BuildContext context, String msgId) async {
+    final fileUrl = json
+        .decode(json.encode(messages[
+            messages.indexWhere((element) => element.id == msgId)]))['uri']
+        .toString();
+    await ApiController.downloadAndSaveFile(
+            fileUrl, fileUrl.substring(fileUrl.lastIndexOf('/') + 1),
+            isPermanentStore: true)
+        .then((value) {
+      Utility.showSnackBar(context, 'file downloaded', isSuccess: true);
     });
-
   }
-
 }

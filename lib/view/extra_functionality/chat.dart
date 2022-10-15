@@ -56,42 +56,59 @@ class ChatRoom extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Chat(
-                      showUserAvatars: true,
-                      dateFormat: DateFormat('dd-MM-yyyy'),
+                      inputOptions: InputOptions(
+                          sendButtonVisibilityMode:
+                              SendButtonVisibilityMode.always),
+                      showUserAvatars: false,
+                      dateFormat: DateFormat('dd-MM-yyyy hh:mm:ss'),
                       theme: DefaultChatTheme(
+                          inputTextColor: Colors.black,
+                          sendButtonIcon: Icon(
+                            Icons.send,
+                            size: 25,
+                            color: Colors.green,
+                          ),
+                          attachmentButtonIcon: Icon(
+                            Icons.perm_media,
+                            size: 25,
+                            color: Colors.green,
+                          ),
                           inputMargin: const EdgeInsets.all(5),
                           inputPadding: const EdgeInsets.all(10),
                           inputBorderRadius:
                               const BorderRadius.all(Radius.circular(5)),
-                          inputBackgroundColor: Colors.blueAccent,
-                          primaryColor: Colors.green,
-                          secondaryColor: Colors.purple,
-                          backgroundColor: Colors.white,
+                          inputBackgroundColor: Colors.white,
+                          primaryColor: Colors.lightGreen,
+                          secondaryColor: Colors.white,
+                          backgroundColor: Color(0XFF191919),
                           messageBorderRadius: 3.0,
                           receivedMessageBodyTextStyle:
                               CustomStyles.customTextStyle(
-                                  defaultColor: AppConstants.whiteColor, isNormalFont: true),
+                                  defaultColor: AppConstants.blackColor,
+                                  isNormalFont: true),
                           sentMessageBodyTextStyle:
                               CustomStyles.customTextStyle(
-                                  defaultColor: AppConstants.blackColor, isNormalFont: true),
-                          inputTextStyle:
-                              CustomStyles.customTextStyle(isLargeFont: true),
+                                  defaultColor: AppConstants.blackColor,
+                                  isNormalFont: true),
+                          inputTextStyle: CustomStyles.customTextStyle(
+                              defaultColor: Colors.red, isLargeFont: true),
                           messageInsetsHorizontal: 10,
                           messageInsetsVertical: 10),
                       textMessageOptions:
                           TextMessageOptions(onLinkPressed: (value) {}),
-                      onMessageTap: (context, message)async{
-                        if(message.type==MessageType.image || message.type==MessageType.file)
-                       await context.read<ChatController>().downloadFile(context,message.id);
+                      onMessageTap: (context, message) async {
+                        if (message.type == MessageType.image ||
+                            message.type == MessageType.file)
+                          await context
+                              .read<ChatController>()
+                              .downloadFile(context, message.id);
                       },
-                      onMessageLongPress: (context, message) {
-
-                      },
+                      onMessageLongPress: (context, message) {},
                       l10n: const ChatL10nEn(
-                        inputPlaceholder: "message",
+                        inputPlaceholder: "",
                         emptyChatPlaceholder: "",
                         fileButtonAccessibilityLabel: "",
-                        sendButtonAccessibilityLabel: "",
+                        sendButtonAccessibilityLabel: "Send",
                         attachmentButtonAccessibilityLabel: "",
                       ),
                       messages: context.watch<ChatController>().messages,

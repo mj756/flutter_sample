@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sample/controller/extra_functionality/google_ads_controller.dart';
 import 'package:provider/provider.dart';
 
+<<<<<<< Updated upstream
 
 
+=======
+>>>>>>> Stashed changes
 class BannerAdPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

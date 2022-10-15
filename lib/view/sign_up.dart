@@ -10,6 +10,14 @@ import 'package:flutter_sample/widget/social_login.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+<<<<<<< Updated upstream
+=======
+import '../controller/sign_up_controller.dart';
+import '../utils/constants.dart';
+import '../utils/styles.dart';
+import '../utils/utility.dart';
+import '../widget/progress_indicator.dart';
+>>>>>>> Stashed changes
 
 class SignUpPage extends StatelessWidget {
   SignUpPage({Key? key}) : super(key: key);
@@ -21,9 +29,6 @@ class SignUpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _emailController.text = 'demo@gmail.com';
-    _passwordController.text = '1234567890';
-    _nameController.text = 'Milan';
     return ChangeNotifierProvider(
         create: (context) => SignUpController(),
         lazy: false,
@@ -36,7 +41,10 @@ class SignUpPage extends StatelessWidget {
                     gradient: const LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: [AppConstants.whiteColor,AppConstants. themeColor],
+                      colors: [
+                        AppConstants.whiteColor,
+                        AppConstants.themeColor
+                      ],
                     ),
                     borderRadius: BorderRadius.all(Radius.circular(2.w))),
                 child: Column(
@@ -64,7 +72,8 @@ class SignUpPage extends StatelessWidget {
                                         .label_registration,
                                     style: CustomStyles.customTextStyle(
                                         isBold: true,
-                                        defaultColor: AppConstants.screenBackgroundColor,
+                                        defaultColor:
+                                            AppConstants.screenBackgroundColor,
                                         isExtraLargeFont: true),
                                   ),
                                   SizedBox(height: 20.h),
@@ -117,12 +126,19 @@ class SignUpPage extends StatelessWidget {
                                         .isPasswordVisible,
                                     decoration: InputDecoration(
                                       prefixIcon: const Icon(Icons.lock),
-                                      suffixIcon: Icon(context
-                                                  .watch<SignUpController>()
-                                                  .isPasswordVisible ==
-                                              true
-                                          ? Icons.visibility
-                                          : Icons.visibility_off),
+                                      suffixIcon: GestureDetector(
+                                        onTap: () =>
+                                            Provider.of<SignUpController>(
+                                                    context,
+                                                    listen: false)
+                                                .changePasswordVisibility(),
+                                        child: Icon(context
+                                                    .watch<SignUpController>()
+                                                    .isPasswordVisible ==
+                                                true
+                                            ? Icons.visibility
+                                            : Icons.visibility_off),
+                                      ),
                                       hintText: AppLocalizations.of(context)!
                                           .title_enter_password,
                                       label: Text(AppLocalizations.of(context)!
@@ -156,6 +172,9 @@ class SignUpPage extends StatelessWidget {
                                                   AppLocalizations.of(context)!
                                                       .message_no_internet_connection);
                                             } else {
+                                              LoadingProgressDialog dialog =
+                                                  Utility.showLoaderDialog(
+                                                      context);
                                               await Provider.of<
                                                           SignUpController>(
                                                       context,
@@ -165,6 +184,7 @@ class SignUpPage extends StatelessWidget {
                                                       _emailController.text,
                                                       _passwordController.text)
                                                   .then((value) {
+                                                dialog.hideDialog();
                                                 if (value.isEmpty) {
                                                   Navigator
                                                       .pushReplacementNamed(
@@ -183,7 +203,8 @@ class SignUpPage extends StatelessWidget {
                                             .label_sign_up,
                                         style: CustomStyles.customTextStyle(
                                             isLargeFont: true,
-                                            defaultColor: AppConstants.whiteColor,
+                                            defaultColor:
+                                                AppConstants.whiteColor,
                                             isBold: true),
                                       )),
                                   const SocialLogin(),
@@ -222,7 +243,8 @@ class SignUpPage extends StatelessWidget {
                                                   style: CustomStyles
                                                       .customTextStyle(
                                                           defaultColor:
-                                                          AppConstants.themeColor,
+                                                              AppConstants
+                                                                  .themeColor,
                                                           isLargeFont: true,
                                                           isBold: true),
                                                   recognizer:

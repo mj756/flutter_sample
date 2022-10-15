@@ -9,6 +9,12 @@ import 'package:flutter_sample/widget/social_login.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+<<<<<<< Updated upstream
+=======
+import '../utils/constants.dart';
+import '../utils/utility.dart';
+import '../widget/progress_indicator.dart';
+>>>>>>> Stashed changes
 
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -18,11 +24,8 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _emailController.text = 'iliptamflutter@gmail.com';
-    _passwordController.text = '1234567890';
-
     return ChangeNotifierProvider(
-        create: (context) => LoginController(),
+        create: (_) => LoginController(),
         lazy: false,
         builder: (context, child) {
           return Scaffold(
@@ -34,7 +37,10 @@ class LoginPage extends StatelessWidget {
                     gradient: const LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: [AppConstants.whiteColor, AppConstants.themeColor],
+                      colors: [
+                        AppConstants.whiteColor,
+                        AppConstants.themeColor
+                      ],
                     ),
                     borderRadius: BorderRadius.all(Radius.circular(2.w))),
                 child: Column(
@@ -71,7 +77,8 @@ class LoginPage extends StatelessWidget {
                                     'Login',
                                     style: CustomStyles.customTextStyle(
                                         isBold: true,
-                                        defaultColor: AppConstants.screenBackgroundColor,
+                                        defaultColor:
+                                            AppConstants.screenBackgroundColor,
                                         isExtraLargeFont: true),
                                   ),
                                   SizedBox(height: 20.h),
@@ -145,8 +152,8 @@ class LoginPage extends StatelessWidget {
                                           AppLocalizations.of(context)!
                                               .label_forgot_password,
                                           style: CustomStyles.customTextStyle(
-                                              defaultColor:
-                                              AppConstants.screenBackgroundColor,
+                                              defaultColor: AppConstants
+                                                  .screenBackgroundColor,
                                               isBold: true)),
                                     ),
                                   ),
@@ -166,7 +173,9 @@ class LoginPage extends StatelessWidget {
                                                   AppLocalizations.of(context)!
                                                       .message_no_internet_connection);
                                             } else {
-                                              //   LoadingProgressDialog dialog =Utility.showLoaderDialog(context);
+                                              LoadingProgressDialog dialog =
+                                                  Utility.showLoaderDialog(
+                                                      context);
                                               await Provider.of<
                                                           LoginController>(
                                                       context,
@@ -174,7 +183,7 @@ class LoginPage extends StatelessWidget {
                                                   .login(_emailController.text,
                                                       _passwordController.text)
                                                   .then((value) {
-                                                // dialog.hideDialog();
+                                                dialog.hideDialog();
                                                 if (value.isEmpty) {
                                                   Navigator
                                                       .pushReplacementNamed(
@@ -193,7 +202,8 @@ class LoginPage extends StatelessWidget {
                                             .label_login,
                                         style: CustomStyles.customTextStyle(
                                             isLargeFont: true,
-                                            defaultColor: AppConstants.whiteColor,
+                                            defaultColor:
+                                                AppConstants.whiteColor,
                                             isBold: true),
                                       )),
                                   const Expanded(
@@ -255,17 +265,18 @@ class LoginPage extends StatelessWidget {
         });
   }
 
-  Future<void> _showMyDialog(BuildContext context) async {
+  Future<void> _showMyDialog(BuildContext mainContext) async {
     final TextEditingController forgotPasswordController =
         TextEditingController();
     return showDialog<void>(
-      context: context,
+      context: mainContext,
       barrierDismissible: false,
-      builder: (BuildContext context) {
+      builder: (context) {
         return AlertDialog(
           contentPadding: EdgeInsets.all(10.w),
           title: Text(AppLocalizations.of(context)!.label_forgot_password),
           content: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
             child: ListBody(
               children: <Widget>[
                 Text(AppLocalizations.of(context)!
@@ -302,14 +313,25 @@ class LoginPage extends StatelessWidget {
                                 AppLocalizations.of(context)!
                                     .message_no_internet_connection);
                           } else {
-                            await Provider.of<LoginController>(context,
+                            await Provider.of<LoginController>(mainContext,
                                     listen: false)
                                 .forgotPassword(
-                              _emailController.text,
+                              forgotPasswordController.text,
                             )
                                 .then((value) {
-                              if (value.isEmpty) {
-                                Navigator.pop(context);
+                              if (value.isNotEmpty) {
+                                Utility.showSnackBar(
+                                    context,
+                                    value.startsWith('0')
+                                        ? 'Password is sent to your email address'
+                                        : value
+                                            .substring(value.indexOf('-') + 1),
+                                    isSuccess: value.startsWith('0'));
+                                if (value.startsWith('0'))
+                                  Future.delayed(const Duration(seconds: 3))
+                                      .then((value) {
+                                    Navigator.pop(context);
+                                  });
                               } else {
                                 Utility.showSnackBar(context, value);
                               }

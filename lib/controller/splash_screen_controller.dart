@@ -39,19 +39,19 @@ class SplashScreenController with ChangeNotifier {
           PreferenceController.getString(PreferenceController.prefKeyLanguage);
       context
           .read<AppSettingController>()
-          .changeLanguage(language.isEmpty ? 'es' : language);
+          .changeLanguage(language.isEmpty ? 'en' : language);
     });
     await StorageController.initDatabase();
     await ApiController.checkInternetStatus().then((value) async {
       if (value == true) {
         await FirebaseController().initialize();
 
-       final FirebaseRemoteConfig config= await FirebaseRemoteConfig.instance;
-       await config.fetchAndActivate();
-       String baseAddress=await config.getString('apiAddress');
-       if(baseAddress.isNotEmpty){
-         AppConstants.baseAddress=baseAddress;
-       }
+        final FirebaseRemoteConfig config = await FirebaseRemoteConfig.instance;
+        await config.fetchAndActivate();
+        String baseAddress = await config.getString('apiAddress');
+        if (baseAddress.isNotEmpty) {
+          AppConstants.baseAddress = baseAddress;
+        }
         await PushNotificationController.initialize();
         if (PreferenceController.getString(PreferenceController.fcmToken)
             .isEmpty) {

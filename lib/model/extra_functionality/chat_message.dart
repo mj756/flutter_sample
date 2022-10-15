@@ -65,8 +65,10 @@ class ChatMessage {
   }
 
   static ChatMessage parseFromMessage(
-      String senderId, String receiverId, types.Message message,
-      {bool isUtcTime = true}) {
+    String senderId,
+    String receiverId,
+    types.Message message,
+  ) {
     ChatMessage chatMessage = ChatMessage();
 
     chatMessage.id = message.id;
@@ -150,7 +152,6 @@ class ChatMessage {
   }
 
   ChatMessage.fromJson(Map<String, dynamic> json, {bool isUtcTime = true}) {
-
     id = (json['id'] as int).toString();
 
     senderId = (json['senderId'] as int).toString();
@@ -186,17 +187,13 @@ class ChatMessage {
     return test;
   }
 
-  static int getEpochTime(DateTime date, {bool needToConvert = true}) {
-    if (needToConvert) {
-      int value = date.isUtc
-          ? (date.toLocal().millisecondsSinceEpoch)
-          : (date.millisecondsSinceEpoch);
-      return value;
-    }
-    return date.millisecondsSinceEpoch;
-  }
+  /* static int getEpochToDate(int epochTime, {bool isUtc = true}) {
+    print(epochTime);
+    final date = DateTime.fromMillisecondsSinceEpoch(epochTime, isUtc: false);
+    print(date);
 
-  static DateTime getEpochToDate(int epochTime, bool isUtc) {
-    return DateTime.fromMillisecondsSinceEpoch(epochTime * 1000, isUtc: isUtc);
-  }
+    return date.isUtc
+        ? (date.toLocal().millisecondsSinceEpoch)
+        : (date.millisecondsSinceEpoch);
+  }*/
 }

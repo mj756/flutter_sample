@@ -1,31 +1,34 @@
 import 'package:shared_preferences/shared_preferences.dart';
-class PreferenceController
-{
+
+class PreferenceController {
   static SharedPreferences? prefs;
-  static const String prefKeyUserPayload="LoggedInUser";
+  static const String prefKeyUserPayload = "LoggedInUser";
   static const String prefKeyIsLoggedIn = "IsLogin";
   static const String prefKeyUserId = "UserId";
-  static const String prefKeyLoginType = "UserId";
+  static const String prefKeyLoginType = "LoginType";
 
   static const String prefKeyLanguage = "SelectedLanguage";
-  static const loginTypeNormal='Normal';
-  static const loginTypeGoogle='Google';
-  static const loginTypeApple='Apple';
-  static const loginTypeFaceBook='FaceBook';
-  static const loginTypeMicrosoft='Microsoft';
-  static const apiToken='apiToken';
-  static const fcmToken='fcmToken';
+  static const loginTypeNormal = 'Normal';
+  static const loginTypeGoogle = 'Google';
+  static const loginTypeApple = 'Apple';
+  static const loginTypeFaceBook = 'FaceBook';
+  static const loginTypeMicrosoft = 'Microsoft';
+  static const apiToken = 'apiToken';
+  static const fcmToken = 'fcmToken';
 
   static Future initPreference() async {
     prefs = await SharedPreferences.getInstance();
   }
 
-  static void clearLoginCredential()
-  {
-    if(prefs!=null)
-      {
-        prefs!.clear();
-      }
+  static void clearLoginCredential() {
+    if (prefs != null) {
+      prefs!.remove(prefKeyUserPayload);
+      prefs!.remove(prefKeyIsLoggedIn);
+      prefs!.remove(prefKeyUserId);
+      prefs!.remove(apiToken);
+      prefs!.remove(prefKeyLanguage);
+      prefs!.remove(prefKeyLoginType);
+    }
   }
 
   static bool contains(String key) {
@@ -69,5 +72,4 @@ class PreferenceController
       await prefs?.remove(key);
     }
   }
-
 }

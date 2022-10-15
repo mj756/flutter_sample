@@ -39,6 +39,10 @@ class SignUpController with ChangeNotifier {
             PreferenceController.prefKeyIsLoggedIn, true);
         PreferenceController.setString(PreferenceController.prefKeyLoginType,
             PreferenceController.loginTypeNormal);
+        PreferenceController.setString(
+            PreferenceController.prefKeyUserId, user.id);
+        PreferenceController.setString(
+            PreferenceController.apiToken, user.token);
         status = '';
       } else {
         status = response.message;

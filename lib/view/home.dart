@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   static const platform = MethodChannel('samples.flutter.dev/permission');
-
   const HomePage({Key? key}) : super(key: key);
 
   @override
@@ -62,6 +61,14 @@ class HomePage extends StatelessWidget {
                   ),
                   ListTile(
                     onTap: () async {
+                      await Navigator.pushNamed(context, '/firestorage',
+                          arguments: {'title': 'Firestore Database'});
+                    },
+                    leading: const Icon(Icons.data_object),
+                    title: const Text('FireStore Database'),
+                  ),
+                  ListTile(
+                    onTap: () async {
                       await Navigator.pushNamed(context, '/video',
                           arguments: {'title': 'Video player'});
                     },
@@ -83,6 +90,14 @@ class HomePage extends StatelessWidget {
                     },
                     leading: const Icon(Icons.library_music_sharp),
                     title: const Text('Audio player'),
+                  ),
+                  ListTile(
+                    onTap: () async {
+                      await Navigator.pushNamed(context, '/payment',
+                          arguments: {'title': 'Stripe payment'});
+                    },
+                    leading: const Icon(Icons.library_music_sharp),
+                    title: const Text('Stripe payment player'),
                   )
                 ],
               ),

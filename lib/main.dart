@@ -5,23 +5,23 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_sample/controller/app_setting_controller.dart';
 import 'package:flutter_sample/utils/constants.dart';
-import 'package:flutter_sample/view/extra_functionality/audio_player.dart';
 import 'package:flutter_sample/view/extra_functionality/chat_user_list.dart';
 import 'package:flutter_sample/view/extra_functionality/database_operation.dart';
+import 'package:flutter_sample/view/extra_functionality/firestore_database.dart';
 import 'package:flutter_sample/view/extra_functionality/googlead_view.dart';
 import 'package:flutter_sample/view/extra_functionality/map.dart';
 import 'package:flutter_sample/view/home.dart';
 import 'package:flutter_sample/view/language_selection.dart';
 import 'package:flutter_sample/view/login.dart';
+import 'package:flutter_sample/view/profile.dart';
 import 'package:flutter_sample/view/sign_up.dart';
 import 'package:flutter_sample/view/splash_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
 import 'controller/firebase_controller.dart';
 import 'controller/push_notification_controller.dart';
-import 'model/extra_functionality/video.dart';
+import 'view/extra_functionality/video.dart';
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await FirebaseController().initialize();
@@ -32,14 +32,11 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FirebaseController().initialize();
-  await MobileAds.instance.initialize();
-  RequestConfiguration configuration =
-      RequestConfiguration(testDeviceIds: ["79D189AD178449F9A8A6BD36DBB5CA91"]);
-  MobileAds.instance.updateRequestConfiguration(configuration);
   await PushNotificationController.initialize();
-  FirebaseMessaging.onBackgroundMessage(
+  /*FirebaseMessaging.onBackgroundMessage(
       PushNotificationController.onBackgroundMessage);
-  FirebaseMessaging.instance.getInitialMessage().then((message) {
+
+   FirebaseMessaging.instance.getInitialMessage().then((message) {
     if (message != null) {
       PushNotificationController.getInitialMessage(message);
     }
@@ -49,7 +46,7 @@ void main() async {
 
   FirebaseMessaging.onMessageOpenedApp.listen((event) {
     PushNotificationController.onMessageOpenedApp(event);
-  });
+  });*/
 
   runApp(
     const MyApp(),
@@ -99,15 +96,16 @@ class MyApp extends StatelessWidget {
                   routes: {
                     '/splash': (context) => const SplashScreen(),
                     '/login': (context) => LoginPage(),
+                    '/profile': (context) => ProfileScreen(),
                     '/signup': (context) => SignUpPage(),
                     '/home': (context) => HomePage(),
                     '/language': (context) => const SelectLanguage(),
                     '/map': (context) => GoogleView(),
                     '/chatting': (context) => const ChatUserList(),
                     '/database': (context) => DatabaseOperation(),
+                    '/firestorage': (context) => FirebaseDatabaseOperation(),
                     '/video': (context) => VideoPlayerView(),
                     '/advertisement': (context) => BannerAdPage(),
-                    '/audio': (context) => AudioDemo(),
                   },
                 );
               });

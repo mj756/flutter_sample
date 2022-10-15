@@ -28,6 +28,7 @@ class AppUser {
     token = json['token'] as String;
     profileImage = json['profileImage'] as String;
   }
+
   static List<AppUser> fromJsonList(Map<String, dynamic> jsonData) {
     List<AppUser> users = List.empty(growable: true);
     for (int i = 0; i < jsonData.length; i++) {

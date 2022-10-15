@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_sample/controller/api_controller.dart';
 import 'package:flutter_sample/controller/firebase_controller.dart';
 import 'package:flutter_sample/controller/preference_controller.dart';
 import 'package:flutter_sample/model/user.dart';
+import 'package:flutter_sample/utils/constants.dart';
 import 'package:flutter_sample/view/login.dart';
 import 'package:flutter_sample/view/setting.dart';
 
@@ -28,16 +30,7 @@ class SideBar extends StatelessWidget {
               )),
           ListTile(
             onTap: () async {
-              await Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const Setting()));
-            },
-            leading: const Icon(
-              Icons.home,
-            ),
-            title: Text(AppLocalizations.of(context)!.home),
-          ),
-          ListTile(
-            onTap: () async {
+              Navigator.pop(context);
               await Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => const Setting()));
             },
@@ -46,12 +39,33 @@ class SideBar extends StatelessWidget {
           ),
           ListTile(
             onTap: () async {
+              Navigator.pop(context);
+              await Navigator.of(context).pushNamed('/profile');
+            },
+            leading: const Icon(Icons.settings),
+            title: Text(AppLocalizations.of(context)!.label_profile),
+          ),
+          ListTile(
+            onTap: () async {
               if (PreferenceController.getString(
                       PreferenceController.prefKeyLoginType) ==
                   PreferenceController.loginTypeNormal) {
-                PreferenceController.clearLoginCredential();
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => LoginPage()));
+                print(AppConstants.endpointLogout);
+                await ApiController.post(
+                    AppConstants.endpointLogout,
+                    json.encode({
+                      'id': PreferenceController.getString(
+                          PreferenceController.prefKeyUserId),
+                      'fcmToken': PreferenceController.getString(
+                          PreferenceController.fcmToken)
+                    })).then((response) {
+                  print(response.message);
+                  if (response.status != 0) {
+                    PreferenceController.clearLoginCredential();
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => LoginPage()));
+                  }
+                });
               } else {
                 await FirebaseController().logOut().then((value) {
                   if (value == true) {
