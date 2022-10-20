@@ -17,6 +17,7 @@ import 'package:flutter_sample/view/profile.dart';
 import 'package:flutter_sample/view/sign_up.dart';
 import 'package:flutter_sample/view/splash_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'controller/firebase_controller.dart';
@@ -83,10 +84,13 @@ class MyApp extends StatelessWidget {
                     GlobalCupertinoLocalizations.delegate,
                   ],
                   theme: ThemeData(
-                    fontFamily: 'Lato',
+                    // fontFamily: 'Lato',
                     primarySwatch: AppConstants.themeColor,
                     visualDensity: VisualDensity.adaptivePlatformDensity,
-                    textTheme: Theme.of(context).textTheme,
+                    // textTheme: Theme.of(context).textTheme,
+                    textTheme: GoogleFonts.latoTextTheme(
+                      Theme.of(context).textTheme,
+                    ),
                     iconTheme: const IconThemeData(
                       color: AppConstants.themeColor,
                       size: 20,

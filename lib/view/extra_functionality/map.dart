@@ -5,10 +5,6 @@ import 'package:flutter_sample/utils/styles.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 class GoogleView extends StatelessWidget {
   final TextEditingController addressController = TextEditingController();
 

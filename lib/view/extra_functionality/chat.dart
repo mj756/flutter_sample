@@ -11,7 +11,6 @@ import 'package:flutter_sample/utils/styles.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-
 class ChatRoom extends StatelessWidget {
   final AppUser otherUser;
 
@@ -112,7 +111,6 @@ class ChatRoom extends StatelessWidget {
                         attachmentButtonAccessibilityLabel: "",
                       ),
                       messages: context.watch<ChatController>().messages,
-                      isTextMessageTextSelectable: true,
                       onAttachmentPressed: () => context
                           .read<ChatController>()
                           .handleAttachmentPressed(context),

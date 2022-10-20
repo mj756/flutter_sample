@@ -185,8 +185,6 @@ class ChatController with ChangeNotifier {
           final result = json.decode(json.encode(response.data));
 
           for (int i = 0; i < result.length; i++) {
-            print(
-                'date value=>${json.decode(json.encode(result[i]))['insertedOn']}');
             ChatMessage temp =
                 ChatMessage.fromJson(json.decode(json.encode(result[i])));
             if (temp.messageType == AppConstants.messageTypeText) {

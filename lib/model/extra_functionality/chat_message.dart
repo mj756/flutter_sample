@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:flutter_sample/Utils/Utility.dart';
 import 'package:flutter_sample/utils/constants.dart';
 import 'package:mime/mime.dart';
 
@@ -160,7 +159,8 @@ class ChatMessage {
     receiverId = (json['receiverId'] as int).toString();
     messageType = json['messageType'] as String;
     status = json['status'] as String;
-    message = Utility.utf8Decode(json['message'] as String?);
+    // message = Utility.utf8Decode(json['message'] as String?);
+    message = json['message'] as String;
     insertedOn = json['insertedOn'] as int;
     isDelivered = true;
     isRead = true;

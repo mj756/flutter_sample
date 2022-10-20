@@ -34,12 +34,17 @@ class FirebaseStorageController extends ChangeNotifier {
         .get();
     final List<DocumentSnapshot> documents = data.docs;
     if (documents.isNotEmpty) {
-      for (int i = 0; i < documents.length; i++) {
+      users.addAll(documents
+          .map<AppUser>((e) =>
+              AppUser.fromJson(Map<String, dynamic>.from(e.data() as Map))
+                ..id = e.id)
+          .toList());
+      /* for (int i = 0; i < documents.length; i++) {
         AppUser temp =
             AppUser.fromJson(json.decode(json.encode(documents[i].data())));
         temp.id = documents[i].id;
         users.add(temp);
-      }
+      }*/
     }
   }
 

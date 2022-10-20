@@ -6,7 +6,6 @@ import 'package:flutter_sample/widget/app_exit_dialog.dart';
 import 'package:flutter_sample/widget/drawer.dart';
 import 'package:provider/provider.dart';
 
-
 class HomePage extends StatelessWidget {
   static const platform = MethodChannel('samples.flutter.dev/permission');
   const HomePage({Key? key}) : super(key: key);
@@ -91,14 +90,6 @@ class HomePage extends StatelessWidget {
                     leading: const Icon(Icons.library_music_sharp),
                     title: const Text('Audio player'),
                   ),
-                  ListTile(
-                    onTap: () async {
-                      await Navigator.pushNamed(context, '/payment',
-                          arguments: {'title': 'Stripe payment'});
-                    },
-                    leading: const Icon(Icons.library_music_sharp),
-                    title: const Text('Stripe payment player'),
-                  )
                 ],
               ),
               bottomNavigationBar: BottomNavigationBar(

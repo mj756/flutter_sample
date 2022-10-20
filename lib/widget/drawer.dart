@@ -50,7 +50,6 @@ class SideBar extends StatelessWidget {
               if (PreferenceController.getString(
                       PreferenceController.prefKeyLoginType) ==
                   PreferenceController.loginTypeNormal) {
-                print(AppConstants.endpointLogout);
                 await ApiController.post(
                     AppConstants.endpointLogout,
                     json.encode({
@@ -59,8 +58,7 @@ class SideBar extends StatelessWidget {
                       'fcmToken': PreferenceController.getString(
                           PreferenceController.fcmToken)
                     })).then((response) {
-                  print(response.message);
-                  if (response.status != 0) {
+                  if (response.status == 0) {
                     PreferenceController.clearLoginCredential();
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) => LoginPage()));

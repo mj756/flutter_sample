@@ -23,12 +23,10 @@ class PushNotificationController {
                 requestBadgePermission: true,
                 requestAlertPermission: true,
                 onDidReceiveLocalNotification: onDidReceiveLocalNotification)));
-
         subscribeMessages();
         isInitialized = true;
       }
     }
-    await getFCMToken().then((value) {});
   }
 
   static void subscribeMessages() {

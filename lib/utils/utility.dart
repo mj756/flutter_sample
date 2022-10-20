@@ -3,9 +3,9 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_sample/widget/progress_indicator.dart';
-
 
 class Utility {
   static String getRandomString({int length = 10}) {
@@ -15,6 +15,9 @@ class Utility {
     return String.fromCharCodes(Iterable.generate(
         length, (_) => chars.codeUnitAt(rnd.nextInt(chars.length - 1))));
   }
+
+  static void hideKeyboard() =>
+      SystemChannels.textInput.invokeMethod('TextInput.hide');
 
   static LoadingProgressDialog showLoaderDialog(BuildContext context) {
     LoadingProgressDialog progressDialog = LoadingProgressDialog();
@@ -40,7 +43,7 @@ class Utility {
     return '';
   }
 
-  static String utf8Decode(String? text) {
+  static String utf8Decode01(String? text) {
     if (text != null) {
       try {
         if (double.tryParse(text) != null) {

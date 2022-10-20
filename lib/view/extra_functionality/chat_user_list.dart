@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sample/controller/api_controller.dart';
 import 'package:flutter_sample/model/user.dart';
@@ -57,17 +58,21 @@ class ChatUserList extends StatelessWidget {
   Future<List<AppUser>> getAllUser(BuildContext context) async {
     AppUser user = AppUser.fromJson(json.decode(PreferenceController.getString(
         PreferenceController.prefKeyUserPayload)));
+
     List<AppUser> users = List.empty(growable: true);
     final response = await ApiController.get(
         '${AppConstants.endpointGetAllUser}?id=${user.id}');
     if (response.status == 0) {
-      final datas = json.decode(json.encode(response.data));
-      for (int i = 0; i < datas.length; i++) {
-        users.add(AppUser.fromJson(json.decode(json.encode(datas[i]))));
-      }
+      final userList =
+          json.decode(json.encode(response.data)).cast<Map<String, dynamic>>();
+      return compute(parse, userList);
     } else {
       print(response.message);
     }
     return users;
+  }
+
+  List<AppUser> parse(dynamic userList) {
+    return userList.map<AppUser>((json) => AppUser.fromJson(json)).toList();
   }
 }

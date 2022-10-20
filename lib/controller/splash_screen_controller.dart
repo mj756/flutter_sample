@@ -5,9 +5,9 @@ import 'package:flutter_sample/controller/app_setting_controller.dart';
 import 'package:flutter_sample/controller/extra_functionality/local_storage_controller.dart';
 import 'package:flutter_sample/controller/preference_controller.dart';
 import 'package:flutter_sample/controller/push_notification_controller.dart';
-import 'package:flutter_sample/utils/constants.dart';
 import 'package:provider/provider.dart';
 
+import '../utils/constants.dart';
 import 'api_controller.dart';
 import 'firebase_controller.dart';
 

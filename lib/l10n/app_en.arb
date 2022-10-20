@@ -20,7 +20,7 @@
     "label_login":"Login",
     "label_forgot_password":"Forgot password?",
      "label_do_not_have_account":"Don't have an account yet? create",
-     "label_registration":"Registration",
+     "label_registration":"Create new account",
      "label_sign_up":"Sign Up",
      "label_already_have_account":"Already have an account? Login",
      "label_send":"Send",
@@ -28,11 +28,14 @@
       "message_invalid_user_name":"Please enter valid user name",
       "label_enter_user_name":"Enter user name",
       "label_name":"Name",
-      "label_terms_and_condition":  "By signing up your agree with our terms and conditions",
+      "label_agree_terms":  "By signing up your agree with our ",
+      "label_terms_and_condition":  "terms and conditions",
        "label_select_language":"Select language",
        "label_profile":"Profile",
        "label_gender":"Gender",
        "label_male":"Male",
        "label_female":"Female",
-       "label_other":"Other"
+       "label_other":"Other",
+       "label_welcome":"Welcome back",
+         "label_login_to_account":"Login to your account"
 }

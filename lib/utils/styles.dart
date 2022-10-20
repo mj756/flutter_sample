@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'constants.dart';
 
@@ -15,16 +16,24 @@ class CustomStyles {
       isExtraLargeFont = false}) {
     int fontSize = 14;
     if (isExtraSmallFont == true) {
-      fontSize = AppConstants.extraSmallFont;
+      fontSize = AppConstants.fontSize10;
     } else if (isSmallFont == true) {
-      fontSize = AppConstants.smallFont;
+      fontSize = AppConstants.fontSize12;
     } else if (isLargeFont == true) {
-      fontSize = AppConstants.largeFont;
+      fontSize = AppConstants.fontSize16;
     } else if (isExtraLargeFont == true) {
-      fontSize = AppConstants.extraLargeFont;
+      fontSize = AppConstants.fontSize18;
     } else {
-      fontSize = AppConstants.normalFont;
+      fontSize = AppConstants.fontSize14;
     }
+
+    return GoogleFonts.lato(
+        color: defaultColor,
+        fontSize: fontSize.h,
+        fontWeight: isBold == true ? FontWeight.bold : FontWeight.normal,
+        decoration: isUnderLine == true
+            ? TextDecoration.underline
+            : TextDecoration.none);
 
     return TextStyle(
         fontFamily: 'Lato',
@@ -60,7 +69,8 @@ class CustomStyles {
       ),
       textStyle: MaterialStateProperty.resolveWith<TextStyle>(
           (Set<MaterialState> states) {
-        return customTextStyle(defaultColor: AppConstants.whiteColor, isLargeFont: true);
+        return customTextStyle(
+            defaultColor: AppConstants.whiteColor, isLargeFont: true);
       }),
       minimumSize:
           MaterialStateProperty.resolveWith<Size>((Set<MaterialState> states) {

@@ -1,11 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_sample/controller/extra_functionality/local_storage_controller.dart';
-<<<<<<< Updated upstream
 import 'package:flutter_sample/model/user.dart';
-=======
-
-import '../../model/user.dart';
->>>>>>> Stashed changes
 
 class DatabaseOperationController extends ChangeNotifier {
   List<AppUser> user = List.empty(growable: true);

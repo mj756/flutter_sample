@@ -20,7 +20,7 @@
       "label_login":"Acceso",
       "label_forgot_password":"¿Se te olvidó tu contraseña?",
       "label_do_not_have_account":"¿Aún no tienes una cuenta? crear",
-      "label_registration":"Registro",
+      "label_registration":"Crear una nueva cuenta",
       "label_sign_up":"Inscribirse",
        "label_already_have_account":"¿Ya tienes una cuenta? Acceso",
         "label_send":"Enviar",
@@ -28,11 +28,14 @@
         "message_invalid_user_name":"Porfavor ingrese un usuario valido",
         "label_enter_user_name":"Introduzca su nombre de usuario",
         "label_name":"Nombre",
-         "label_terms_and_condition":  "Al registrarte aceptas nuestros términos y condiciones",
+          "label_agree_terms":  "Al registrarte estás de acuerdo con nuestro ",
+              "label_terms_and_condition":  "Términos y condiciones",
          "label_select_language":"Seleccione el idioma",
           "label_profile":"Perfil",
            "label_gender":"Género",
            "label_male":"Masculino",
            "label_female":"Femenina",
-           "label_other":"Otro"
+           "label_other":"Otro",
+           "label_welcome":"Bienvenido de nuevo",
+           "label_login_to_account":"Ingrese a su cuenta"
 }
