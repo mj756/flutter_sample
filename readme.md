@@ -89,6 +89,11 @@ run "flutter pub run build_runner build --delete-conflicting-outputs" for build 
 if  we add google login in our app then we need to add release sha1 key and debug sha1(usually in C:\Users\UserName\.android\debug.keystore
 ) key other wise it will generate apiexception 10 while debug mode.
 
+add google-services in app folder
+add key.jks file in app folder
+add google ads key, google map key,face book login related detail in string.xml
+set googleMap key in googleMapKey in constant
+
 
 # Generate key hash for facebook,microsoft login
 keytool -exportcert -alias SIGNATURE_ALIAS -keystore "C:\Users\User\Documents\GitHub\flutter_sample\android\app\key.jks" | openssl sha1 -binary | openssl base64
