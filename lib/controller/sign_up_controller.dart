@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_sample/constant/constants.dart';
 import 'package:flutter_sample/controller/preference_controller.dart';
 import 'package:flutter_sample/model/user.dart';
-import 'package:flutter_sample/utils/constants.dart';
+
 import 'api_controller.dart';
 
 class SignUpController with ChangeNotifier {

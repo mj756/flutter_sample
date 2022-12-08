@@ -2,9 +2,10 @@
 <resources>
     <string
         name="googleMapKey"
-        >AIzaSyCNZXYP85k8TDGjsduRS44N0BbbAiLPT4M</string>
+        >your own key</string>
     <string name="app_name">Flutter Sample</string>
-    <string name="facebook_app_id">380783437590227</string>
-    <string name="fb_login_protocol_scheme">fb380783437590227</string>
-    <string name="facebook_client_token">96f3d6b3cd6ff774395ba3bd56ccebdd</string>
+    <string name="advertisementId">your own advertisement id</string>
+    <string name="facebook_app_id">face book app id</string>
+    <string name="fb_login_protocol_scheme">fb protocol scheme like fb12...</string>
+    <string name="facebook_client_token">facebook client token</string>
 </resources>

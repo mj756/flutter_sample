@@ -3,15 +3,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:flutter_sample/constant/constants.dart';
 import 'package:flutter_sample/controller/api_controller.dart';
 import 'package:flutter_sample/controller/extra_functionality/permission_handler.dart';
 import 'package:flutter_sample/model/extra_functionality/map_model.dart';
 import 'package:flutter_sample/model/extra_functionality/parking_detail.dart';
-import 'package:flutter_sample/utils/constants.dart';
 import 'package:geocoding/geocoding.dart' as geo_coding;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-
 
 class MyMapController extends MyPermissionManager with ChangeNotifier {
   MapResponseResult? nearByPlaces;
@@ -53,9 +52,9 @@ class MyMapController extends MyPermissionManager with ChangeNotifier {
           ),
         )
             .then((value) {
-          /* getNearByPlaces().then((value1) {
+          getNearByPlaces().then((value1) {
             notifyListeners();
-          });*/
+          });
         });
       });
     });

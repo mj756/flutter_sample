@@ -74,6 +74,6 @@
        </activity>  -->
        <meta-data
            android:name="com.google.android.gms.ads.APPLICATION_ID"
-           android:value="ca-app-pub-7485007380540678~2476967135"/>
+           android:value="@string/advertisementId"/>
    </application>
 </manifest>

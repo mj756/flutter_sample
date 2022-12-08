@@ -8,7 +8,7 @@ class AppConstants {
 
   static const Duration apiResponseTimeOut = Duration(seconds: 30);
 
-  static String baseAddress = 'http://192.168.21.10:8000/api/';
+  static String baseAddress = 'http://my_address.com/api/';
   static String endpointLogin = "${baseAddress}user/login";
   static String endpointSocialLogin = "${baseAddress}user/sociallogin";
   static String endpointRegistration = "${baseAddress}user/register";
@@ -26,7 +26,7 @@ class AppConstants {
   static const String messageTypeImage = "image";
   static const String messageTypeAudio = "audio";
   static const String messageTypeFile = "file";
-  static const String googleMapKey = 'AIzaSyCNZXYP85k8TDGjsduRS44N0BbbAiLPT4M';
+  static const String googleMapKey = 'your own google map key';
   static const String serverDateFormat = "yyyy-MM-dd";
 
   static const SizedBox spaceHeight5 = SizedBox(height: 5);

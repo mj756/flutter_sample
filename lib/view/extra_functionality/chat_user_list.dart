@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_sample/constant/constants.dart';
 import 'package:flutter_sample/controller/api_controller.dart';
 import 'package:flutter_sample/model/user.dart';
-import 'package:flutter_sample/utils/constants.dart';
 import 'package:flutter_sample/view/extra_functionality/chat.dart';
 
 import '../../controller/preference_controller.dart';

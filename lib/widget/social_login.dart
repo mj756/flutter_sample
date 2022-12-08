@@ -24,6 +24,8 @@ class SocialLogin extends StatelessWidget {
                       .then((value) {
                     if (value.isEmpty) {
                       Navigator.pushReplacementNamed(context, '/home');
+                    } else {
+                      print(value);
                     }
                   });
                 },

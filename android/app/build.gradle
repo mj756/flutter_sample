@@ -87,7 +87,7 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation 'com.facebook.android:facebook-login:latest.release'
+    implementation group: 'com.facebook.android', name: 'facebook-login', version: '15.0.2'
     implementation 'com.google.android.gms:play-services-ads:7.5.0'
     implementation 'com.android.support:multidex:1.0.3'
 

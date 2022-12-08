@@ -2,15 +2,14 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter_sample/constant/constants.dart';
 import 'package:flutter_sample/controller/preference_controller.dart';
 import 'package:flutter_sample/model/api_response.dart';
 import 'package:flutter_sample/model/extra_functionality/map_model.dart';
-import 'package:flutter_sample/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-
 
 class ApiController {
   static Future<bool> checkInternetStatus() async {
@@ -74,6 +73,7 @@ class ApiController {
 
   static Future<ApiResponse> post(String url, String body,
       {bool isLoginApiCall = false}) async {
+    print(url);
     ApiResponse apiResponse = ApiResponse();
     try {
       if (await checkInternetStatus() == false) {

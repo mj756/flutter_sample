@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_sample/constant/constants.dart';
 import 'package:flutter_sample/controller/preference_controller.dart';
 import 'package:flutter_sample/controller/splash_screen_controller.dart';
-import 'package:flutter_sample/utils/constants.dart';
 import 'package:provider/provider.dart';
-
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);

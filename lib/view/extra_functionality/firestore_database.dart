@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
+import '../../constant/constants.dart';
 import '../../controller/extra_functionality/firebase_storage_controller.dart';
-import '../../utils/constants.dart';
 import '../../utils/styles.dart';
 
 class FirebaseDatabaseOperation extends StatelessWidget {
@@ -110,14 +110,22 @@ class FirebaseDatabaseOperation extends StatelessWidget {
                           )),
                     ],
                   ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Expanded(
-                      child: ListView.builder(
+                      child: ListView.separated(
                           itemCount: context
                               .watch<FirebaseStorageController>()
                               .users
                               .length,
+                          separatorBuilder: (context, index) {
+                            return SizedBox(
+                              height: 5,
+                            );
+                          },
                           itemBuilder: (context, index) {
-                            return ListTile(
+                            return GestureDetector(
                               onTap: () {
                                 _idController.text =
                                     Provider.of<FirebaseStorageController>(
@@ -138,32 +146,61 @@ class FirebaseDatabaseOperation extends StatelessWidget {
                                         .users[index]
                                         .email;
                               },
-                              title: Text(context
-                                  .watch<FirebaseStorageController>()
-                                  .users[index]
-                                  .name),
-                              subtitle: Text(context
-                                  .watch<FirebaseStorageController>()
-                                  .users[index]
-                                  .email),
-                              leading: Text(context
-                                  .watch<FirebaseStorageController>()
-                                  .users[index]
-                                  .id),
-                              trailing: IconButton(
-                                icon: const Icon(Icons.delete),
-                                onPressed: () async {
-                                  await Provider.of<FirebaseStorageController>(
-                                          context,
-                                          listen: false)
-                                      .deleteData(
-                                          'users',
-                                          Provider.of<FirebaseStorageController>(
-                                                  context,
-                                                  listen: false)
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                        color: AppConstants.themeColor)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(context
+                                              .watch<
+                                                  FirebaseStorageController>()
                                               .users[index]
-                                              .id);
-                                },
+                                              .name),
+                                          Text(context
+                                              .watch<
+                                                  FirebaseStorageController>()
+                                              .users[index]
+                                              .email),
+                                          Text(context
+                                              .watch<
+                                                  FirebaseStorageController>()
+                                              .users[index]
+                                              .id)
+                                        ],
+                                      ),
+                                    ),
+                                    Align(
+                                        alignment: Alignment.center,
+                                        child: IconButton(
+                                          icon: const Icon(
+                                            Icons.delete,
+                                            color: Colors.red,
+                                          ),
+                                          onPressed: () async {
+                                            await Provider.of<
+                                                        FirebaseStorageController>(
+                                                    context,
+                                                    listen: false)
+                                                .deleteData(
+                                                    'users',
+                                                    Provider.of<FirebaseStorageController>(
+                                                            context,
+                                                            listen: false)
+                                                        .users[index]
+                                                        .id);
+                                          },
+                                        ))
+                                  ],
+                                ),
                               ),
                             );
                           }))

@@ -1,5 +1,11 @@
-import 'package:firebase_remote_config/firebase_remote_config.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show BuildContext;
+import 'package:flutter/material.dart' show ChangeNotifier;
+import 'package:flutter/material.dart' show ScaffoldMessenger;
+import 'package:flutter/material.dart' show SnackBarAction;
+import 'package:flutter/material.dart' show SnackBar;
+import 'package:flutter/material.dart' show Colors;
+import 'package:flutter/material.dart' show Text;
+import 'package:flutter/material.dart' show TextStyle;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_sample/controller/app_setting_controller.dart';
 import 'package:flutter_sample/controller/extra_functionality/local_storage_controller.dart';
@@ -7,7 +13,6 @@ import 'package:flutter_sample/controller/preference_controller.dart';
 import 'package:flutter_sample/controller/push_notification_controller.dart';
 import 'package:provider/provider.dart';
 
-import '../utils/constants.dart';
 import 'api_controller.dart';
 import 'firebase_controller.dart';
 
@@ -45,13 +50,6 @@ class SplashScreenController with ChangeNotifier {
     await ApiController.checkInternetStatus().then((value) async {
       if (value == true) {
         await FirebaseController().initialize();
-
-        final FirebaseRemoteConfig config = await FirebaseRemoteConfig.instance;
-        await config.fetchAndActivate();
-        String baseAddress = await config.getString('apiAddress');
-        if (baseAddress.isNotEmpty) {
-          AppConstants.baseAddress = baseAddress;
-        }
         await PushNotificationController.initialize();
         if (PreferenceController.getString(PreferenceController.fcmToken)
             .isEmpty) {

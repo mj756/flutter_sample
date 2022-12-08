@@ -1,0 +1,16 @@
+{
+    "editor.guides.bracketPairs": "active",
+    "RainbowBrackets.forceIterationColorCycle": true,
+    "RainbowBrackets.forceUniqueOpeningColor": true,
+    "RainbowBrackets.consecutivePairColors": [
+        "()",
+        "[]",
+        "{}",
+        [
+            "pink",
+            "red",
+            "yellow"
+        ],
+        "Revioletd"
+    ]
+}

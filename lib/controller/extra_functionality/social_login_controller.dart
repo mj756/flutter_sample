@@ -4,10 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_sample/Utils/Utility.dart';
+import 'package:flutter_sample/constant/constants.dart';
 import 'package:flutter_sample/controller/api_controller.dart';
 import 'package:flutter_sample/controller/preference_controller.dart';
 import 'package:flutter_sample/model/user.dart';
-import 'package:flutter_sample/utils/constants.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class SocialLoginController with ChangeNotifier {

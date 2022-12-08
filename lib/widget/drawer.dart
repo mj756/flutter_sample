@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_sample/constant/constants.dart';
 import 'package:flutter_sample/controller/api_controller.dart';
 import 'package:flutter_sample/controller/firebase_controller.dart';
 import 'package:flutter_sample/controller/preference_controller.dart';
 import 'package:flutter_sample/model/user.dart';
-import 'package:flutter_sample/utils/constants.dart';
 import 'package:flutter_sample/view/login.dart';
 import 'package:flutter_sample/view/setting.dart';
 

@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_sample/controller/preference_controller.dart';
 
+import '../constant/constants.dart';
 import '../model/user.dart';
-import '../utils/constants.dart';
 import 'api_controller.dart';
 
 class ProfileController extends ChangeNotifier {
